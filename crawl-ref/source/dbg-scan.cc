@@ -577,8 +577,6 @@ void debug_mons_scan()
         return;
     }
 
-    mpr("");
-
     for (unsigned int i = 0; i < floating_mons.size(); ++i)
     {
         const int       idx = floating_mons[i];
@@ -597,8 +595,6 @@ void debug_mons_scan()
                                      " and ", ", ", MSGCH_WARN);
         }
     }
-
-    mpr("");
 
     for (unsigned int i = 0; i < bogus_pos.size(); ++i)
     {

@@ -1320,10 +1320,10 @@ void debug_pathfind(int idx)
         mpr(path_str.c_str());
         mprf("-> path length: %u", (unsigned int)path.size());
 
-        mpr("");
+        ////mpr("");
         path = mp.calc_waypoints();
         path_str = "";
-        mpr("");
+        ////mpr("");
         mpr("And here are the needed waypoints: ");
         for (unsigned int i = 0; i < path.size(); ++i)
         {

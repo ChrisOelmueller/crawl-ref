@@ -820,7 +820,6 @@ void wizard_list_items()
                     mpr(si->name(DESC_PLAIN, false, false, false).c_str());
             }
 
-        mpr("");
     }
 
     mpr("Item stacks (by location and top item):");
@@ -838,7 +837,6 @@ void wizard_list_items()
         }
     }
 
-    mpr("");
     mpr("Floor items (stacks only show top item):");
 
     const coord_def start(1,1), end(GXM-1, GYM-1);

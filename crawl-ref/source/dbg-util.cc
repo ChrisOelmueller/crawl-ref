@@ -102,7 +102,6 @@ void debug_dump_levgen()
             mprf("    %s", vault_name.c_str());
         }
     }
-    mpr("");
 }
 
 string debug_coord_str(const coord_def &pos)

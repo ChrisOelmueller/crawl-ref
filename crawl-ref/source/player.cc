@@ -3108,7 +3108,7 @@ static void _draconian_scale_colour_message()
         break;
 
     case SP_BASE_DRACONIAN:
-        mpr("");
+        ////mpr("");
         break;
 
     default:

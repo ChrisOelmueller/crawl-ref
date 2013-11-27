@@ -1286,7 +1286,6 @@ void wizard_mod_tide()
              "Tide inertia: %d. New value "
              "(smaller = faster tide) or use +/- to change tide: ",
              TIDE_MULTIPLIER);
-        mpr("");
         const int res =
             cancellable_get_line(buf, sizeof buf, NULL, _tidemod_keyfilter);
         mesclr(true);
