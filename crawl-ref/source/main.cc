@@ -19,6 +19,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <libintl.h>
 #include <list>
 #include <sstream>
 #include <iostream>
@@ -278,6 +279,9 @@ int main(int argc, char *argv[])
         exit(1);
     }
 #endif
+    // i18n (TODO move to good spot)
+    bindtextdomain("messages", "dat/lang/");
+    textdomain("messages");
 #ifdef DEBUG_GLOBALS
     real_Options = new game_options();
     real_you = new player();

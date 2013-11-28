@@ -851,6 +851,7 @@ static string _menu_burden_invstatus(const Menu *menu, bool is_pickup = false)
                                                     : "unencumbered";
     if (Options.show_inventory_weights)
     {
+        //i18n: Exact inventory burden when displaying item weights
         newstate = make_stringf("%.0f%s/%.0f aum",
                        you.burden * BURDEN_TO_AUM,
                        sw.c_str(),

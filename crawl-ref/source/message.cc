@@ -30,6 +30,7 @@
 #include "shout.h"
 #include "viewgeom.h"
 
+#include <libintl.h>
 #include <sstream>
 
 #ifdef WIZARD
@@ -1203,6 +1204,12 @@ static int _last_msg_turn = -1; // Turn of last message.
 
 static void _mpr(string text, msg_channel_type channel, int param, bool nojoin, bool cap)
 {
+    //TODO Make this a parameter.
+    const bool translate = true;
+
+    if (translate)
+        text = gettext(text.c_str());
+
     if (_msg_dump_file != NULL)
         fprintf(_msg_dump_file, "%s\n", text.c_str());
 
