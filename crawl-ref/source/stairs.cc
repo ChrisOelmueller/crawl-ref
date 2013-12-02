@@ -360,15 +360,16 @@ void up_stairs(dungeon_feature_type force_stair)
         && !feat_is_escape_hatch(stair_find)
         && coinflip())
     {
-        const char* fall_where = "down the stairs";
-        if (!feat_is_staircase(stair_find))
-            fall_where = "through the gate";
-
-        mprf("In your confused state, you trip and fall back %s.", fall_where);
-        if (!feat_is_staircase(stair_find))
-            ouch(1, NON_MONSTER, KILLED_BY_FALLING_THROUGH_GATE);
-        else
+        if (feat_is_staircase(stair_find))
+        {
+            mpr("In your confused state, you trip and fall back down the stairs.");
             ouch(1, NON_MONSTER, KILLED_BY_FALLING_DOWN_STAIRS);
+        }
+        else
+        {
+            mpr("In your confused state, you trip and fall back through the gate.");
+            ouch(1, NON_MONSTER, KILLED_BY_FALLING_THROUGH_GATE);
+        }
         you.turn_is_over = true;
         return;
     }
@@ -917,17 +918,18 @@ void down_stairs(dungeon_feature_type force_stair, bool force_known_shaft)
         && force_stair != DNGN_ENTER_ABYSS
         && coinflip())
     {
-        const char* fall_where = "down the stairs";
-        if (!feat_is_staircase(stair_find))
-            fall_where = "through the gate";
-
-        mprf("In your confused state, you trip and fall %s.", fall_where);
-        // Note that this only does damage; it doesn't cancel the level
+        // Note that the `ouch` only do damage; they do not cancel the level
         // transition.
-        if (!feat_is_staircase(stair_find))
-            ouch(1, NON_MONSTER, KILLED_BY_FALLING_THROUGH_GATE);
-        else
+        if (feat_is_staircase(stair_find))
+        {
+            mpr("In your confused state, you trip and fall down the stairs.");
             ouch(1, NON_MONSTER, KILLED_BY_FALLING_DOWN_STAIRS);
+        }
+        else
+        {
+            mpr("In your confused state, you trip and fall through the gate.");
+            ouch(1, NON_MONSTER, KILLED_BY_FALLING_THROUGH_GATE);
+        }
     }
 
     dungeon_feature_type stair_taken = stair_find;
