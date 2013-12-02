@@ -1129,11 +1129,13 @@ void arena_placed_monster(monster* mons)
     const bool summoned = mons->is_summoned();
 
 #ifdef ARENA_VERBOSE
-    mprf("%s %s!",
-         mons->full_name(DESC_A, true).c_str(),
-         arena::is_respawning                ? "respawns" :
-         (summoned && ! arena::real_summons) ? "is summoned"
-                                             : "enters the arena");
+    const char *themons = mons->full_name(DESC_A, true).c_str();
+    if (arena::is_respawning)
+        mprf("%s respawns!", themons);
+    else if (summoned && ! arena::real_summons)
+        mprf("%s is summoned!", themons);
+    else
+        mprf("%s enters the arena!", themons);
 #endif
 
     for (int i = 0; i < NUM_MONSTER_SLOTS; i++)
