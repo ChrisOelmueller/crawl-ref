@@ -1348,10 +1348,12 @@ bool fall_into_a_pool(const coord_def& entry, bool allow_shift,
         }
     }
 
-    mprf("You fall into the %s!",
-         (terrain == DNGN_LAVA)       ? "lava" :
-         (terrain == DNGN_DEEP_WATER) ? "water"
-                                      : "programming rift");
+    if (terrain == DNGN_LAVA)
+        mpr("You fall into the lava!");
+    else if (terrain == DNGN_DEEP_WATER)
+        mpr("You fall into the water!");
+    else
+        mpr("You fall into the programming rift!");
 
     more();
     mesclr();

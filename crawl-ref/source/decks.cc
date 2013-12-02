@@ -1288,7 +1288,10 @@ void draw_from_deck_of_punishment(bool deal)
     card_type card = _random_card(MISC_DECK_OF_PUNISHMENT, DECK_RARITY_COMMON,
                                   oddity);
 
-    mprf("You %s a card...", deal ? "deal" : "draw");
+    if (deal)
+        mpr("You deal a card...");
+    else
+        mpr("You draw a card...");
     card_effect(card, DECK_RARITY_COMMON, deal ? CFLAG_DEALT : 0);
 }
 
@@ -1955,8 +1958,10 @@ static void _shadow_card(int power, deck_rarity_type rarity)
 
     if (power_level >= 1)
     {
-        mpr(you.duration[DUR_STEALTH] ? "You feel more catlike."
-                                      : "You feel stealthy.");
+        if (you.duration[DUR_STEALTH])
+            mpr("You feel more catlike.");
+        else
+            mpr("You feel stealthy.");
         you.increase_duration(DUR_STEALTH, random2(power/4) + 1);
     }
 

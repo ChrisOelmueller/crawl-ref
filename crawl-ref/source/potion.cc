@@ -178,8 +178,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     {
         const bool were_mighty = you.duration[DUR_MIGHT] > 0;
 
-        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
-             were_mighty ? "mightier" : "very mighty");
+        if (were_mighty)
+            mprf(MSGCH_DURATION, "You feel mightier all of a sudden.");
+        else
+            mprf(MSGCH_DURATION, "You feel very mighty all of a sudden.");
 
         you.increase_duration(DUR_MIGHT, (35 + random2(pow)) / factor, 80);
 
@@ -192,8 +194,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     {
         const bool were_brilliant = you.duration[DUR_BRILLIANCE] > 0;
 
-        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
-             were_brilliant ? "more clever" : "clever");
+        if (were_brilliant)
+            mprf(MSGCH_DURATION, "You feel more clever all of a sudden.");
+        else
+            mprf(MSGCH_DURATION, "You feel clever all of a sudden.");
 
         you.increase_duration(DUR_BRILLIANCE,
                               (35 + random2(pow)) / factor, 80);
@@ -207,8 +211,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     {
         const bool were_agile = you.duration[DUR_AGILITY] > 0;
 
-        mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
-             were_agile ? "more agile" : "agile");
+        if (were_agile)
+            mprf(MSGCH_DURATION, "You feel more agile all of a sudden.");
+        else
+            mprf(MSGCH_DURATION, "You feel agile all of a sudden.");
 
         you.increase_duration(DUR_AGILITY, (35 + random2(pow)) / factor, 80);
 
@@ -250,14 +256,17 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     case POT_STRONG_POISON:
         if (player_res_poison() >= (pot_eff == POT_POISON ? 1 : 3))
         {
-            mprf("You feel %s nauseous.",
-                 (pot_eff == POT_POISON) ? "slightly" : "quite");
+            if (pot_eff == POT_POISON)
+                mpr("You feel slightly nauseous.");
+            else
+                mpr("You feel quite nauseous.");
         }
         else
         {
-            mprf(MSGCH_WARN,
-                 "That liquid tasted %s nasty...",
-                 (pot_eff == POT_POISON) ? "very" : "extremely");
+            if (pot_eff == POT_POISON)
+                mprf(MSGCH_WARN, "That liquid tasted very nasty...");
+            else
+                mprf(MSGCH_WARN, "That liquid tasted extremely nasty...");
 
             int amount;
             string msg;
@@ -327,9 +336,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
         }
         else
         {
-            mprf(MSGCH_DURATION, !you.duration[DUR_INVIS]
-                 ? "You fade into invisibility!"
-                 : "You fade further into invisibility.");
+            if (!you.duration[DUR_INVIS])
+                mprf(MSGCH_DURATION, "You fade into invisibility!");
+            else
+                mprf(MSGCH_DURATION, "You fade further into invisibility.");
         }
 
         // Now multiple invisiblity casts aren't as good. -- bwr
@@ -456,8 +466,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     case POT_CURE_MUTATION:
         if (potion && was_known && undead_mutation_rot(true))
         {
-            mpr(you.form == TRAN_LICH ? "You cannot mutate at present."
-                                      : "You cannot mutate.");
+            if (you.form == TRAN_LICH)
+                mpr("You cannot mutate at present.");
+            else
+                mpr("You cannot mutate.");
             return false;
         }
         mpr("It has a very clean taste.");
@@ -469,8 +481,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
     case POT_MUTATION:
         if (potion && was_known && undead_mutation_rot(true))
         {
-            mpr(you.form == TRAN_LICH ? "You cannot mutate at present."
-                                      : "You cannot mutate.");
+            if (you.form == TRAN_LICH)
+                mpr("You cannot mutate at present.");
+            else
+                mpr("You cannot mutate.");
             return false;
         }
 
@@ -487,8 +501,10 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
         {
             if (potion && was_known)
             {
-                mpr(you.form == TRAN_LICH ? "You cannot mutate at present."
-                                          : "You cannot mutate.");
+                if (you.form == TRAN_LICH)
+                    mpr("You cannot mutate at present.");
+                else
+                    mpr("You cannot mutate.");
                 return false;
             }
 

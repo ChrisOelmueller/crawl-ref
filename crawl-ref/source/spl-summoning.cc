@@ -185,7 +185,10 @@ spret_type cast_sticks_to_snakes(int pow, god_type god, bool fail)
     }
 
     dec_inv_item_quantity(you.equip[EQ_WEAPON], count);
-    mpr((count > 1) ? "You create some snakes!" : "You create a snake!");
+    if (count > 1)
+        mpr("You create some snakes!");
+    else
+        mpr("You create a snake!");
     return SPRET_SUCCESS;
 }
 
@@ -529,8 +532,10 @@ spret_type cast_summon_ugly_thing(int pow, god_type god, bool fail)
                       MHITYOU,
                       0, god)))
     {
-        mpr((mon == MONS_VERY_UGLY_THING) ? "A very ugly thing appears."
-                                          : "An ugly thing appears.");
+        if (mon == MONS_VERY_UGLY_THING)
+            mpr("A very ugly thing appears.");
+        else
+            mpr("An ugly thing appears.");
     }
     else
         canned_msg(MSG_NOTHING_HAPPENS);
@@ -923,8 +928,10 @@ static bool _summon_demon_wrapper(int pow, god_type god, int spell,
 
         if (!player_angers_monster(demon) && !friendly)
         {
-            mpr(charmed ? "You don't feel so good about this..."
-                        : "It doesn't seem very happy.");
+            if (charmed)
+                mpr("You don't feel so good about this...");
+            else
+                mpr("It doesn't seem very happy.");
         }
         else if (friendly)
         {
@@ -1472,8 +1479,10 @@ static bool _raise_remains(const coord_def &pos, int corps, beh_type beha,
     {
         if (you.see_cell(pos))
         {
-            mprf("The headless hydra %s sways and immediately collapses!",
-                 item.sub_type == CORPSE_BODY ? "corpse" : "skeleton");
+            if (item.sub_type == CORPSE_BODY)
+                mpr("The headless hydra corpse sways and immediately collapses!");
+            else
+                mpr("The headless hydra skeleton sways and immediately collapses!");
         }
         return false;
     }
@@ -2280,13 +2289,17 @@ spret_type cast_haunt(int pow, const coord_def& where, god_type god, bool fail)
 
     if (success > 1)
     {
-        mpr(friendly ? "Insubstantial figures form in the air."
-                     : "You sense hostile presences.");
+        if (friendly)
+            mpr("Insubstantial figures form in the air.");
+        else
+            mpr("You sense hostile presences.");
     }
     else if (success)
     {
-        mpr(friendly ? "An insubstantial figure forms in the air."
-                     : "You sense a hostile presence.");
+        if (friendly)
+            mpr("An insubstantial figure forms in the air.");
+        else
+            mpr("You sense a hostile presence.");
     }
     else
     {

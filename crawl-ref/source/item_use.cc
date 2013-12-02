@@ -675,9 +675,10 @@ bool can_wear_armour(const item_def &item, bool verbose, bool ignore_temporary)
                 {
                     if (verbose)
                     {
-                        mprf(you_tran_can_wear(s) ? "The hauberk won't fit your %s."
-                                                  : "You have no %s!",
-                             parts[s - EQ_HELMET]);
+                        if (you_tran_can_wear(s))
+                            mprf("The hauberk won't fit your %s.", parts[s - EQ_HELMET]);
+                        else
+                            mprf("You have no %s!", parts[s - EQ_HELMET]);
                     }
                     return false;
                 }
@@ -701,9 +702,12 @@ bool can_wear_armour(const item_def &item, bool verbose, bool ignore_temporary)
     if (bad_size)
     {
         if (verbose)
-            mprf("This armour is too %s for you!",
-                 (bad_size > 0) ? "big" : "small");
-
+        {
+            if (bad_size > 0)
+                mpr("This armour is too big for you!");
+            else
+                mpr("This armour is too small for you!");
+        }
         return false;
     }
 
@@ -3102,9 +3106,10 @@ void read_scroll(int slot)
     if (player_mutation_level(MUT_BLURRY_VISION)
         && x_chance_in_y(player_mutation_level(MUT_BLURRY_VISION), 5))
     {
-        mpr((player_mutation_level(MUT_BLURRY_VISION) == 3 && one_chance_in(3))
-                        ? "This scroll appears to be blank."
-                        : "The writing blurs in front of your eyes.");
+        if (player_mutation_level(MUT_BLURRY_VISION) == 3 && one_chance_in(3))
+            mpr("This scroll appears to be blank.");
+        else
+            mpr("The writing blurs in front of your eyes.");
         return;
     }
 

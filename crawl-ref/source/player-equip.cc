@@ -238,8 +238,10 @@ static void _equip_artefact_effect(item_def &item, bool *show_msgs, bool unmeld)
         {
             if (msg)
             {
-                mprf("You feel %s.", proprt[ARTP_AC] > 0?
-                     "well-protected" : "more vulnerable");
+                if (proprt[ARTP_AC] > 0)
+                    mpr("You feel well-protected.");
+                else
+                    mpr("You feel more vulnerable.");
             }
             artefact_wpn_learn_prop(item, ARTP_AC);
         }
@@ -252,8 +254,10 @@ static void _equip_artefact_effect(item_def &item, bool *show_msgs, bool unmeld)
         {
             if (msg)
             {
-                mprf("You feel somewhat %s.", proprt[ARTP_EVASION] > 0?
-                     "nimbler" : "more awkward");
+                if (proprt[ARTP_EVASION] > 0)
+                    mpr("You feel somewhat nimbler.");
+                else
+                    mpr("You feel somewhat more awkward.");
             }
             artefact_wpn_learn_prop(item, ARTP_EVASION);
         }
@@ -366,8 +370,10 @@ static void _unequip_artefact_effect(item_def &item,
         you.redraw_armour_class = true;
         if (!known[ARTP_AC] && msg)
         {
-            mprf("You feel less %s.",
-                 proprt[ARTP_AC] > 0? "well-protected" : "vulnerable");
+            if (proprt[ARTP_AC] > 0)
+                mpr("You feel less well-protected.");
+            else
+                mpr("You feel less vulnerable.");
         }
     }
 
@@ -376,8 +382,10 @@ static void _unequip_artefact_effect(item_def &item,
         you.redraw_evasion = true;
         if (!known[ARTP_EVASION] && msg)
         {
-            mprf("You feel less %s.",
-                 proprt[ARTP_EVASION] > 0? "nimble" : "awkward");
+            if (proprt[ARTP_EVASION] > 0)
+                mpr("You feel less nimble.");
+            else
+                mpr("You feel less awkward.");
         }
     }
 
@@ -594,10 +602,10 @@ static void _equip_weapon_effect(item_def& item, bool showMsgs, bool unmeld)
                     break;
 
                 case SPWPN_DRAGON_SLAYING:
-                    mpr(player_genus(GENPC_DRACONIAN)
-                        || you.form == TRAN_DRAGON
-                            ? "You feel a sudden desire to commit suicide."
-                            : "You feel a sudden desire to slay dragons!");
+                    if (player_genus(GENPC_DRACONIAN) || you.form == TRAN_DRAGON)
+                        mpr("You feel a sudden desire to commit suicide.");
+                    else
+                        mpr("You feel a sudden desire to slay dragons!");
                     break;
 
                 case SPWPN_VENOM:
@@ -1320,7 +1328,10 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld)
         break;
 
     case RING_FLIGHT:
-        mprf("You feel %sbuoyant.", you.airborne() ? "more " : "");
+        if (you.airborne())
+            mpr("You feel more buoyant.");
+        else
+            mpr("You feel buoyant.");
         fake_rap = ARTP_FLY;
         ident = ID_KNOWN_TYPE;
         break;
@@ -1329,15 +1340,21 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld)
         if (crawl_state.game_is_sprint())
             mpr("You feel a slight, muted jump rush through you.");
         else
+        {
             // keep in sync with player_teleport
-            mprf("You feel slightly %sjumpy.",
-                 (player_teleport(false) > 8) ? "more " : "");
+            if (player_teleport(false) > 8)
+                mpr("You feel slightly more jumpy.");
+            else
+                mpr("You feel slightly jumpy.");
+        }
         ident = ID_KNOWN_TYPE;
         break;
 
     case RING_TELEPORT_CONTROL:
-        mprf("You feel %scontrolled for a moment.",
-              you.duration[DUR_CONTROL_TELEPORT] ? "more " : "");
+        if (you.duration[DUR_CONTROL_TELEPORT])
+            mpr("You feel more controlled for a moment.");
+        else
+            mpr("You feel controlled for a moment.");
         ident = ID_KNOWN_TYPE;
         break;
 

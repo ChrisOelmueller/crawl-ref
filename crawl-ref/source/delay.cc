@@ -1021,10 +1021,12 @@ static void _finish_delay(const delay_queue_item &delay)
         {
             if (item.sub_type == CORPSE_SKELETON)
             {
-                mprf("The corpse rots away into a skeleton just before you "
-                     "finish %s!",
-                     (delay.type == DELAY_BOTTLE_BLOOD ? "bottling its blood"
-                                                       : "butchering"));
+                if (delay.type == DELAY_BOTTLE_BLOOD)
+                   mpr("The corpse rots away into a skeleton just before"
+                       " you finish bottling its blood!");
+                else
+                   mpr("The corpse rots away into a skeleton just before"
+                       " you finish butchering!");
 
                 if (player_mutation_level(MUT_SAPROVOROUS) == 3)
                     _xom_check_corpse_waste();
@@ -1108,9 +1110,10 @@ static void _finish_delay(const delay_queue_item &delay)
         }
         else
         {
-            mprf("You stop %s.",
-                 delay.type == DELAY_BUTCHER ? "butchering the corpse"
-                                             : "bottling this corpse's blood");
+            if (delay.type == DELAY_BOTTLE_BLOOD)
+               mpr("You stop bottling this corpse's blood.");
+            else
+               mpr("You stop butchering the corpse.");
             _pop_delay();
         }
         StashTrack.update_stash(you.pos()); // Stash-track the generated items.

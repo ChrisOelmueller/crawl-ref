@@ -426,7 +426,10 @@ void splash_with_acid(int acid_strength, int death_source, bool corrode_items,
 
     if (post_res_dam > 0)
     {
-        mpr(hurt_msg ? hurt_msg : "The acid burns!");
+        if (hurt_msg)
+            mpr(hurt_msg);
+        else
+            mpr("The acid burns!");
 
         if (post_res_dam < dam)
             canned_msg(MSG_YOU_RESIST);

@@ -1554,9 +1554,10 @@ bool trog_burn_spellbooks()
             const int duration = min(4 + count + random2(rarity/2), 23);
             place_cloud(CLOUD_FIRE, *ri, duration, &you);
 
-            mprf(MSGCH_GOD, "The spellbook%s burst%s into flames.",
-                 count == 1 ? ""  : "s",
-                 count == 1 ? "s" : "");
+            if (count == 1)
+                mprf(MSGCH_GOD, "The spellbook bursts into flames.");
+            else
+                mprf(MSGCH_GOD, "The spellbooks burst into flames.");
         }
     }
 
@@ -1567,9 +1568,11 @@ bool trog_burn_spellbooks()
     }
     else if (totalblocked)
     {
-        mprf("The spellbook%s fail%s to ignite!",
-             totalblocked == 1 ? ""  : "s",
-             totalblocked == 1 ? "s" : "");
+        if (totalblocked == 1)
+            mpr("The spellbook fails to ignite!");
+        else
+            mpr("The spellbooks fail to ignite!");
+
         for (vector<coord_def>::iterator it = mimics.begin();
              it != mimics.end(); ++it)
         {
@@ -1754,8 +1757,10 @@ void yred_make_enslaved_soul(monster* mon, bool force_hostile)
     mon->stop_constricting_all(false);
     mon->stop_being_constricted();
 
-    mprf("%s soul %s.", whose.c_str(),
-         !force_hostile ? "is now yours" : "fights you");
+    if (!force_hostile)
+        mprf("%s soul is now yours.", whose.c_str());
+    else
+        mprf("%s soul fights you.", whose.c_str());
 }
 
 bool kiku_receive_corpses(int pow)
@@ -2200,8 +2205,10 @@ bool fedhas_sunlight()
 
     if (revealed_count)
     {
-        mprf("In the bright light, you notice %s.", revealed_count == 1 ?
-             "an invisible shape" : "some invisible shapes");
+        if (revealed_count == 1)
+            mpr("In the bright light, you notice an invisible shape");
+        else
+            mpr("In the bright light, you notice some invisible shapes");
     }
 
     return true;
@@ -3093,7 +3100,10 @@ void lugonu_bend_space()
     const int pow = 4 + skill_bump(SK_INVOCATIONS);
     const bool area_warp = random2(pow) > 9;
 
-    mprf("Space bends %saround you!", area_warp ? "sharply " : "");
+    if (area_warp)
+        mpr("Space bends sharply around you!");
+    else
+        mpr("Space bends around you!");
 
     if (area_warp)
         _lugonu_warp_area(pow);

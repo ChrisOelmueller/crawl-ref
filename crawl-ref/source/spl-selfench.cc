@@ -177,8 +177,10 @@ spret_type cast_swiftness(int power, bool fail)
 
     if (you.in_water() || you.liquefied_ground())
     {
-        mprf("The %s foams!", you.in_water() ? "water"
-                                             : "liquid ground");
+        if (you.in_water())
+           mpr("The water foams!");
+        else
+           mpr("The liquid ground foams!");
         return SPRET_ABORT;
     }
 
@@ -199,9 +201,12 @@ spret_type cast_swiftness(int power, bool fail)
     if (you.in_liquid())
     {
         // Hint that the player won't be faster until they leave the liquid.
-        mprf("The %s foams!", you.in_water() ? "water"
-                            : you.in_lava()  ? "lava"
-                                             : "liquid ground");
+        if (you.in_water())
+            mpr("The water foams!");
+        else if (you.in_lava())
+            mpr("The lava foams!");
+        else
+            mpr("The liquid ground foams!");
     }
 
     you.set_duration(DUR_SWIFTNESS, 12 + random2(power)/2, 30,

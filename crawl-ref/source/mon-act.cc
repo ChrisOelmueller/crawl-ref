@@ -3824,9 +3824,10 @@ static bool _monster_move(monster* mons)
                 if (you.see_cell(target))
                 {
                     const bool actor_visible = you.can_see(mons);
-                    mprf("%s knocks down a tree!",
-                         actor_visible?
-                         mons->name(DESC_THE).c_str() : "Something");
+                    if (actor_visible)
+                        mprf("%s knocks down a tree!", mons->name(DESC_THE).c_str());
+                    else
+                        mpr("Something knocks down a tree!");
                     noisy(25, target);
                 }
                 else
@@ -3836,9 +3837,10 @@ static bool _monster_move(monster* mons)
             {
                 // Message depends on whether caused by boring beetle or
                 // acid (Dissolution).
-                mprf(MSGCH_SOUND, (mons->type == MONS_BORING_BEETLE) ?
-                     "You hear a grinding noise." :
-                     "You hear a sizzling sound.");
+                if (mons->type == MONS_BORING_BEETLE)
+                    mprf(MSGCH_SOUND, "You hear a grinding noise.");
+                else
+                    mprf(MSGCH_SOUND, "You hear a sizzling sound.");
             }
         }
     }

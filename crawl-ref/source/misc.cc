@@ -678,7 +678,10 @@ bool maybe_coagulate_blood_potions_inv(item_def &blood)
         return rot_count > 0;
     }
 
-    mprf("You can't carry %s right now.", coag_count > 1 ? "them" : "it");
+    if (coag_count > 1)
+        mpr("You can't carry them right now.");
+    else
+        mpr("You can't carry it right now.");
 
     // No space in inventory, check floor.
     int o = igrd(you.pos());
@@ -1749,7 +1752,12 @@ static void _drop_tomb(const coord_def& pos, bool premature, bool zin)
     if (count)
     {
         if (seen_change && !zin)
-            mprf("The walls disappear%s!", premature ? " prematurely" : "");
+        {
+            if (premature)
+                mpr("The walls disappear prematurely!");
+            else
+                mpr("The walls disappear!");
+        }
         else if (seen_change && zin)
         {
             if (mon)
@@ -2461,8 +2469,12 @@ void swap_with_monster(monster* mon_to_swap)
         {
             int net = get_trapping_net(you.pos());
             if (net != NON_ITEM)
+            {
                 destroy_item(net);
-            mprf("The %s rips apart!", (net == NON_ITEM) ? "web" : "net");
+                mpr("The net rips apart!");
+            }
+            else
+                mpr("The web rips apart!");
             you.attribute[ATTR_HELD] = 0;
             you.redraw_quiver = true;
             you.redraw_evasion = true;
@@ -2621,8 +2633,11 @@ void entered_malign_portal(actor* act)
 {
     if (you.can_see(act))
     {
-        mprf("The portal repels %s, its terrible forces doing untold damage!",
-             act->is_player() ? "you" : act->name(DESC_THE).c_str());
+        if (act->is_player())
+            mpr("The portal repels you, its terrible forces doing untold damage!");
+        else
+            mprf("The portal repels %s, its terrible forces doing untold damage!",
+                 act->name(DESC_THE).c_str());
     }
 
     act->blink(false);

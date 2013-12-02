@@ -5804,7 +5804,10 @@ bool melee_attack::_player_vampire_draws_blood(const monster* mon, const int dam
         if (heal > 0 && !you.duration[DUR_DEATHS_DOOR])
         {
             inc_hp(heal);
-            mprf("You feel %sbetter.", (you.hp == you.hp_max) ? "much " : "");
+            if (you.hp == you.hp_max)
+                mpr("You feel much better.");
+            else
+                mpr("You feel better.");
         }
     }
 

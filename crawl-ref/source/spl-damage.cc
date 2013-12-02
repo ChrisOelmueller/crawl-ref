@@ -1261,8 +1261,11 @@ static int _shatter_player(int pow, actor *wielder, bool devastator = false)
 
     if (damage > 0)
     {
-        mpr(damage > 15 ? "You shudder from the earth-shattering force."
-                        : "You shudder.");
+        if (damage > 15)
+            mpr("You shudder from the earth-shattering force.");
+        else
+            mpr("You shudder.");
+
         if (devastator)
             ouch(damage, wielder->mindex(), KILLED_BY_MONSTER);
         else

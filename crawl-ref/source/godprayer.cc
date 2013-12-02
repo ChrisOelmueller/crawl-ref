@@ -322,9 +322,12 @@ void pray()
     {
         const mon_holy_type holi = you.holiness();
 
-        mprf(MSGCH_PRAY,
-             "You spend a moment contemplating the meaning of %s.",
-             holi == MH_NONLIVING ? "existence" : holi == MH_UNDEAD ? "unlife" : "life");
+        if (holi == MH_NONLIVING)
+            mprf(MSGCH_PRAY, "You spend a moment contemplating the meaning of existence.");
+        else if (holi == MH_UNDEAD)
+            mprf(MSGCH_PRAY, "You spend a moment contemplating the meaning of unlife.");
+        else
+            mprf(MSGCH_PRAY, "You spend a moment contemplating the meaning of life.");
 
         // Zen meditation is timeless.
         return;
@@ -900,8 +903,10 @@ static bool _offer_items()
     }
     if (num_sacced == 0 && you_worship(GOD_ELYVILON))
     {
-        mprf("There are no %sweapons here to destroy!",
-             you.piety_max[GOD_ELYVILON] < piety_breakpoint(2) ? "" : "unholy or evil ");
+        if (you.piety_max[GOD_ELYVILON] < piety_breakpoint(2))
+            mpr("There are no weapons here to destroy!");
+        else
+            mpr("There are no unholy or evil weapons here to destroy!");
     }
 
     return num_sacced > 0;

@@ -834,7 +834,12 @@ void trap_def::trigger(actor& triggerer, bool flat_footed)
         {
             trap_destroyed = true;
             if (you_trigger)
-                mprf("You tear through %s web.", you_know ? "the" : "a");
+            {
+                if (you_know)
+                    mpr("You tear through the web.");
+                else
+                    mpr("You tear through a web.");
+            }
             else if (m)
                 simple_monster_message(m, " tears through a web.");
             break;
@@ -903,11 +908,13 @@ void trap_def::trigger(actor& triggerer, bool flat_footed)
     case TRAP_ZOT:
         if (you_trigger)
         {
-            mpr((trig_knows) ? "You enter the Zot trap."
-                             : "Oh no! You have blundered into a Zot trap!");
-            if (!trig_knows)
+            if (trig_knows)
+                mpr("You enter the Zot trap.");
+            else
+            {
+                mpr("Oh no! You have blundered into a Zot trap!");
                 xom_is_stimulated(25);
-
+            }
             MiscastEffect(&you, ZOT_TRAP_MISCAST, SPTYP_RANDOM,
                            3, "a Zot trap");
         }
@@ -930,8 +937,10 @@ void trap_def::trigger(actor& triggerer, bool flat_footed)
             // to their friend.
             if (player_can_hear(pos) && (!targ || !in_sight))
             {
-                mprf(MSGCH_SOUND, "You hear a %s \"Zot\"!",
-                     in_sight ? "loud" : "distant");
+                if (in_sight)
+                    mprf(MSGCH_SOUND, "You hear a loud \"Zot\"!");
+                else
+                    mprf(MSGCH_SOUND, "You hear a distant \"Zot\"!");
             }
 
             if (targ)
@@ -1367,8 +1376,10 @@ void free_self_from_net()
 
         if (damage >= 4)
         {
-            mprf("You %s into the net.",
-                 can_slice? "slice" : "tear a large gash");
+            if (can_slice)
+                mpr("You slice into the net.");
+            else
+                mpr("You tear a large gash into the net.");
         }
         else
             mpr("You struggle against the net.");

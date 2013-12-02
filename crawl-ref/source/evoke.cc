@@ -207,9 +207,10 @@ static bool _reaching_weapon_attack(const item_def& wpn)
             mpr("You reach to attack!");
         else
         {
-            mprf("%s is in the way.",
-                 mons->observable() ? mons->name(DESC_THE).c_str()
-                                    : "Something you can't see");
+            if (mons->observable())
+                mprf("%s is in the way.", mons->name(DESC_THE).c_str());
+            else
+                mpr("Something you can't see is in the way.");
         }
     }
 
@@ -220,8 +221,10 @@ static bool _reaching_weapon_attack(const item_def& wpn)
 
         if (you.confused())
         {
-            mprf("You swing wildly%s", beam.isMe() ?
-                                       " and almost hit yourself!" : ".");
+            if (beam.isMe())
+                mpr("You swing wildly and almost hit yourself!");
+            else
+                mpr("You swing wildly");
         }
         else
             mpr("You attack empty space.");

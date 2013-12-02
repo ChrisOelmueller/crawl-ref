@@ -1818,9 +1818,12 @@ int monster_die(monster* mons, killer_type killer,
         {
             if (you.can_see(mons))
             {
-                mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD, silenced(mons->pos()) ?
-                    "The tentacle is hauled back through the portal!" :
-                    "With a roar, the tentacle is hauled back through the portal!");
+                if (silenced(mons->pos()))
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD,
+                         "The tentacle is hauled back through the portal!");
+                else
+                    mprf(MSGCH_MONSTER_DAMAGE, MDAM_DEAD,
+                         "With a roar, the tentacle is hauled back through the portal!");
             }
             silent = true;
         }

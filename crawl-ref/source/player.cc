@@ -4607,9 +4607,10 @@ bool enough_hp(int minimum, bool suppress_msg, bool abort_macros)
     {
         if (!suppress_msg)
         {
-            mpr(you.species != SP_DJINNI ?
-                "You haven't enough vitality at the moment." :
-                "You haven't enough essence at the moment.");
+            if (you.species == SP_DJINNI)
+                mpr("You haven't enough essence at the moment.");
+            else
+                mpr("You haven't enough vitality at the moment.");
         }
 
         if (abort_macros)
@@ -4975,9 +4976,10 @@ void contaminate_player(int change, bool controlled, bool msg)
             mpr("Your magical contamination has completely faded away.");
         else
         {
-            mprf((change > 0) ? MSGCH_WARN : MSGCH_RECOVERY,
-                 "You feel %s contaminated with magical energies.",
-                 (change > 0) ? "more" : "less");
+            if (change > 0)
+                mprf(MSGCH_WARN, "You feel more contaminated with magical energies.");
+            else
+                mprf(MSGCH_RECOVERY, "You feel less contaminated with magical energies.");
         }
 
         if (change > 0)
@@ -5565,8 +5567,12 @@ void fly_player(int pow, bool already_flying)
 
     bool standing = !you.airborne() && !already_flying;
     if (!already_flying)
-        mprf(MSGCH_DURATION, "You feel %s buoyant.", standing ? "very" : "more");
-
+    {
+        if (standing)
+            mprf(MSGCH_DURATION, "You feel very buoyant.");
+        else
+            mprf(MSGCH_DURATION, "You feel more buoyant.");
+    }
     you.increase_duration(DUR_FLIGHT, 25 + random2(pow), 100);
 
     if (standing)

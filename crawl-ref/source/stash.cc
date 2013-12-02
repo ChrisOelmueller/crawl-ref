@@ -1255,9 +1255,10 @@ void LevelStashes::no_stash(int x, int y)
 
         m_stashes[ newStash.abs_pos() ] = newStash;
     }
-
-    mpr(en? "I'll no longer ignore what I see on this square."
-          : "Ok, I'll ignore what I see on this square.");
+    if (en)
+        mpr("I'll no longer ignore what I see on this square.");
+    else
+        mpr("Ok, I'll ignore what I see on this square.");
 }
 
 void LevelStashes::add_stash(int x, int y)

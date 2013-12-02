@@ -1631,10 +1631,12 @@ static void _experience_check()
         perc = (you.experience - exp_needed(xl)) * 100
              / (exp_needed(xl + 1) - exp_needed(xl));
         perc = (nl - xl) * 100 - perc;
-        mprf(you.lives < 2 ?
-             "You'll get an extra life in %d.%02d levels' worth of XP." :
-             "If you died right now, you'd get an extra life in %d.%02d levels' worth of XP.",
-             perc / 100, perc % 100);
+        if (you.lives < 2)
+            mprf("You'll get an extra life in %d.%02d levels' worth of XP.",
+                 perc / 100, perc % 100);
+        else
+            mprf("If you died right now, you'd get an extra life in %d.%02d"
+                 " levels' worth of XP.", perc / 100, perc % 100);
     }
 
     handle_real_time();
@@ -1831,7 +1833,10 @@ static void _do_cycle_quiver(int dir)
 static void _do_list_gold()
 {
     if (shopping_list.empty())
-        mprf("You have %d gold piece%s.", you.gold, you.gold != 1 ? "s" : "");
+        if (you.gold == 1)
+            mprf("You have %d gold piece.", you.gold);
+        else
+            mprf("You have %d gold pieces.", you.gold);
     else
         shopping_list.display();
 }

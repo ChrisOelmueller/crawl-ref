@@ -454,9 +454,10 @@ void antimagic()
 
     if (need_msg)
     {
-        mprf(danger ? MSGCH_DANGER : MSGCH_WARN,
-             "%sYour magical effects are unravelling.",
-             danger ? "Careful! " : "");
+        if (danger)
+            mprf(MSGCH_DANGER, "Careful! Your magical effects are unravelling.");
+        else
+            mprf(MSGCH_WARN, "Your magical effects are unravelling.");
     }
 
     contaminate_player(-1 * (1000 + random2(4000)));
@@ -717,8 +718,10 @@ static bool _selectively_curse_item(bool armour, string *pre_msg)
             || armour && item.base_type != OBJ_ARMOUR
             || !armour && item.base_type != OBJ_JEWELLERY)
         {
-            mprf("Choose an uncursed equipped piece of %s, or Esc to abort.",
-                 armour ? "armour" : "jewellery");
+            if (armour)
+                mpr("Choose an uncursed equipped piece of armour, or Esc to abort.");
+            else
+                mpr("Choose an uncursed equipped piece of jewellery, or Esc to abort.");
             if (Options.auto_list)
                 more();
             continue;
@@ -755,8 +758,10 @@ bool curse_item(bool armour, bool alreadyknown, string *pre_msg)
     {
         if (you_worship(GOD_ASHENZARI) && alreadyknown)
         {
-            mprf(MSGCH_PROMPT, "You aren't wearing any piece of uncursed %s.",
-                 armour ? "armour" : "jewellery");
+            if (armour)
+                mprf(MSGCH_PROMPT, "You aren't wearing any piece of uncursed armour.");
+            else
+                mprf(MSGCH_PROMPT, "You aren't wearing any piece of uncursed jewellery.");
         }
         else
         {
@@ -841,9 +846,10 @@ static bool _do_imprison(int pow, const coord_def& where, bool zin)
 
         if (!success)
         {
-            mprf(none_vis ? "You briefly glimpse something next to %s."
-                        : "You need more space to imprison %s.",
-                targname.c_str());
+            if (none_vis)
+                mprf("You briefly glimpse something next to %s.", targname.c_str());
+            else
+                mprf("You need more space to imprison %s.", targname.c_str());
             return false;
         }
     }

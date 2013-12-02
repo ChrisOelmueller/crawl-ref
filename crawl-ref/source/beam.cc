@@ -3320,8 +3320,10 @@ bool bolt::misses_player()
     else if (defl && !_test_beam_hit(real_tohit, dodge_less, is_beam, defl, r))
     {
         // active voice to imply stronger effect
-        mprf(defl == 1 ? "The %s is repelled." : "You deflect the %s!",
-             name.c_str());
+        if (defl == 1)
+            mprf("The %s is repelled.", name.c_str());
+        else
+            mprf("You deflect the %s!", name.c_str());
     }
     else if (!_test_beam_hit(real_tohit, dodge, is_beam, defl, r))
     {

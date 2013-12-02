@@ -1387,8 +1387,11 @@ static bool _ely_holy_revenge(const monster *victim)
             targets.push_back(*mi);
     }
 
-    mprf("You %sare rebuked by divine will.", targets.size() ? "and your allies "
-                                                             : "");
+    if (targets.size())
+        mpr("You and your allies are rebuked by divine will.");
+    else
+        mpr("You are rebuked by divine will.");
+
     for (vector<monster*>::const_iterator mi = targets.begin();
          mi != targets.end(); ++mi)
     {

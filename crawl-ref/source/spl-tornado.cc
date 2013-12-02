@@ -137,9 +137,10 @@ spret_type cast_tornado(int powc, bool fail)
 
     fail_check();
 
-    mprf("A great vortex of raging winds %s.",
-         (you.airborne() || you.form == TRAN_TREE) ?
-         "appears around you" : "appears and lifts you up");
+    if (you.airborne() || you.form == TRAN_TREE)
+        mpr("A great vortex of raging winds appears around you.");
+    else
+        mpr("A great vortex of raging winds appears and lifts you up");
 
     if (you.fishtail)
         merfolk_stop_swimming();

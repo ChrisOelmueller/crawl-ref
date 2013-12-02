@@ -697,8 +697,10 @@ static bool _transformation_is_safe(transformation_type which_trans,
 
     if (!quiet)
     {
-        mprf("You would %s in your new form.",
-             feat == DNGN_DEEP_WATER ? "drown" : "burn");
+        if (feat == DNGN_DEEP_WATER)
+            mpr("You would drown in your new form.");
+        else
+            mpr("You would burn in your new form.");
     }
     return false;
 }
@@ -1329,8 +1331,10 @@ void untransform(bool skip_wielding, bool skip_move)
             // way is one line:
             you.mutation[app] = you.innate_mutations[app];
             you.attribute[ATTR_APPENDAGE] = 0;
-            mprf(MSGCH_DURATION, "Your %s disappear%s.", appendage_name(app),
-                 (app == MUT_TENTACLE_SPIKE) ? "s" : "");
+            if (app == MUT_TENTACLE_SPIKE)
+                mprf(MSGCH_DURATION, "Your %s disappears.", appendage_name(app));
+            else
+                mprf(MSGCH_DURATION, "Your %s disappear.", appendage_name(app));
         }
         break;
 
