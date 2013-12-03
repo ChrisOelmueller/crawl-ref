@@ -213,13 +213,27 @@ void stop_delay(bool stop_stair_travel, bool force_unsafe)
                 break;
             }
 
-        const string butcher_verb =
-                (delay.type == DELAY_BUTCHER      ? "butchering" :
-                 delay.type == DELAY_BOTTLE_BLOOD ? "bottling blood from"
-                                                  : "sacrificing");
-
-        mprf("You stop %s the corpse%s.", butcher_verb.c_str(),
-             multiple_corpses ? "s" : "");
+        if (delay.type == DELAY_BUTCHER)
+        {
+            if (multiple_corpses)
+                mpr("You stop butchering the corpses.");
+            else
+                mpr("You stop butchering the corpse.");
+        }
+        else if (delay.type == DELAY_BOTTLE_BLOOD)
+        {
+            if (multiple_corpses)
+                mpr("You stop bottling blood from the corpses.");
+            else
+                mpr("You stop bottling blood from the corpse.");
+        }
+        else
+        {
+            if (multiple_corpses)
+                mpr("You stop sacrificing the corpses.");
+            else
+                mpr("You stop sacrificing the corpse.");
+        }
 
         _pop_delay();
         break;
