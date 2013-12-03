@@ -4499,10 +4499,12 @@ void mons_cast(monster* mons, bolt &pbolt, spell_type spell_cast,
         if (you.can_see(mons))
         {
             bool flying = mons->flight_mode();
-            mprf("A great vortex of raging winds appears %s%s%s!",
-                 flying ? "around " : "and lifts ",
-                 mons->name(DESC_THE).c_str(),
-                 flying ? "" : " up!");
+            if (flying)
+                mprf("A great vortex of raging winds appears around %s!",
+                     mons->name(DESC_THE).c_str());
+            else
+                mprf("A great vortex of raging winds appears and lifts %s up!",
+                     mons->name(DESC_THE).c_str());
         }
         else if (you.see_cell(mons->pos()))
             mpr("A great vortex of raging winds appears out of thin air!");

@@ -896,11 +896,17 @@ spret_type cast_call_imp(int pow, god_type god, bool fail)
             mgen_data(mon, BEH_FRIENDLY, &you, dur, SPELL_CALL_IMP,
                       you.pos(), MHITYOU, MG_FORCE_BEH, god)))
     {
-        mpr((mon == MONS_WHITE_IMP)  ? "A beastly little devil appears in a puff of frigid air." :
-            (mon == MONS_IRON_IMP)   ? "A metallic apparition takes form in the air." :
-            (mon == MONS_SHADOW_IMP) ? "A shadowy apparition takes form in the air."
-                                     : "A beastly little devil appears in a puff of flame.");
-
+        switch (mon)
+        {
+        case MONS_WHITE_IMP:
+            mpr("A beastly little devil appears in a puff of frigid air."); break;
+        case MONS_IRON_IMP:
+            mpr("A metallic apparition takes form in the air."); break;
+        case MONS_SHADOW_IMP:
+            mpr("A shadowy apparition takes form in the air."); break;
+        default:
+            mpr("A beastly little devil appears in a puff of flame."); break;
+        }
         if (!player_angers_monster(imp))
             _monster_greeting(imp, "_friendly_imp_greeting");
     }

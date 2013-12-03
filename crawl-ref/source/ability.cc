@@ -1616,8 +1616,10 @@ bool activate_talent(const talent& tal)
     {
         if (feat_dangerous_for_form(TRAN_NONE, env.grid(you.pos())))
         {
-            mprf("Turning back right now would cause you to %s!",
-                 env.grid(you.pos()) == DNGN_LAVA ? "burn" : "drown");
+            if (env.grid(you.pos()) == DNGN_LAVA)
+                mpr("Turning back right now would cause you to burn!");
+            else
+                mpr("Turning back right now would cause you to drown!");
 
             crawl_state.zero_turns_taken();
             return false;

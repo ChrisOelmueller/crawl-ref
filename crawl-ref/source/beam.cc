@@ -854,9 +854,10 @@ void bolt::digging_wall_effect()
             else
                 wall = "rock";
 
-            mprf("%s %s shatters into small pieces.",
-                 agent() && agent()->is_player() ? "The" : "Some",
-                 wall.c_str());
+            if (agent() && agent()->is_player())
+                mprf("The %s shatters into small pieces.", wall.c_str());
+            else
+                mprf("Some %s shatters into small pieces.", wall.c_str());
         }
         break;
 
@@ -3611,8 +3612,10 @@ void bolt::affect_player_enchantment()
         break;
 
     case BEAM_DIMENSION_ANCHOR:
-        mprf("You feel %sfirmly anchored in space.",
-             you.duration[DUR_DIMENSION_ANCHOR] ? "more " : "");
+        if (you.duration[DUR_DIMENSION_ANCHOR])
+            mpr("You feel more firmly anchored in space.");
+        else
+            mpr("You feel firmly anchored in space.");
         you.increase_duration(DUR_DIMENSION_ANCHOR, 12 + random2(15), 50);
         if (you.duration[DUR_TELEPORT])
         {

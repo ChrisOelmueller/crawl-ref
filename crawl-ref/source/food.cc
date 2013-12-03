@@ -1226,9 +1226,10 @@ int eat_from_floor(bool skip_chunks)
         {
             if (you.species == SP_VAMPIRE)
             {
-                mprf("%s devoid of blood.",
-                     unusable_corpse == 1 ? "This corpse is"
-                                          : "These corpses are");
+                if (unusable_corpse == 1)
+                    mpr("This corpse is devoid of blood.");
+                else
+                    mpr("These corpses are devoid of blood.");
             }
             else
                 _player_can_eat_rotten_meat(true);
@@ -1366,9 +1367,10 @@ bool eat_from_inventory()
         {
             if (you.species == SP_VAMPIRE)
             {
-                mprf("%s devoid of blood.",
-                     unusable_corpse == 1 ? "The corpse you are carrying is"
-                                          : "The corpses you are carrying are");
+                if (unusable_corpse == 1)
+                    mpr("The corpse you are carrying is devoid of blood.");
+                else
+                    mpr("The corpses you are carrying are devoid of blood.");
             }
             else
                 _player_can_eat_rotten_meat(true);
@@ -1727,9 +1729,20 @@ static void _eat_chunk(item_def& food)
         int contam = _contamination_ratio(chunk_effect);
         if (player_mutation_level(MUT_SAPROVOROUS) == 3)
         {
-            mprf("This %s flesh tastes %s!",
-                 chunk_effect == CE_ROTTEN   ? "rotting"   : "raw",
-                 x_chance_in_y(contam, 1000) ? "delicious" : "good");
+            if (chunk_effect == CE_ROTTEN)
+            {
+                if (x_chance_in_y(contam, 1000))
+                    mpr("This rotting flesh tastes delicious!");
+                else
+                    mpr("This rotting flesh tastes good!");
+            }
+            else
+            {
+                if (x_chance_in_y(contam, 1000))
+                    mpr("This raw flesh tastes delicious!");
+                else
+                    mpr("This raw flesh tastes good!");
+            }
             if (you.species == SP_GHOUL)
             {
                 int hp_amt = 1 + random2(5) + random2(1 + you.experience_level);
@@ -1986,9 +1999,10 @@ void vampire_nutrition_per_turn(const item_def &corpse, int feeding)
         case CE_CLEAN:
             if (start_feeding)
             {
-                mprf("This %sblood tastes delicious!",
-                     mons_class_flag(mons_type, M_WARM_BLOOD) ? "warm "
-                                                              : "");
+                if (mons_class_flag(mons_type, M_WARM_BLOOD))
+                    mpr("This warm blood tastes delicious!");
+                else
+                    mpr("This blood tastes delicious!");
             }
             else if (end_feeding && corpse.special > 150)
                 _heal_from_food(1);

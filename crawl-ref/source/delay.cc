@@ -326,9 +326,10 @@ void stop_delay(bool stop_stair_travel, bool force_unsafe)
                        "Keep equipping yourself?" :
                        "Keep disrobing?", false, 0, false))
             {
-                mprf("You stop %s your armour.",
-                     delay.type == DELAY_ARMOUR_ON ? "putting on"
-                                                   : "removing");
+                if (delay.type == DELAY_ARMOUR_ON)
+                    mpr("You stop putting on your armour.");
+                else
+                    mpr("You stop removing your armour.");
                 _pop_delay();
             }
             else
@@ -340,9 +341,10 @@ void stop_delay(bool stop_stair_travel, bool force_unsafe)
     case DELAY_DESCENDING_STAIRS: // short... and probably what people want
         if (stop_stair_travel)
         {
-            mprf("You stop %s the stairs.",
-                 delay.type == DELAY_ASCENDING_STAIRS ? "ascending"
-                                                      : "descending");
+            if (delay.type == DELAY_ASCENDING_STAIRS)
+                mpr("You stop ascending the stairs.");
+            else
+                mpr("You stop descending the stairs.");
             _pop_delay();
         }
         break;

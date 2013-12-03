@@ -1943,9 +1943,10 @@ static void _blade_card(int power, deck_rarity_type rarity)
 
         if (wpn)
         {
-            mprf("%s vibrate%s crazily for a second.",
-                 wpn->name(DESC_YOUR).c_str(),
-                 wpn->quantity == 1 ? "s" : "");
+            if (wpn->quantity == 1)
+                mprf("%s vibrates crazily for a second.", wpn->name(DESC_YOUR).c_str());
+            else
+                mprf("%s vibrate crazily for a second.", wpn->name(DESC_YOUR).c_str());
         }
         else
             mprf("Your %s twitch.", you.hand_name(true).c_str());

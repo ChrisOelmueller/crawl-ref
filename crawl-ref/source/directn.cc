@@ -1306,8 +1306,10 @@ bool direction_chooser::select(bool allow_out_of_range, bool endpoint)
 
     if ((restricts == DIR_JUMP || !allow_out_of_range) && !in_range(target()))
     {
-        mprf(MSGCH_EXAMINE_FILTER, "%s",
-             hitfunc? hitfunc->why_not.c_str() : "That is beyond the maximum range.");
+        if (hitfunc)
+            mprf(MSGCH_EXAMINE_FILTER, "%s", hitfunc->why_not.c_str());
+        else
+            mprf(MSGCH_EXAMINE_FILTER, "That is beyond the maximum range.");
         return false;
     }
     moves.isEndpoint = endpoint || (mons && _mon_exposed(mons));
@@ -1396,8 +1398,10 @@ void direction_chooser::print_target_description(bool &did_cloud) const
 
     if (!in_range(target()))
     {
-        mprf(MSGCH_EXAMINE_FILTER, "%s",
-             hitfunc ? hitfunc->why_not.c_str() : "Out of range.");
+        if (hitfunc)
+            mprf(MSGCH_EXAMINE_FILTER, "%s", hitfunc->why_not.c_str());
+        else
+            mprf(MSGCH_EXAMINE_FILTER, "Out of range.");
     }
 }
 

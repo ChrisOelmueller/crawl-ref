@@ -1613,9 +1613,11 @@ bool beogh_water_walk()
 
 void jiyva_paralyse_jellies()
 {
-    mprf(MSGCH_PRAY, "You %s prayer to %s.",
-         you.duration[DUR_JELLY_PRAYER] ? "renew your" : "offer a",
-         god_name(you.religion).c_str());
+    const char *jelly_master = god_name(you.religion).c_str();
+    if (you.duration[DUR_JELLY_PRAYER])
+        mprf(MSGCH_PRAY, "You renew your prayer to %s.", jelly_master);
+    else
+        mprf(MSGCH_PRAY, "You offer a prayer to %s.", jelly_master);
 
     you.duration[DUR_JELLY_PRAYER] = 200;
 
@@ -3325,10 +3327,15 @@ bool ashenzari_end_transfer(bool finished, bool force)
         }
     }
 
-    mprf("You %s forgetting about %s and learning about %s.",
-         finished ? "have finished" : "stop",
-         skill_name(you.transfer_from_skill),
-         skill_name(you.transfer_to_skill));
+    if (finished)
+        mprf("You have finished forgetting about %s and learning about %s.",
+             skill_name(you.transfer_from_skill),
+             skill_name(you.transfer_to_skill));
+    else
+        mprf("You stop forgetting about %s and learning about %s.",
+             skill_name(you.transfer_from_skill),
+             skill_name(you.transfer_to_skill));
+
     you.transfer_from_skill = SK_NONE;
     you.transfer_to_skill = SK_NONE;
     you.transfer_skill_points = 0;

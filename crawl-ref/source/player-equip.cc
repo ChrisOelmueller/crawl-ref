@@ -883,8 +883,10 @@ static void _unequip_weapon_effect(item_def& item, bool showMsgs, bool meld)
     monster *spectral_weapon = find_spectral_weapon(&you);
     if (spectral_weapon)
     {
-        mprf("Your spectral weapon disappears as %s.",
-             meld ? "your weapon melds" : "you unwield");
+        if (meld)
+            mpr("Your spectral weapon disappears as your weapon melds.");
+        else
+            mpr("Your spectral weapon disappears as you unwield.");
         end_spectral_weapon(spectral_weapon, false, true);
     }
 }
@@ -1259,8 +1261,10 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld)
         break;
 
     case RING_INVISIBILITY:
-        mprf("You become %stransparent for a moment.",
-             you.duration[DUR_INVIS] ? "more " : "");
+        if (you.duration[DUR_INVIS])
+            mpr("You become more transparent for a moment.");
+        else
+            mpr("You become transparent for a moment.");
         fake_rap = ARTP_INVISIBLE;
         ident = ID_KNOWN_TYPE;
         break;
@@ -1423,10 +1427,13 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld)
             amount += 30 + random2(150);
         if (amount)
         {
-            mprf("The amulet engulfs you in a%s magical discharge!",
-                 (amount > 250) ? " massive" :
-                 (amount >  50) ? " violent" :
-                                  "");
+            if (amount > 250)
+                mpr("The amulet engulfs you in a massive magical discharge!");
+            else if (amount >  50)
+                mpr("The amulet engulfs you in a violent magical discharge!");
+            else
+                mpr("The amulet engulfs you in a magical discharge!");
+
             ident = ID_KNOWN_TYPE;
 
             // XXX: This can probably be improved.
@@ -1488,8 +1495,11 @@ static void _equip_jewellery_effect(item_def &item, bool unmeld)
 
     if (item.cursed())
     {
-        mprf("Oops, that %s feels deathly cold.",
-             jewellery_is_amulet(item)? "amulet" : "ring");
+        if (jewellery_is_amulet(item))
+            mpr("Oops, that amulet feels deathly cold.");
+        else
+            mpr("Oops, that ring feels deathly cold.");
+
         learned_something_new(HINT_YOU_CURSED);
 
         int amusement = 32;

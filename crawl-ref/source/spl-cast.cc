@@ -76,16 +76,18 @@ static void _surge_power(spell_type spell)
 
     if (enhanced)               // one way or the other {dlb}
     {
-        const string modifier = (enhanced  < -2) ? "extraordinarily" :
-                                (enhanced == -2) ? "extremely" :
-                                (enhanced ==  2) ? "strong" :
-                                (enhanced  >  2) ? "huge"
-                                                 : "";
-        mprf("You feel %s %s",
-             !modifier.length() ? "a"
-                                : article_a(modifier).c_str(),
-             (enhanced < 0) ? "numb sensation."
-                            : "surge of power!");
+        if (enhanced < -2)
+            mpr("You feel an extraordinarily numb sensation.");
+        else if (enhanced == -2)
+            mpr("You feel an extremely numb sensation.");
+        else if (enhanced < 0)
+            mpr("You feel a numb sensation.");
+        else if (enhanced > 2)
+            mpr("You feel a huge surge of power!");
+        else if (enhanced == 2)
+            mpr("You feel a strong surge of power!");
+        else
+            mpr("You feel a surge of power!");
     }
 }
 
@@ -1200,7 +1202,12 @@ spret_type your_spells(spell_type spell, int powc,
 
         const char *prompt = get_spell_target_prompt(spell);
         if (dir == DIR_DIR)
-            mprf(MSGCH_PROMPT, "%s", prompt ? prompt : "Which direction?");
+        {
+            if (prompt)
+                mprf(MSGCH_PROMPT, "%s", prompt);
+            else
+                mprf(MSGCH_PROMPT, "Which direction?");
+        }
 
         const bool needs_path = (!testbits(flags, SPFLAG_GRID)
                                  && !testbits(flags, SPFLAG_TARGET));

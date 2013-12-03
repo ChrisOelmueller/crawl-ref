@@ -199,8 +199,7 @@ bool potion_effect(potion_type pot_eff, int pow, item_def *potion, bool was_know
         else
             mprf(MSGCH_DURATION, "You feel clever all of a sudden.");
 
-        you.increase_duration(DUR_BRILLIANCE,
-                              (35 + random2(pow)) / factor, 80);
+        you.increase_duration(DUR_BRILLIANCE, (35 + random2(pow)) / factor, 80);
 
         if (!were_brilliant)
             notify_stat_change(STAT_INT, 5, true, "");

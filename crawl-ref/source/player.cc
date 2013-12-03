@@ -362,8 +362,10 @@ void moveto_location_effects(dungeon_feature_type old_feat,
                 if (!stepped)
                     noisy(4, you.pos(), "Gloop!");
 
-                mprf("You %s lava.",
-                     (stepped) ? "slowly immerse yourself in the" : "fall into the");
+                if (stepped)
+                    mpr("You slowly immerse yourself in the lava.");
+                else
+                    mpr("You fall into the lava.");
 
                 // Extra time if you stepped in.
                 if (stepped)
@@ -419,9 +421,20 @@ void moveto_location_effects(dungeon_feature_type old_feat,
                 }
                 else
                 {
-                    mprf("You %s the %s water.",
-                         stepped ? "enter" : "fall into",
-                         new_grid == DNGN_SHALLOW_WATER ? "shallow" : "deep");
+                    if (stepped)
+                    {
+                        if (new_grid == DNGN_SHALLOW_WATER)
+                            mpr("You enter the shallow water.");
+                        else
+                            mpr("You enter the deep water.");
+                    }
+                    else
+                    {
+                        if (new_grid == DNGN_SHALLOW_WATER)
+                            mpr("You fall into the shallow water.");
+                        else
+                            mpr("You fall into the deep water.");
+                    }
                 }
             }
 
@@ -5045,8 +5058,10 @@ bool confuse_player(int amount, bool quiet)
 
         if (!quiet)
         {
-            mprf(MSGCH_WARN, "You are %sconfused.",
-                 old_value > 0 ? "more " : "");
+            if (old_value > 0)
+                mprf(MSGCH_WARN, "You are more confused.");
+            else
+                mprf(MSGCH_WARN, "You are confused.");
         }
 
         learned_something_new(HINT_YOU_ENCHANTED);
@@ -5128,8 +5143,10 @@ bool poison_player(int amount, string source, string source_aux, bool force)
 
     if (you.duration[DUR_POISONING] > old_value)
     {
-        mprf(MSGCH_WARN, "You are %spoisoned.",
-             old_value > 0 ? "more " : "");
+        if (old_value > 0)
+            mprf(MSGCH_WARN, "You are more poisoned.");
+        else
+            mprf(MSGCH_WARN, "You are poisoned.");
 
         learned_something_new(HINT_YOU_POISON);
     }
@@ -5215,8 +5232,10 @@ void reduce_poison_player(int amount)
 
     if (you.duration[DUR_POISONING] < old_value)
     {
-        mprf(MSGCH_RECOVERY, "You feel %sbetter.",
-             you.duration[DUR_POISONING] > 0 ? "a little " : "");
+        if (you.duration[DUR_POISONING] > 0)
+            mprf(MSGCH_RECOVERY, "You feel a little better.");
+        else
+            mprf(MSGCH_RECOVERY, "You feel better.");
     }
 }
 
@@ -7109,8 +7128,10 @@ bool player::rot(actor *who, int amount, int immediate, bool quiet)
     // be changed so that they're easier to tell apart. -- bwr
     if (!quiet)
     {
-        mprf(MSGCH_WARN, "You feel your flesh %s away!",
-             (rotting > 0 || immediate) ? "rotting" : "start to rot");
+        if (rotting > 0 || immediate)
+            mprf(MSGCH_WARN, "You feel your flesh rotting away!");
+        else
+            mprf(MSGCH_WARN, "You feel your flesh starting to rot away!");
     }
 
     rotting += amount;
@@ -7168,8 +7189,10 @@ void player::paralyse(actor *who, int str, string source)
         props["paralysed_by"] = source;
     }
 
-    mprf("You %s the ability to move!",
-         paralysis ? "still haven't" : "suddenly lose");
+    if (paralysis)
+        mpr("You still haven't the ability to move!");
+    else
+        mpr("You suddenly lose the ability to move!");
 
     str *= BASELINE_DELAY;
     if (str > paralysis && (paralysis < 3 || one_chance_in(paralysis)))

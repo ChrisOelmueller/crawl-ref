@@ -159,12 +159,17 @@ void quiver_item(int slot)
         t = _get_weapon_ammo_type(weapon);
 
     you.m_quiver->set_quiver(you.inv[slot], t);
-    mprf("Quivering %s for %s.", you.inv[slot].name(DESC_INVENTORY).c_str(),
-         t == AMMO_THROW    ? "throwing" :
-         t == AMMO_BLOWGUN  ? "blowguns" :
-         t == AMMO_SLING    ? "slings" :
-         t == AMMO_BOW      ? "bows" :
-                              "crossbows");
+    const char *ammo_name = you.inv[slot].name(DESC_INVENTORY).c_str();
+    if (t == AMMO_THROW)
+        mprf("Quivering %s for throwing.", ammo_name);
+    else if (t == AMMO_BLOWGUN)
+        mprf("Quivering %s for blowguns.", ammo_name);
+    else if (t == AMMO_SLING)
+        mprf("Quivering %s for slings.", ammo_name);
+    else if (t == AMMO_BOW)
+        mprf("Quivering %s for bows.", ammo_name);
+    else
+        mprf("Quivering %s for crossbows.", ammo_name);
 }
 
 void choose_item_for_quiver()
@@ -188,12 +193,16 @@ void choose_item_for_quiver()
         ammo_t t = _get_weapon_ammo_type(you.weapon());
         you.m_quiver->empty_quiver(t);
 
-        mprf("Reset %s quiver to default.",
-             t == AMMO_THROW    ? "throwing" :
-             t == AMMO_BLOWGUN  ? "blowgun" :
-             t == AMMO_SLING    ? "sling" :
-             t == AMMO_BOW      ? "bow" :
-                                  "crossbow");
+        if (t == AMMO_THROW)
+            mpr("Reset throwing quiver to default.");
+        else if (t == AMMO_BLOWGUN)
+            mpr("Reset blowgun quiver to default.");
+        else if (t == AMMO_SLING)
+            mpr("Reset sling quiver to default.");
+        else if (t == AMMO_BOW)
+            mpr("Reset bow quiver to default.");
+        else
+            mpr("Reset crossbow quiver to default.");
         return;
     }
     else

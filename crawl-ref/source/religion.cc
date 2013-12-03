@@ -2566,11 +2566,14 @@ void dock_piety(int piety_loss, int penance)
         if (last_piety_lecture != you.num_turns)
         {
             // output guilt message:
-            mprf("You feel%sguilty.",
-                 (piety_loss == 1) ? " a little " :
-                 (piety_loss <  5) ? " " :
-                 (piety_loss < 10) ? " very "
-                                   : " extremely ");
+            if (piety_loss == 1)
+                mpr("You feel a little guilty.");
+            else if (piety_loss < 5)
+                mpr("You feel guilty.");
+            else if (piety_loss < 10)
+                mpr("You feel very guilty.");
+            else
+                mpr("You feel extremely guilty.");
         }
 
         last_piety_lecture = you.num_turns;
@@ -3460,27 +3463,40 @@ void god_pitch(god_type which_god)
 {
     if (which_god == GOD_BEOGH && grd(you.pos()) != DNGN_ALTAR_BEOGH)
         mpr("You bow before the missionary of Beogh.");
-    else
+    else if (you.form == TRAN_WISP)
+        mprf("You swirl around the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_BAT)
+        mprf("You perch on the altar of %s.", god_name(which_god).c_str());
+    else if (you.flight_mode())
+        mprf("You hover solemnly before the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_SPIDER)
+        mprf("You cling to the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_STATUE)
+        mprf("You place yourself before the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_ICE_BEAST
+            || you.form == TRAN_DRAGON
+            || you.form == TRAN_PIG)
     {
-        mprf("You %s the altar of %s.",
-         you.form == TRAN_WISP   ? "swirl around" :
-         you.form == TRAN_BAT    ? "perch on" :
-         you.flight_mode()       ? "hover solemnly before" :
-         you.form == TRAN_SPIDER ? "cling to" :
-         you.form == TRAN_STATUE ? "place yourself before" :
-         you.form == TRAN_ICE_BEAST
-             || you.form == TRAN_DRAGON
-             || you.form == TRAN_PIG    ? "bow your head before" :
-         you.form == TRAN_TREE   ? "sway towards" :
-         you.form == TRAN_FUNGUS ? "release spores on" :
-         you.form == TRAN_PORCUPINE ? "curl into a sanctuary of spikes before" :
-         you.form == TRAN_JELLY  ? "quiver devoutly before" :
-         you.species == SP_NAGA  ? "coil in front of" :
-         // < TGWi> you curl up on the altar and go to sleep
-         you.species == SP_FELID ? "sit before" :
-                                   "kneel at",
-         god_name(which_god).c_str());
+        mprf("You bow your head before the altar of %s.", god_name(which_god).c_str());
     }
+    else if (you.form == TRAN_TREE)
+        mprf("You sway towards the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_FUNGUS)
+        mprf("You release spores on the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_PORCUPINE)
+        mprf("You curl into a sanctuary of spikes before the altar of %s.", god_name(which_god).c_str());
+    else if (you.form == TRAN_JELLY)
+        mprf("You quiver devoutly before the altar of %s.", god_name(which_god).c_str());
+    else if (you.species == SP_NAGA)
+        mprf("You coil in front of the altar of %s.", god_name(which_god).c_str());
+    else if (you.species == SP_FELID)
+    {
+        // <TGWi> you curl up on the altar and go to sleep
+        mprf("You sit before the altar of %s.", god_name(which_god).c_str());
+    }
+    else
+        mprf("You kneel at the altar of %s.", god_name(which_god).c_str());
+
     more();
 
     // Note: using worship we could make some gods not allow followers to

@@ -5853,27 +5853,29 @@ void melee_attack::stab_message()
     case 6:     // big melee, monster surrounded/not paying attention
         if (coinflip())
         {
-            mprf("You %s %s from a blind spot!",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            if (you.species == SP_FELID)
+                mprf("You pounce on %s from a blind spot!", defender->name(DESC_THE).c_str());
+            else
+                mprf("You strike %s from a blind spot!", defender->name(DESC_THE).c_str());
         }
         else
         {
             mprf("You catch %s momentarily off-guard.",
-                  defender->name(DESC_THE).c_str());
+                 defender->name(DESC_THE).c_str());
         }
         break;
     case 4:     // confused/fleeing
         if (!one_chance_in(3))
         {
             mprf("You catch %s completely off-guard!",
-                  defender->name(DESC_THE).c_str());
+                 defender->name(DESC_THE).c_str());
         }
         else
         {
-            mprf("You %s %s from behind!",
-                  (you.species == SP_FELID) ? "pounce on" : "strike",
-                  defender->name(DESC_THE).c_str());
+            if (you.species == SP_FELID)
+                mprf("You pounce on %s from behind!", defender->name(DESC_THE).c_str());
+            else
+                mprf("You strike %s from behind!", defender->name(DESC_THE).c_str());
         }
         break;
     case 2:
@@ -5885,8 +5887,8 @@ void melee_attack::stab_message()
             break;
         }
         mprf("%s fails to defend %s.",
-              defender->name(DESC_THE).c_str(),
-              defender->pronoun(PRONOUN_REFLEXIVE).c_str());
+             defender->name(DESC_THE).c_str(),
+             defender->pronoun(PRONOUN_REFLEXIVE).c_str());
         break;
     }
 

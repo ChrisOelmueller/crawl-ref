@@ -1534,12 +1534,10 @@ static void _got_gold(item_def& item, int quant, bool quiet)
 
     if (!quiet)
     {
-        const string gain = quant != you.gold
-                            ? make_stringf(" (gained %d)", quant)
-                            : "";
-
-        mprf("You now have %d gold piece%s%s.",
-             you.gold, you.gold != 1 ? "s" : "", gain.c_str());
+        if (you.gold == 1)
+            mprf("You now have %d gold piece (gained %d).", you.gold, quant);
+        else
+            mprf("You now have %d gold pieces (gained %d).", you.gold, quant);
         learned_something_new(HINT_SEEN_GOLD);
     }
 }

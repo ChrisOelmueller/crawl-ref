@@ -185,21 +185,33 @@ static void _climb_message(dungeon_feature_type stair, bool going_up,
             mpr("A mysterious force pulls you upwards.");
         else
         {
-            mprf("You %s downwards.",
-                 you.flight_mode() ? "fly" : "slide");
+            if (you.flight_mode())
+                mpr("You fly downwards.");
+            else
+                mpr("You slide downwards.");
         }
     }
     else if (feat_is_gate(stair))
     {
-        mprf("You %s %s through the gate.",
-             you.flight_mode() ? "fly" : "go",
-             going_up ? "up" : "down");
+        if (going_up && you.flight_mode())
+            mpr("You fly up through the gate.");
+        else if (going_up && !you.flight_mode())
+            mpr("You go up through the gate.");
+        else if (!going_up && you.flight_mode())
+            mpr("You fly down through the gate.");
+        else if (!going_up && !you.flight_mode())
+            mpr("You go down through the gate.");
     }
     else
     {
-        mprf("You %s %swards.",
-             you.flight_mode() ? "fly" : "climb",
-             going_up ? "up" : "down");
+        if (going_up && you.flight_mode())
+            mpr("You fly upwards.");
+        else if (going_up && !you.flight_mode())
+            mpr("You climb upwards.");
+        else if (!going_up && you.flight_mode())
+            mpr("You fly downwards.");
+        else if (!going_up && !you.flight_mode())
+            mpr("You climb downwards.");
     }
 }
 
@@ -907,9 +919,10 @@ void down_stairs(dungeon_feature_type force_stair, bool force_known_shaft)
         && player_in_connected_branch()
         && old_level.branch != you.where_are_you)
     {
-        mprf("Welcome %sto %s!",
-             you.char_direction == GDT_GAME_START ? "" : "back ",
-             branches[you.where_are_you].longname);
+        if (you.char_direction == GDT_GAME_START)
+            mprf("Welcome to %s!", branches[you.where_are_you].longname);
+        else
+            mprf("Welcome back to %s!", branches[you.where_are_you].longname);
     }
 
     if (!you.airborne()

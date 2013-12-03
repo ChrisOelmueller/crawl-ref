@@ -2277,9 +2277,10 @@ void handle_time()
                     simple_god_message(" gurgles merrily.");
                     break;
                 case 1:
-                    mprf(MSGCH_SOUND, "You hear %s splatter%s.",
-                         total_jellies > 1 ? "a series of" : "a",
-                         total_jellies > 1 ? "s" : "");
+                    if (total_jellies > 1)
+                        mprf(MSGCH_SOUND, "You hear a series of splatters.");
+                    else
+                        mprf(MSGCH_SOUND, "You hear a splatter.");
                     break;
                 case 2:
                     simple_god_message(" says: Divide and consume!");
@@ -2920,8 +2921,11 @@ int spawn_corpse_mushrooms(item_def& corpse,
                 placed_targets++;
                 if (current == you.pos())
                 {
-                    mprf("A toadstool grows %s.",
-                         player_has_feet() ? "at your feet" : "before you");
+                    if (player_has_feet())
+                        mpr("A toadstool grows at your feet.");
+                    else
+                        mpr("A toadstool grows before you.");
+
                     current = mushroom->pos();
                 }
                 else if (you.see_cell(current))

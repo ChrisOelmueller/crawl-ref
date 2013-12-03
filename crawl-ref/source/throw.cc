@@ -1969,11 +1969,24 @@ bool throw_it(bolt &pbolt, int throw_2, bool teleport, int acc_bonus,
               pbolt.hit, pbolt.damage.num, pbolt.damage.size);
 
     // Create message.
-    mprf("%s %s%s %s.",
-          teleport  ? "Magically, you" : "You",
-          projected ? "" : "awkwardly ",
-          projected == LRET_LAUNCHED ? "shoot" : "throw",
-          ammo_name.c_str());
+    if (teleport)
+    {
+        if (projected == LRET_LAUNCHED)
+            mprf("Magically, you shoot %s.", ammo_name.c_str());
+        else if (projected)
+            mprf("Magically, you throw %s.", ammo_name.c_str());
+        else
+            mprf("Magically, you awkwardly throw %s.", ammo_name.c_str());
+    }
+    else
+    {
+        if (projected == LRET_LAUNCHED)
+            mprf("You shoot %s.", ammo_name.c_str());
+        else if (projected)
+            mprf("You throw %s.", ammo_name.c_str());
+        else
+            mprf("You awkwardly throw %s.", ammo_name.c_str());
+    }
 
     // Ensure we're firing a 'missile'-type beam.
     pbolt.is_beam   = false;

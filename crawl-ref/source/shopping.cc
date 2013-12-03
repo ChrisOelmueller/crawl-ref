@@ -859,10 +859,12 @@ static bool _in_a_shop(int shopidx, int &num_in_list)
 
                     if (outside_items)
                     {
-                        mprf("I'll put %s outside for you.",
-                              num_items == 1             ? "it" :
-                              num_items == outside_items ? "them"
-                                                         : "part of them");
+                        if (num_items == 1)
+                            mpr("I'll put it outside for you.");
+                        else if (num_items == outside_items)
+                            mpr("I'll put them outside for you.");
+                        else
+                            mpr("I'll put part of them outside for you.");
                     }
                     bought_something = true;
                 }

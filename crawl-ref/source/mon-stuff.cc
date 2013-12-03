@@ -4140,9 +4140,10 @@ void mons_check_pool(monster* mons, const coord_def &oldpos,
         // something has fallen into the lava.
         if (message && (oldpos == mons->pos() || grd(oldpos) != grid))
         {
-            mprf("%s falls into the %s!",
-                 mons->name(DESC_THE).c_str(),
-                 grid == DNGN_LAVA ? "lava" : "water");
+            if (grid == DNGN_LAVA)
+                mprf("%s falls into the lava!", mons->name(DESC_THE).c_str());
+            else
+                mprf("%s falls into the water!", mons->name(DESC_THE).c_str());
         }
 
         if (grid == DNGN_LAVA && mons->res_fire() >= 2)

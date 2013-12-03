@@ -757,9 +757,12 @@ static bool _get_mem_list(spell_list &mem_spells,
     {
         if (!just_check)
         {
-            mprf(MSGCH_PROMPT, "All of the spellbooks%s are beyond your "
-                 "current level of comprehension.",
-                 num_on_ground == 0 ? " you're carrying" : "");
+            if (num_on_ground == 0)
+                mprf(MSGCH_PROMPT, "All of the spellbooks you're carrying"
+                                   " are beyond your current level of comprehension.");
+            else
+                mprf(MSGCH_PROMPT, "All of the spellbooks"
+                                   " are beyond your current level of comprehension.");
         }
         return false;
     }

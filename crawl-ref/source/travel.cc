@@ -2195,9 +2195,10 @@ static int _prompt_travel_branch(int prompt_flags, bool* to_entrance)
                                               ", ", ", ");
             shortcuts += ") ";
         }
-        mprf(MSGCH_PROMPT, "%s? %s",
-             *to_entrance ? "Entrance to where" : "Where to",
-             shortcuts.c_str());
+        if (*to_entrance)
+            mprf(MSGCH_PROMPT, "Entrance to where? %s", shortcuts.c_str());
+        else
+            mprf(MSGCH_PROMPT, "Where to? %s", shortcuts.c_str());
 
         int keyin = get_ch();
         switch (keyin)
@@ -3770,8 +3771,11 @@ void TravelCache::add_waypoint(int x, int y)
         list_waypoints();
     }
 
-    mprf(MSGCH_PROMPT, "Assign waypoint to what number? (0-9%s) ",
-         waypoints_exist? ", D - delete waypoint" : "");
+    if (waypoints_exist)
+        mprf(MSGCH_PROMPT, "Assign waypoint to what number? "
+                           "(0-9, D - delete waypoint)");
+    else
+        mprf(MSGCH_PROMPT, "Assign waypoint to what number? (0-9)");
 
     int keyin = toalower(get_ch());
 

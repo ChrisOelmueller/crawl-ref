@@ -894,10 +894,20 @@ static void _maybe_spawn_jellies(int dam, const char* aux,
 
             if (count_created > 0)
             {
-                mprf("You shudder from the %s and a %s!",
-                     death_type == KILLED_BY_MONSTER ? "blow" : "blast",
-                     count_created > 1 ? "flood of jellies pours out from you"
-                                       : "jelly pops out");
+                if (death_type == KILLED_BY_MONSTER)
+                {
+                    if (count_created > 1)
+                        mpr("You shudder from the blow and a flood of jellies pours out from you!");
+                    else
+                        mpr("You shudder from the blow and a jelly pops out!");
+                }
+                else
+                {
+                    if (count_created > 1)
+                        mpr("You shudder from the blast and a flood of jellies pours out from you!");
+                    else
+                        mpr("You shudder from the blast and a jelly pops out!");
+                }
             }
         }
     }

@@ -2950,9 +2950,12 @@ bool monster::fumbles_attack(bool verbose)
         {
             if (you.can_see(this))
             {
-                mprf("%s %s", name(DESC_THE).c_str(), liquefied(pos())
-                     ? "becomes momentarily stuck in the liquid earth."
-                     : "splashes around in the water.");
+                if (liquefied(pos()))
+                    mprf("%s becomes momentarily stuck in the liquid earth.",
+                         name(DESC_THE).c_str());
+                else
+                    mprf("%s splashes around in the water.",
+                         name(DESC_THE).c_str());
             }
             else if (player_can_hear(pos(), LOS_RADIUS))
                 mprf(MSGCH_SOUND, "You hear a splashing noise.");
@@ -4192,8 +4195,10 @@ bool monster::rot(actor *agent, int amount, int immediate, bool quiet)
 
     if (!quiet && you.can_see(this))
     {
-        mprf("%s %s!", name(DESC_THE).c_str(),
-             amount > 0 ? "rots" : "looks less resilient");
+        if (amount > 0)
+            mprf("%s rots!", name(DESC_THE).c_str());
+        else
+            mprf("%s looks less resilient!", name(DESC_THE).c_str());
     }
 
     // Apply immediate damage because we can't handle rotting for

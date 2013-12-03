@@ -2827,8 +2827,10 @@ static int _xom_player_confusion_effect(int sever, bool debug = false)
     if (confuse_player(min(random2(sever) + 1, 20), true))
     {
         god_speaks(GOD_XOM, _get_xom_speech("confusion").c_str());
-        mprf(MSGCH_WARN, "You are %sconfused.",
-             conf ? "more " : "");
+        if (conf)
+            mprf(MSGCH_WARN, "You are more confused.");
+        else
+            mprf(MSGCH_WARN, "You are confused.");
 
         rc = true;
 
@@ -2999,8 +3001,10 @@ bool move_stair(coord_def stair_pos, bool away, bool allow_under)
 
     string stair_str = feature_description_at(stair_pos, false, DESC_THE, false);
 
-    mprf("%s slides %s you!", stair_str.c_str(),
-         away ? "away from" : "towards");
+    if (away)
+        mprf("%s slides away from you!", stair_str.c_str());
+    else
+        mprf("%s slides towards you!", stair_str.c_str());
 
     // Animate stair moving.
     const feature_def &feat_def = get_feature_def(feat);
