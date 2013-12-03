@@ -322,14 +322,16 @@ void stop_delay(bool stop_stair_travel, bool force_unsafe)
     case DELAY_ARMOUR_OFF:
         if (delay.duration > 1 && !delay.parm3)
         {
-            if (!yesno(delay.type == DELAY_ARMOUR_ON ?
-                       "Keep equipping yourself?" :
-                       "Keep disrobing?", false, 0, false))
+            if (delay.type == DELAY_ARMOUR_ON
+                && !yesno("Keep equipping yourself?", false, 0, false))
             {
-                if (delay.type == DELAY_ARMOUR_ON)
-                    mpr("You stop putting on your armour.");
-                else
-                    mpr("You stop removing your armour.");
+                mpr("You stop putting on your armour.");
+                _pop_delay();
+            }
+            else if (delay.type == DELAY_ARMOUR_OFF
+                     && !yesno("Keep disrobing?", false, 0, false))
+            {
+                mpr("You stop removing your armour.");
                 _pop_delay();
             }
             else
