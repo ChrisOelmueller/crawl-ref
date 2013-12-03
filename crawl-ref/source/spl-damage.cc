@@ -1883,13 +1883,17 @@ spret_type cast_discharge(int pow, bool fail)
             mpr("The air around you crackles with electrical energy.");
         else
         {
-            const bool plural = coinflip();
-            mprf("%s blue arc%s ground%s harmlessly %s you.",
-                 plural ? "Some" : "A",
-                 plural ? "s" : "",
-                 plural ? " themselves" : "s itself",
-                 plural ? "around" : (coinflip() ? "beside" :
-                                      coinflip() ? "behind" : "before"));
+            if (coinflip())
+                mpr("Some blue arcs ground themselves harmlessly around you.");
+            else
+            {
+                if (coinflip())
+                    mpr("A blue arc grounds itself harmlessly beside you.");
+                else if (coinflip())
+                    mpr("A blue arc grounds itself harmlessly behind you.");
+                else
+                    mpr("A blue arc grounds itself harmlessly before you.");
+            }
         }
     }
     return SPRET_SUCCESS;
