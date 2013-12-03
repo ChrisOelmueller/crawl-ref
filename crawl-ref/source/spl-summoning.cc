@@ -771,9 +771,12 @@ spret_type cast_tukimas_dance(int pow, god_type god, bool force_hostile,
     {
         if (wpn)
         {
-            mprf("%s vibrate%s crazily for a second.",
-                 wpn->name(DESC_YOUR).c_str(),
-                 wpn->quantity > 1 ? "" : "s");
+            if (wpn->quantity == 1)
+                mprf("%s vibrates crazily for a second.",
+                     wpn->name(DESC_YOUR).c_str());
+            else
+                mprf("%s vibrate crazily for a second.",
+                     wpn->name(DESC_YOUR).c_str());
         }
         else
             mprf("Your %s twitch.", you.hand_name(true).c_str());
@@ -2914,9 +2917,12 @@ spret_type cast_spectral_weapon(actor *agent, int pow, god_type god, bool fail)
         {
             if (wpn)
             {
-                mprf("%s vibrate%s crazily for a second.",
-                     wpn->name(DESC_YOUR).c_str(),
-                     wpn->quantity > 1 ? "" : "s");
+                if (wpn->quantity == 1)
+                    mprf("%s vibrates crazily for a second.",
+                         wpn->name(DESC_YOUR).c_str());
+                else
+                    mprf("%s vibrate crazily for a second.",
+                         wpn->name(DESC_YOUR).c_str());
             }
             else
                 mprf("Your %s twitch.", you.hand_name(true).c_str());

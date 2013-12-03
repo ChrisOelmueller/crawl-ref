@@ -107,8 +107,12 @@ bool can_wield(item_def *weapon, bool say_reason,
         && is_weapon(*you.weapon())
         && you.weapon()->cursed())
     {
-        SAY(mprf("You can't unwield your weapon%s!",
-                 !unwield ? " to draw a new one" : ""));
+        if (unwield)
+        {
+            SAY(mpr("You can't unwield your weapon!"));
+        }
+        else
+            SAY(mpr("You can't unwield your weapon to draw a new one!"));
         return false;
     }
 
@@ -606,8 +610,10 @@ bool can_wear_armour(const item_def &item, bool verbose, bool ignore_temporary)
     {
         if (verbose)
         {
-            mprf("Your wings%s won't fit in that.", you.mutation[MUT_BIG_WINGS]
-                 ? "" : ", even vestigial as they are,");
+            if (you.mutation[MUT_BIG_WINGS])
+                mpr("Your wings, even vestigial as they are, won't fit in that.");
+            else
+                mpr("Your wings won't fit in that.");
         }
         return false;
     }
@@ -2010,8 +2016,10 @@ void zap_wand(int slot)
                 "the power of this device...");
         }
 
-        mprf("This wand has %d charge%s left.",
-             wand.plus, wand.plus == 1 ? "" : "s");
+        if (wand.plus == 1)
+            mprf("This wand has %d charge left.", wand.plus);
+        else
+            mprf("This wand has %d charges left.", wand.plus);
 
         set_ident_flags(wand, ISFLAG_KNOW_PLUSES);
     }
@@ -3391,9 +3399,10 @@ void read_scroll(int slot)
         && which_scroll != SCR_ACQUIREMENT
         && which_scroll != SCR_BRAND_WEAPON)
     {
-        mprf("It %s a %s.",
-             you.inv[item_slot].quantity < prev_quantity ? "was" : "is",
-             scroll_name.c_str());
+        if (you.inv[item_slot].quantity < prev_quantity)
+            mprf("It was a %s.", scroll_name.c_str());
+        else
+            mprf("It is a %s.", scroll_name.c_str());
     }
 
     if (_two_targeted_scrolls_identified()

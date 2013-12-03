@@ -760,8 +760,10 @@ static void _do_wizard_command(int wiz_command, bool silent_fail)
         you.add_gold(1000);
         if (!Options.show_gold_turns)
         {
-            mprf("You now have %d gold piece%s.",
-                 you.gold, you.gold != 1 ? "s" : "");
+            if (you.gold == 1)
+                mprf("You now have %d gold piece.", you.gold);
+            else
+                mprf("You now have %d gold pieces.", you.gold);
         }
         break;
 
@@ -2260,10 +2262,12 @@ static void _decrement_petrification(int delay)
     if (_decrement_a_duration(DUR_PETRIFIED, delay) && !you.paralysed())
     {
         you.redraw_evasion = true;
-        mprf(MSGCH_DURATION, "You turn to %s and can move again.",
-             you.form == TRAN_LICH ? "bone" :
-             you.form == TRAN_ICE_BEAST ? "ice" :
-             "flesh");
+        if (you.form == TRAN_LICH)
+            mprf(MSGCH_DURATION, "You turn to bone and can move again.");
+        else if (you.form == TRAN_ICE_BEAST)
+            mprf(MSGCH_DURATION, "You turn to ice and can move again.");
+        else
+            mprf(MSGCH_DURATION, "You turn to flesh and can move again.");
     }
 
     if (you.duration[DUR_PETRIFYING])
@@ -4484,9 +4488,10 @@ static void _move_player(coord_def move)
         if (!current || !fedhas_passthrough(current))
         {
             // Probably need a better message. -cao
-            mprf("You %s carefully through the %s.", walkverb.c_str(),
-                 mons_genus(targ_monst->type) == MONS_FUNGUS ? "fungus"
-                                                             : "plants");
+            if (mons_genus(targ_monst->type) == MONS_FUNGUS)
+                mprf("You %s carefully through the fungus.", walkverb.c_str());
+            else
+                mprf("You %s carefully through the plants.", walkverb.c_str());
         }
         targ_monst = NULL;
     }

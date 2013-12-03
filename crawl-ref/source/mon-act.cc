@@ -2590,8 +2590,10 @@ static bool _monster_eat_item(monster* mons, bool nearby)
 
         if (eaten && !shown_msg && player_can_hear(mons->pos()))
         {
-            mprf(MSGCH_SOUND, "You hear a%s slurping noise.",
-                 nearby ? "" : " distant");
+            if (nearby)
+                mprf(MSGCH_SOUND, "You hear a slurping noise.");
+            else
+                mprf(MSGCH_SOUND, "You hear a distant slurping noise.");
             shown_msg = true;
         }
 
@@ -3344,8 +3346,10 @@ static void _jelly_grows(monster* mons)
 {
     if (player_can_hear(mons->pos()))
     {
-        mprf(MSGCH_SOUND, "You hear a%s slurping noise.",
-             mons_near(mons) ? "" : " distant");
+        if (mons_near(mons))
+            mprf(MSGCH_SOUND, "You hear a slurping noise.");
+        else
+            mprf(MSGCH_SOUND, "You hear a distant slurping noise.");
     }
 
     const int avg_hp = mons_avg_hp(mons->type);
@@ -3995,9 +3999,14 @@ static void _heated_area(monster* mons)
     if (final_damage > 0)
     {
         if (mons->observable())
-            mprf("%s is %s by your radiant heat.",
-                 mons->name(DESC_THE).c_str(),
-                 (final_damage) > 10 ? "blasted" : "burned");
+        {
+            if ((final_damage) > 10)
+                mprf("%s is blasted by your radiant heat.",
+                     mons->name(DESC_THE).c_str());
+            else
+                mprf("%s is burned by your radiant heat.",
+                     mons->name(DESC_THE).c_str());
+        }
 
         behaviour_event(mons, ME_DISTURB, 0, mons->pos());
 

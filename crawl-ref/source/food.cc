@@ -459,8 +459,10 @@ bool butchery(int which_corpse, bool bottle_blood)
     {
         if (!_have_corpses_in_pack(false, bottle_blood))
         {
-            mprf("There isn't anything to %s here.",
-                 bottle_blood ? "bottle" : "butcher");
+            if (bottle_blood)
+                mpr("There isn't anything to bottle here.");
+            else
+                mpr("There isn't anything to butcher here.");
         }
         return false;
     }
@@ -474,8 +476,10 @@ bool butchery(int which_corpse, bool bottle_blood)
         if (Options.confirm_butcher == CONFIRM_NEVER
             && !_should_butcher(corpse_id, bottle_blood))
         {
-            mprf("There isn't anything suitable to %s here.",
-                 bottle_blood ? "bottle" : "butcher");
+            if (bottle_blood)
+                mpr("There isn't anything suitable to bottle here.");
+            else
+                mpr("There isn't anything suitable to butcher here.");
             return false;
         }
 
@@ -554,9 +558,15 @@ bool butchery(int which_corpse, bool bottle_blood)
             // Shall we butcher this corpse?
             do
             {
-                mprf(MSGCH_PROMPT, "%s %s? [(y)es/(c)hop/(n)o/(a)ll/(q)uit/?]",
-                     bottle_blood ? "Bottle" : "Butcher",
-                     corpse_name.c_str());
+                if (bottle_blood)
+                    mprf(MSGCH_PROMPT,
+                         "Bottle %s? [(y)es/(c)hop/(n)o/(a)ll/(q)uit/?]",
+                         corpse_name.c_str());
+                else
+                    mprf(MSGCH_PROMPT,
+                         "Butcher %s? [(y)es/(c)hop/(n)o/(a)ll/(q)uit/?]",
+                         corpse_name.c_str());
+
                 repeat_prompt = false;
 
                 keyin = toalower(getchm(KMC_CONFIRM));
@@ -719,8 +729,10 @@ static bool _eat_check(bool check_hunger = true, bool silent = false)
     {
         if (!silent)
         {
-            mprf("You're too full to %s anything.",
-                 you.species == SP_VAMPIRE ? "drain" : "eat");
+            if (you.species == SP_VAMPIRE)
+                mpr("You're too full to drain anything.");
+            else
+                mpr("You're too full to eat anything.");
             crawl_state.zero_turns_taken();
         }
         return false;
@@ -1835,9 +1847,10 @@ void finished_eating_message(int food_type)
             mpr("That meat ration really hit the spot!");
             return;
         case FOOD_BEEF_JERKY:
-            mprf("That beef jerky was %s!",
-                 one_chance_in(4) ? "jerk-a-riffic"
-                                  : "delicious");
+            if (one_chance_in(4))
+                mpr("That beef jerky was jerk-a-riffic!");
+            else
+                mpr("That beef jerky was delicious!");
             return;
         case FOOD_SAUSAGE:
             mpr("That sausage was delicious!");
@@ -1863,13 +1876,13 @@ void finished_eating_message(int food_type)
             mpr("That bread ration really hit the spot!");
             return;
         case FOOD_PEAR:
+            mpr("Mmmm... Yummy pear.");
+            return;
         case FOOD_APPLE:
+            mpr("Mmmm... Yummy apple.");
+            return;
         case FOOD_APRICOT:
-            mprf("Mmmm... Yummy %s.",
-                (food_type == FOOD_APPLE)   ? "apple" :
-                (food_type == FOOD_PEAR)    ? "pear" :
-                (food_type == FOOD_APRICOT) ? "apricot"
-                                            : "fruit");
+            mpr("Mmmm... Yummy apricot.");
             return;
         case FOOD_CHOKO:
             mpr("That choko was very bland.");
@@ -1878,12 +1891,14 @@ void finished_eating_message(int food_type)
             mpr("That snozzcumber tasted truly putrid!");
             return;
         case FOOD_ORANGE:
-            mprf("That orange was delicious!%s",
-                 one_chance_in(8) ? " Even the peel tasted good!" : "");
+            mpr("That orange was delicious!");
+            if (one_chance_in(8))
+               mpr("Even the peel tasted good!");
             return;
         case FOOD_BANANA:
-            mprf("That banana was delicious!%s",
-                 one_chance_in(8) ? " Even the peel tasted good!" : "");
+            mpr("That banana was delicious!");
+            if (one_chance_in(8))
+               mpr("Even the peel tasted good!");
             return;
         case FOOD_STRAWBERRY:
             mpr("That strawberry was delicious!");

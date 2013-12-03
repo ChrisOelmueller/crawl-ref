@@ -391,10 +391,13 @@ static void _pre_refrigerate(actor* agent, bool player,
             {
                 // Exclamation mark to suggest that a lot of creatures were
                 // affected.
-                mprf("The monsters around %s are frozen!",
-                    agent && agent->is_monster() && you.can_see(agent)
-                    ? agent->as_monster()->name(DESC_THE).c_str()
-                    : "you");
+                if (agent && agent->is_monster() && you.can_see(agent))
+                {
+                    mprf("The monsters around %s are frozen!",
+                         agent->as_monster()->name(DESC_THE).c_str());
+                }
+                else
+                    mpr("The monsters around you are frozen!");
             }
         }
     }
@@ -1451,15 +1454,17 @@ static int _ignite_poison_affect_item(item_def& item, bool in_inv)
         {
             if (item.base_type == OBJ_POTIONS)
             {
-                mprf("%s explode%s!",
-                     item.name(DESC_PLAIN).c_str(),
-                     item.quantity == 1 ? "s" : "");
+                if (item.quantity == 1)
+                    mprf("Your %s explodes!", item.name(DESC_PLAIN).c_str());
+                else
+                    mprf("%s explode!", item.name(DESC_PLAIN).c_str());
             }
             else
             {
-                mprf("Your %s burn%s!",
-                     item.name(DESC_PLAIN).c_str(),
-                     item.quantity == 1 ? "s" : "");
+                if (item.quantity == 1)
+                    mprf("Your %s burns!", item.name(DESC_PLAIN).c_str());
+                else
+                    mprf("Your %s burn!", item.name(DESC_PLAIN).c_str());
             }
         }
 

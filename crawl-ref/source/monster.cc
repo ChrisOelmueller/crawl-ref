@@ -1190,10 +1190,10 @@ void monster::pickup_message(const item_def &item, int near)
             flags |= MF_SEEN_RANGED;
         }
 
-        mprf("%s picks up %s.",
-             name(DESC_THE).c_str(),
-             item.base_type == OBJ_GOLD ? "some gold"
-                                        : item.name(DESC_A).c_str());
+        if (item.base_type == OBJ_GOLD)
+            mprf("%s picks up some gold.", name(DESC_THE).c_str());
+        else
+            mprf("%s picks up %s.", name(DESC_THE).c_str(), item.name(DESC_A).c_str());
     }
 }
 
@@ -5954,9 +5954,11 @@ void monster::steal_item_from_player()
             new_item.set_holding_monster(mindex());
         }
         mitm[inv[MSLOT_GOLD]].flags |= ISFLAG_THROWN;
-        mprf("%s steals %s your gold!",
-             name(DESC_THE).c_str(),
-             stolen_amount == you.gold ? "all" : "some of");
+
+        if (stolen_amount == you.gold)
+           mprf("%s steals all your gold!", name(DESC_THE).c_str());
+        else
+           mprf("%s steals some of your gold!", name(DESC_THE).c_str());
 
         you.attribute[ATTR_GOLD_FOUND] -= stolen_amount;
 
