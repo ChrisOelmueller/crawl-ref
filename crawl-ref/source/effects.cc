@@ -2994,14 +2994,24 @@ bool mushroom_spawn_message(int seen_targets, int seen_corpses)
     if (seen_targets <= 0)
         return false;
 
-    string what  = seen_targets  > 1 ? "Some toadstools"
-                                     : "A toadstool";
-    string where = seen_corpses  > 1 ? "nearby corpses" :
-                   seen_corpses == 1 ? "a nearby corpse"
-                                     : "the ground";
-    mprf("%s grow%s from %s.",
-         what.c_str(), seen_targets > 1 ? "" : "s", where.c_str());
-
+    if (seen_targets > 1)
+    {
+        if (seen_corpses > 1)
+            mpr("Some toadstools grow from nearby corpses.");
+        else if (seen_corpses == 1)
+            mpr("Some toadstools grow from a nearby corpse.");
+        else
+            mpr("Some toadstools grow from the ground.");
+    }
+    else
+    {
+        if (seen_corpses > 1)
+            mpr("A toadstool grows from nearby corpses.");
+        else if (seen_corpses == 1)
+            mpr("A toadstool grows from a nearby corpse.");
+        else
+            mpr("A toadstool grows from the ground.");
+    }
     return true;
 }
 
