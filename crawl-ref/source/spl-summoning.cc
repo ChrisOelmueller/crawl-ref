@@ -1632,11 +1632,24 @@ int animate_remains(const coord_def &a, corpse_type class_allowed,
                 // Ignore quiet.
                 if (was_butchering || was_draining)
                 {
-                    mprf("The corpse you are %s rises to %s!",
-                         was_draining ? "drinking from"
-                                      : "butchering",
-                         beha == BEH_FRIENDLY ? "join your ranks"
-                                              : "attack");
+                    if (was_draining)
+                    {
+                        if (beha == BEH_FRIENDLY)
+                            mpr("The corpse you are drinking from rises to"
+                                " join your ranks!");
+                        else
+                            mpr("The corpse you are drinking from rises to"
+                                " attack!");
+                    }
+                    else
+                    {
+                        if (beha == BEH_FRIENDLY)
+                            mpr("The corpse you are butchering rises to"
+                                " join your ranks!");
+                        else
+                            mpr("The corpse you are butchering rises to"
+                                " attack!");
+                    }
                 }
 
                 if (!quiet && you.see_cell(a))

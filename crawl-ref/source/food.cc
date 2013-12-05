@@ -613,9 +613,20 @@ bool butchery(int which_corpse, bool bottle_blood)
 #endif
     if (!butcher_all && corpse_id == -1)
     {
-        mprf("There isn't anything %s to %s here.",
-             Options.confirm_butcher == CONFIRM_NEVER ? "suitable" : "else",
-             bottle_blood ? "bottle" : "butcher");
+        if (Options.confirm_butcher == CONFIRM_NEVER)
+        {
+            if (bottle_blood)
+                mpr("There isn't anything suitable to bottle here.");
+            else
+                mpr("There isn't anything suitable to butcher here.");
+        }
+        else
+        {
+            if (bottle_blood)
+                mpr("There isn't anything else to bottle here.");
+            else
+                mpr("There isn't anything else to butcher here.");
+        }
     }
 
     if (success)

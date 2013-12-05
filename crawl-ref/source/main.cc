@@ -1914,10 +1914,15 @@ void process_command(command_type cmd)
 
     case CMD_TOGGLE_AUTOPICKUP:
         if (Options.autopickup_on < 1)
+        {
             Options.autopickup_on = 1;
+            mpr("Autopickup is now on.");
+        }
         else
+        {
             Options.autopickup_on = 0;
-        mprf("Autopickup is now %s.", Options.autopickup_on > 0 ? "on" : "off");
+            mpr("Autopickup is now off.");
+        }
         break;
 
     case CMD_TOGGLE_FRIENDLY_PICKUP:     _toggle_friendly_pickup(); break;

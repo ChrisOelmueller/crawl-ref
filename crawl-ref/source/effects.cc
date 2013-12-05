@@ -753,27 +753,31 @@ int recharge_wand(int item_slot, bool known, string *pre_msg)
                              1 + random2avg(((charge_gain - 1) * 3) + 1, 3)));
 
             const bool charged = (new_charges > wand.plus);
-
-            string desc;
-
-            if (charged && item_ident(wand, ISFLAG_KNOW_PLUSES))
-            {
-                snprintf(info, INFO_SIZE, " and now has %d charge%s",
-                         new_charges, new_charges == 1 ? "" : "s");
-                desc = info;
-            }
+            const char *yourwand = wand.name(DESC_YOUR).c_str();
 
             if (pre_msg)
                 mpr(pre_msg->c_str());
 
-            mprf("%s %s for a moment%s.",
-                 wand.name(DESC_YOUR).c_str(),
-                 charged ? "glows" : "flickers",
-                 desc.c_str());
+            if (charged && item_ident(wand, ISFLAG_KNOW_PLUSES))
+            {
+                if (new_charges == 1)
+                    mprf("%s glows for a moment and now has %d charge.",
+                         yourwand, new_charges);
+                else
+                    mprf("%s glows for a moment and now has %d charges.",
+                         yourwand, new_charges);
+            }
+            else if (charged)
+                mprf("%s glows for a moment.", yourwand);
+            else
+                mprf("%s flickers for a moment.", yourwand);
 
             if (!charged && !item_ident(wand, ISFLAG_KNOW_PLUSES))
             {
-                mprf("It has %d charges and is fully charged.", new_charges);
+                if (new_charges == 1)
+                    mprf("It has %d charge and is fully charged.", new_charges);
+                else
+                    mprf("It has %d charges and is fully charged.", new_charges);
                 set_ident_flags(wand, ISFLAG_KNOW_PLUSES);
             }
 
