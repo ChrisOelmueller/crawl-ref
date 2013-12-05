@@ -2057,19 +2057,6 @@ bool monster_simulacrum(monster *caster, bool actual)
     return false;
 }
 
-// Return a definite/indefinite article for (number) things.
-static const char *_count_article(int number, bool definite)
-{
-    if (number == 0)
-        return "No";
-    else if (definite)
-        return "The";
-    else if (number == 1)
-        return "A";
-    else
-        return "Some";
-}
-
 bool twisted_resurrection(actor *caster, int pow, beh_type beha,
                           unsigned short foe, god_type god, bool actual)
 {
@@ -2196,28 +2183,30 @@ bool twisted_resurrection(actor *caster, int pow, beh_type beha,
     if (num_lost + num_crawlies + num_masses == 0)
         return false;
 
-    if (seen_lost)
+    if (seen_lost == 1)
     {
-        mprf("%s %s into %s!",
-             _count_article(seen_lost, seen_crawlies + seen_masses == 0),
-             seen_lost == 1 ? "corpse collapses" : "corpses collapse",
-             seen_lost_piles == 1 ? "a pulpy mess" : "pulpy messes");
+        if (seen_lost_piles == 1)
+            mpr("The corpse collapses into a pulpy mess!");
+        else
+            mpr("The corpse collapses into pulpy messes!");
+    }
+    else if (seen_lost > 0)
+    {
+        if (seen_lost_piles == 1)
+            mpr("The corpses collapse into a pulpy mess!");
+        else
+            mpr("The corpses collapse into pulpy messes!");
     }
 
-    if (seen_crawlies > 0)
-    {
-        mprf("%s %s to drag %s along the ground!",
-             _count_article(seen_crawlies, seen_lost + seen_masses == 0),
-             seen_crawlies == 1 ? "corpse begins" : "corpses begin",
-             seen_crawlies == 1 ? "itself" : "themselves");
-    }
+    if (seen_crawlies == 1)
+        mpr("A corpse begins to drag itself along the ground!");
+    else if (seen_crawlies > 0)
+        mpr("Some corpses begin to drag themselves along the ground!");
 
-    if (seen_masses > 0)
-    {
-        mprf("%s corpses meld into %s of writhing flesh!",
-             _count_article(2, seen_crawlies + seen_lost == 0),
-             seen_masses == 1 ? "an agglomeration" : "agglomerations");
-    }
+    if (seen_masses == 1)
+        mpr("Some corpses meld into an agglomeration of writhing flesh!");
+    else if (seen_masses > 0)
+        mpr("Some corpses meld into agglomerations of writhing flesh!");
 
     if (num_orcs > 0 && caster->is_player())
         did_god_conduct(DID_DESECRATE_ORCISH_REMAINS, 2 * num_orcs);
