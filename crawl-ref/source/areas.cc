@@ -468,15 +468,11 @@ void create_sanctuary(const coord_def& center, int time)
     if (trap_count > 0)
         mprf(MSGCH_GOD, "By Zin's power, hidden traps are revealed to you.");
 
-    if (cloud_count == 1)
+    if (cloud_count > 0)
     {
-        mprf(MSGCH_GOD, "By Zin's power, the foul cloud within the sanctuary "
-                        "is swept away.");
-    }
-    else if (cloud_count > 1)
-    {
-        mprf(MSGCH_GOD, "By Zin's power, all foul fumes within the sanctuary "
-                        "are swept away.");
+        mprf_plural(MSGCH_GOD, cloud_count,
+            "By Zin's power, the foul cloud within the sanctuary is swept away.",
+            "By Zin's power, all foul fumes within the sanctuary are swept away.");
     }
 
     if (blood_count > 0)

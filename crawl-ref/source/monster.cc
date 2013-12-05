@@ -1333,11 +1333,12 @@ bool monster::drop_item(int eslot, int near)
     {
         if (need_message(near))
         {
-            mprf("%s %s as %s drops %s!",
-                 pitem->name(DESC_THE).c_str(),
-                 summoned_poof_msg(this, *pitem).c_str(),
-                 name(DESC_THE).c_str(),
-                 pitem->quantity > 1 ? "them" : "it");
+            mprf_plural(pitem->quantity,
+                        "%s %s as %s drops it!",
+                        "%s %s as %s drops them!",
+                        pitem->name(DESC_THE).c_str(),
+                        summoned_poof_msg(this, *pitem).c_str(),
+                        name(DESC_THE).c_str());
         }
 
         item_was_destroyed(*pitem, mindex());

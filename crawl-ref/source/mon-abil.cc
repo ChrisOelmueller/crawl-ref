@@ -1723,10 +1723,9 @@ static bool _seal_doors_and_stairs(const monster* warden)
         mprf(MSGCH_MONSTER_SPELL, "%s activates a sealing rune.",
                 (warden->visible_to(&you) ? warden->name(DESC_THE, true).c_str()
                                           : "Someone"));
-        if (num_closed > 1)
-            mpr("The doors slam shut!");
-        else if (num_closed == 1)
-            mpr("A door slams shut!");
+
+        if (num_closed > 0)
+            mprf_plural(num_closed, "A door slams shut!", "The doors slam shut!");
 
         if (player_pushed)
             mpr("You are pushed out of the doorway!");

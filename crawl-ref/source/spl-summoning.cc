@@ -185,10 +185,7 @@ spret_type cast_sticks_to_snakes(int pow, god_type god, bool fail)
     }
 
     dec_inv_item_quantity(you.equip[EQ_WEAPON], count);
-    if (count > 1)
-        mpr("You create some snakes!");
-    else
-        mpr("You create a snake!");
+    mprf_plural(count, "You create a snake!", "You create some snakes!");
     return SPRET_SUCCESS;
 }
 
@@ -771,12 +768,10 @@ spret_type cast_tukimas_dance(int pow, god_type god, bool force_hostile,
     {
         if (wpn)
         {
-            if (wpn->quantity == 1)
-                mprf("%s vibrates crazily for a second.",
-                     wpn->name(DESC_YOUR).c_str());
-            else
-                mprf("%s vibrate crazily for a second.",
-                     wpn->name(DESC_YOUR).c_str());
+            mprf_plural(wpn->quantity,
+                        "%s vibrates crazily for a second.",
+                        "%s vibrate crazily for a second.",
+                        wpn->name(DESC_YOUR).c_str());
         }
         else
             mprf("Your %s twitch.", you.hand_name(true).c_str());
@@ -2298,24 +2293,22 @@ spret_type cast_haunt(int pow, const coord_def& where, god_type god, bool fail)
         }
     }
 
-    if (success > 1)
-    {
-        if (friendly)
-            mpr("Insubstantial figures form in the air.");
-        else
-            mpr("You sense hostile presences.");
-    }
-    else if (success)
-    {
-        if (friendly)
-            mpr("An insubstantial figure forms in the air.");
-        else
-            mpr("You sense a hostile presence.");
-    }
-    else
+    if (!success)
     {
         canned_msg(MSG_NOTHING_HAPPENS);
         return SPRET_SUCCESS;
+    }
+    else if (friendly)
+    {
+        mprf_plural(success,
+                    "An insubstantial figure forms in the air.",
+                    "Insubstantial figures form in the air.");
+    }
+    else
+    {
+        mprf_plural(success,
+                    "You sense a hostile presence.",
+                    "You sense hostile presences.");
     }
 
     //jmf: Kiku sometimes deflects this
@@ -2919,12 +2912,10 @@ spret_type cast_spectral_weapon(actor *agent, int pow, god_type god, bool fail)
         {
             if (wpn)
             {
-                if (wpn->quantity == 1)
-                    mprf("%s vibrates crazily for a second.",
-                         wpn->name(DESC_YOUR).c_str());
-                else
-                    mprf("%s vibrate crazily for a second.",
-                         wpn->name(DESC_YOUR).c_str());
+                mprf_plural(wpn->quantity,
+                            "%s vibrates crazily for a second.",
+                            "%s vibrate crazily for a second.",
+                            wpn->name(DESC_YOUR).c_str());
             }
             else
                 mprf("Your %s twitch.", you.hand_name(true).c_str());

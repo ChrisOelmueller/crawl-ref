@@ -3725,19 +3725,17 @@ static void _mons_create_tentacles(monster* head)
         }
     }
 
-    if (mons_base_type(head) == MONS_KRAKEN)
+    if (mons_base_type(head) == MONS_KRAKEN && visible_count > 0)
     {
-        if (visible_count == 1)
-            mpr("A tentacle rises from the water!");
-        else if (visible_count > 1)
-            mpr("Tentacles burst out of the water!");
+        mprf_plural(visible_count,
+                   "A tentacle rises from the water!",
+                    "Tentacles burst out of the water!");
     }
-    else if (head->type == MONS_TENTACLED_STARSPAWN)
+    else if (head->type == MONS_TENTACLED_STARSPAWN && visible_count > 0)
     {
-        if (visible_count == 1)
-            mpr("A tentacle flies out from the starspawn's body!");
-        else if (visible_count > 1)
-            mpr("Tentacles burst from the starspawn's body!");
+        mprf_plural(visible_count,
+                    "A tentacle flies out from the starspawn's body!",
+                   "Tentacles burst from the starspawn's body!");
     }
 
     return;

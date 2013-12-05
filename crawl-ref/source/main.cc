@@ -760,10 +760,10 @@ static void _do_wizard_command(int wiz_command, bool silent_fail)
         you.add_gold(1000);
         if (!Options.show_gold_turns)
         {
-            if (you.gold == 1)
-                mprf("You now have %d gold piece.", you.gold);
-            else
-                mprf("You now have %d gold pieces.", you.gold);
+            mprf_plural(you.gold,
+                "You now have %d gold piece.",
+                "You now have %d gold pieces.",
+                you.gold);
         }
         break;
 
@@ -1835,10 +1835,10 @@ static void _do_cycle_quiver(int dir)
 static void _do_list_gold()
 {
     if (shopping_list.empty())
-        if (you.gold == 1)
-            mprf("You have %d gold piece.", you.gold);
-        else
-            mprf("You have %d gold pieces.", you.gold);
+        mprf_plural(you.gold,
+            "You have %d gold piece.",
+            "You have %d gold pieces.",
+            you.gold);
     else
         shopping_list.display();
 }
@@ -2180,10 +2180,9 @@ static void _prep_input()
     if (you.seen_portals)
     {
         ASSERT(you_worship(GOD_ASHENZARI));
-        if (you.seen_portals == 1)
-            mprf(MSGCH_GOD, "You have a vision of a gate.");
-        else
-            mprf(MSGCH_GOD, "You have a vision of multiple gates.");
+        mprf_plural(MSGCH_GOD, you.seen_portals,
+                    "You have a vision of a gate.",
+                    "You have a vision of multiple gates.");
 
         you.seen_portals = 0;
     }

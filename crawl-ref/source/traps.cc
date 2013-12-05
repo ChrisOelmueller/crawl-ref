@@ -1794,10 +1794,10 @@ void handle_items_on_shaft(const coord_def& pos, bool open_shaft)
 
             if (env.map_knowledge(pos).visible())
             {
-                if (mitm[o].quantity == 1)
-                    mprf("%s falls through the shaft.", mitm[o].name(DESC_INVENTORY).c_str());
-                else
-                    mprf("%s fall through the shaft.", mitm[o].name(DESC_INVENTORY).c_str());
+                mprf_plural(mitm[o].quantity,
+                            "%s falls through the shaft.",
+                            "%s fall through the shaft.",
+                            mitm[o].name(DESC_INVENTORY).c_str());
 
                 env.map_knowledge(pos).clear_item();
                 StashTrack.update_stash(pos);

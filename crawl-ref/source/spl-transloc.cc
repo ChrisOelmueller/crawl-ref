@@ -964,11 +964,9 @@ spret_type cast_apportation(int pow, bolt& beam, bool fail)
     dprf("Apport: new spot is %d/%d", new_spot.x, new_spot.y);
 
     // Actually move the item.
-    if (item.quantity == 1)
-        mpr("Yoink! You pull the item towards yourself.");
-    else
-        mpr("Yoink! You pull the items towards yourself.");
-
+    mprf_plural(item.quantity,
+                "Yoink! You pull the item towards yourself.",
+                "Yoink! You pull the items towards yourself.");
     if (max_units < item.quantity)
     {
         if (!copy_item_to_grid(item, new_spot, max_units))

@@ -760,12 +760,10 @@ int recharge_wand(int item_slot, bool known, string *pre_msg)
 
             if (charged && item_ident(wand, ISFLAG_KNOW_PLUSES))
             {
-                if (new_charges == 1)
-                    mprf("%s glows for a moment and now has %d charge.",
-                         yourwand, new_charges);
-                else
-                    mprf("%s glows for a moment and now has %d charges.",
-                         yourwand, new_charges);
+                mprf_plural(new_charges,
+                            "%s glows for a moment and now has %d charge.",
+                            "%s glows for a moment and now has %d charges.",
+                            yourwand, new_charges);
             }
             else if (charged)
                 mprf("%s glows for a moment.", yourwand);
@@ -774,10 +772,10 @@ int recharge_wand(int item_slot, bool known, string *pre_msg)
 
             if (!charged && !item_ident(wand, ISFLAG_KNOW_PLUSES))
             {
-                if (new_charges == 1)
-                    mprf("It has %d charge and is fully charged.", new_charges);
-                else
-                    mprf("It has %d charges and is fully charged.", new_charges);
+                mprf_plural(new_charges,
+                            "It has %d charge and is fully charged.",
+                            "It has %d charges and is fully charged.",
+                            new_charges);
                 set_ident_flags(wand, ISFLAG_KNOW_PLUSES);
             }
 
@@ -2282,9 +2280,9 @@ void handle_time()
                     break;
                 case 1:
                     if (total_jellies > 1)
-                        mprf(MSGCH_SOUND, "You hear a series of splatters.");
-                    else
-                        mprf(MSGCH_SOUND, "You hear a splatter.");
+                        mprf_plural(MSGCH_SOUND, total_jellies,
+                                    "You hear a splatter.",
+                                    "You hear a series of splatters.");
                     break;
                 case 2:
                     simple_god_message(" says: Divide and consume!");
@@ -3000,19 +2998,23 @@ bool mushroom_spawn_message(int seen_targets, int seen_corpses)
 
     if (seen_targets > 1)
     {
-        if (seen_corpses > 1)
-            mpr("Some toadstools grow from nearby corpses.");
-        else if (seen_corpses == 1)
-            mpr("Some toadstools grow from a nearby corpse.");
+        if (seen_corpses > 0)
+        {
+            mprf_plural(seen_corpses,
+                        "Some toadstools grow from a nearby corpse.",
+                        "Some toadstools grow from nearby corpses.");
+        }
         else
             mpr("Some toadstools grow from the ground.");
     }
     else
     {
-        if (seen_corpses > 1)
-            mpr("A toadstool grows from nearby corpses.");
-        else if (seen_corpses == 1)
-            mpr("A toadstool grows from a nearby corpse.");
+        if (seen_corpses > 0)
+        {
+            mprf_plural(seen_corpses,
+                        "A toadstool grows from a nearby corpse.",
+                        "A toadstool grows from nearby corpses.");
+        }
         else
             mpr("A toadstool grows from the ground.");
     }
@@ -3158,10 +3160,8 @@ void slime_wall_damage(actor* act, int delay)
                                               roll_dice(2, strength));
         if (dam > 0 && you.can_see(mon))
         {
-            if (walls > 1)
-                mprf("The walls burn %s!", mon->name(DESC_THE).c_str());
-            else
-                mprf("The wall burns %s!", mon->name(DESC_THE).c_str());
+            mprf_plural(walls, "The wall burns %s!", "The walls burn %s!",
+                        mon->name(DESC_THE).c_str());
         }
         mon->hurt(NULL, dam, BEAM_ACID);
     }

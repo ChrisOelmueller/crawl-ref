@@ -570,34 +570,39 @@ static bool _expose_invent_to_element(beam_type flavour, int strength)
                 switch (target_class)
                 {
                 case OBJ_SCROLLS:
-                    mprf("%s %s catch%s fire!",
-                         part_stack_string(num_dest, quantity).c_str(),
-                         item_name.c_str(),
-                         (num_dest == 1) ? "es" : "");
+                    mprf_plural(num_dest,
+                                "%s %s catches fire!", "%s %s catch fire!",
+                                part_stack_string(num_dest, quantity).c_str(),
+                                item_name.c_str());
                     break;
 
                 case OBJ_POTIONS:
-                    mprf("%s %s freeze%s and shatter%s!",
-                         part_stack_string(num_dest, quantity).c_str(),
-                         item_name.c_str(),
-                         (num_dest == 1) ? "s" : "",
-                         (num_dest == 1) ? "s" : "");
+                    mprf_plural(num_dest,
+                                "%s %s freezes and shatters!",
+                                "%s %s freeze and shatter!",
+                                part_stack_string(num_dest, quantity).c_str(),
+                                item_name.c_str());
                     break;
 
                 case OBJ_FOOD:
-                    mprf("%s %s %s %s!",
-                         part_stack_string(num_dest, quantity).c_str(),
-                         item_name.c_str(),
-                         (num_dest == 1) ? "is" : "are",
-                         (flavour == BEAM_DEVOUR_FOOD) ?
-                             "devoured" : "covered with spores");
+                    if (flavour == BEAM_DEVOUR_FOOD)
+                        mprf_plural(num_dest,
+                            "%s %s is devoured!", "%s %s are devoured!",
+                            part_stack_string(num_dest, quantity).c_str(),
+                            item_name.c_str());
+                    else
+                        mprf_plural(num_dest,
+                            "%s %s is covered with spores!",
+                            "%s %s are covered with spores!",
+                            part_stack_string(num_dest, quantity).c_str(),
+                            item_name.c_str());
                     break;
 
                 default:
-                    mprf("%s %s %s destroyed!",
-                         part_stack_string(num_dest, quantity).c_str(),
-                         item_name.c_str(),
-                         (num_dest == 1) ? "is" : "are");
+                    mprf_plural(num_dest,
+                                "%s %s is destroyed!", "%s %s are destroyed!",
+                                part_stack_string(num_dest, quantity).c_str(),
+                                item_name.c_str());
                     break;
                 }
 
@@ -896,17 +901,17 @@ static void _maybe_spawn_jellies(int dam, const char* aux,
             {
                 if (death_type == KILLED_BY_MONSTER)
                 {
-                    if (count_created > 1)
-                        mpr("You shudder from the blow and a flood of jellies pours out from you!");
-                    else
-                        mpr("You shudder from the blow and a jelly pops out!");
+                    mprf_plural(count_created,
+                        "You shudder from the blow and a jelly pops out!",
+                        "You shudder from the blow and a flood of jellies pours"
+                        " out from you!");
                 }
                 else
                 {
-                    if (count_created > 1)
-                        mpr("You shudder from the blast and a flood of jellies pours out from you!");
-                    else
-                        mpr("You shudder from the blast and a jelly pops out!");
+                    mprf_plural(count_created,
+                        "You shudder from the blast and a jelly pops out!",
+                        "You shudder from the blast and a flood of jellies pours"
+                        " out from you!");
                 }
             }
         }

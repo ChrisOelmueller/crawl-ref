@@ -1063,14 +1063,16 @@ static void _grab_followers()
             // Summons won't follow and will time out.
             if (non_stair_using_summons > 0)
             {
-                mprf("Your summoned %s left behind.",
-                     non_stair_using_allies > 1 ? "allies are" : "ally is");
+                mprf_plural(non_stair_using_allies,
+                            "Your summoned ally is left behind.",
+                            "Your summoned allies are left behind.");
             }
             else
             {
                 // Permanent undead are left behind but stay.
-                mprf("Your mindless thrall%s behind.",
-                     non_stair_using_allies > 1 ? "s stay" : " stays");
+                mprf_plural(non_stair_using_allies,
+                            "Your mindless thrall stays behind.",
+                            "Your mindless thralls stay behind.");
             }
         }
         memset(travel_point_distance, 0, sizeof(travel_distance_grid_t));

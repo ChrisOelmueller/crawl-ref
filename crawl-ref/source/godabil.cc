@@ -1554,10 +1554,9 @@ bool trog_burn_spellbooks()
             const int duration = min(4 + count + random2(rarity/2), 23);
             place_cloud(CLOUD_FIRE, *ri, duration, &you);
 
-            if (count == 1)
-                mprf(MSGCH_GOD, "The spellbook bursts into flames.");
-            else
-                mprf(MSGCH_GOD, "The spellbooks burst into flames.");
+            mprf_plural(MSGCH_GOD, count,
+                        "The spellbook bursts into flames.",
+                        "The spellbooks burst into flames.");
         }
     }
 
@@ -1568,10 +1567,9 @@ bool trog_burn_spellbooks()
     }
     else if (totalblocked)
     {
-        if (totalblocked == 1)
-            mpr("The spellbook fails to ignite!");
-        else
-            mpr("The spellbooks fail to ignite!");
+        mprf_plural(totalblocked,
+                    "The spellbook fails to ignite!",
+                    "The spellbooks fail to ignite!");
 
         for (vector<coord_def>::iterator it = mimics.begin();
              it != mimics.end(); ++it)
@@ -1636,11 +1634,9 @@ void jiyva_paralyse_jellies()
 
     if (jelly_count > 0)
     {
-        if (jelly_count > 1)
-            mprf(MSGCH_PRAY, "The nearby slimes join your prayer.");
-        else
-            mprf(MSGCH_PRAY, "A nearby slime joins your prayer.");
-
+        mprf_plural(MSGCH_PRAY, jelly_count,
+                    "A nearby slime joins your prayer.",
+                    "The nearby slimes join your prayer.");
         lose_piety(5);
     }
 }
@@ -2207,10 +2203,9 @@ bool fedhas_sunlight()
 
     if (revealed_count)
     {
-        if (revealed_count == 1)
-            mpr("In the bright light, you notice an invisible shape");
-        else
-            mpr("In the bright light, you notice some invisible shapes");
+        mprf_plural(revealed_count,
+                    "In the bright light, you notice an invisible shape",
+                    "In the bright light, you notice some invisible shapes");
     }
 
     return true;
@@ -2492,10 +2487,13 @@ static void _decrease_amount(vector<pair<int, int> >& available, int amount)
         amount -= decrease_amount;
         dec_inv_item_quantity(available[i].second, decrease_amount);
     }
-    if (total_decrease > 1)
-        mprf("%d pieces of fruit are consumed!", total_decrease);
-    else
-        mpr("A piece of fruit is consumed!");
+    if (total_decrease > 0)
+    {
+        mprf_plural(total_decrease,
+                    "A piece of fruit is consumed!",
+                    "%d pieces of fruit are consumed!",
+                    total_decrease);
+    }
 }
 
 // Create a ring or partial ring around the caster.  The user is
@@ -2695,9 +2693,9 @@ int fedhas_rain(const coord_def &target)
 
     if (spawned_count > 0)
     {
-        mprf("%s grow%s in the rain.",
-             (spawned_count > 1 ? "Some plants" : "A plant"),
-             (spawned_count > 1 ? "" : "s"));
+        mprf_plural(spawned_count,
+                    "A plant grows in the rain.",
+                    "Some plants grow in the rain.");
     }
 
     return processed_count;

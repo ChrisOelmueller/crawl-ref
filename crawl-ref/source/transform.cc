@@ -288,17 +288,15 @@ static void _remove_equipment(const set<equipment_type>& removed,
 
         if (unequip)
         {
-            if (equip->quantity > 1)
-                mprf("%s fall away!", equip->name(DESC_YOUR).c_str());
-            else
-                mprf("%s falls away!", equip->name(DESC_YOUR).c_str());
+            mprf_plural(equip->quantity, "%s falls away!", "%s fall away!",
+                        equip->name(DESC_YOUR).c_str());
         }
         else
         {
-            if (equip->quantity > 1)
-                mprf("%s meld into your body.", equip->name(DESC_YOUR).c_str());
-            else
-                mprf("%s melds into your body.", equip->name(DESC_YOUR).c_str());
+            mprf_plural(equip->quantity,
+                        "%s melds into your body.",
+                        "%s meld into your body.",
+                        equip->name(DESC_YOUR).c_str());
         }
 
         if (unequip)

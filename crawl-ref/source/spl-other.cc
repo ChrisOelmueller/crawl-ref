@@ -80,10 +80,9 @@ spret_type cast_sublimation_of_blood(int pow, bool fail)
             fail_check();
             success = true;
 
-            if (you.inv[wielded].quantity > 1)
-                mpr("The blood within one of your flasks froths and boils.");
-            else
-                mpr("The blood within the flask you are holding froths and boils.");
+            mprf_plural(you.inv[wielded].quantity,
+                "The blood within the flask you are holding froths and boils.",
+                "The blood within one of your flasks froths and boils.");
 
             mpr("A flood of magical energy pours into your mind!");
 
