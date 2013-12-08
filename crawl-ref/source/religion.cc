@@ -3729,9 +3729,10 @@ void god_pitch(god_type which_god)
     if (old_god != GOD_ZIN && you.penance[GOD_ZIN]
         && god_hates_your_god(GOD_ZIN, you.religion))
     {
-        simple_god_message(make_stringf(" says: You will suffer for embracing such %s!",
-                                        is_chaotic_god(you.religion) ? "chaos" : "evil").c_str(),
-                           GOD_ZIN);
+        if (is_chaotic_god(you.religion))
+            simple_god_message(" says: You will suffer for embracing such chaos!", GOD_ZIN);
+        else
+            simple_god_message(" says: You will suffer for embracing such evil!", GOD_ZIN);
     }
 
     // Note that you.worshipped[] has already been incremented.

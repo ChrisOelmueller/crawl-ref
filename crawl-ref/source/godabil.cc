@@ -1032,9 +1032,10 @@ bool zin_recite_to_single_monster(const coord_def& where,
         if (mon->add_ench(mon_enchant(ENCH_PARALYSIS, 0, &you,
                           (degree + random2(spellpower)) * BASELINE_DELAY)))
         {
-            simple_monster_message(mon,
-                minor ? " is awed by your recitation."
-                      : " is aghast at the heresy of your recitation.");
+            if (minor)
+                simple_monster_message(mon, " is awed by your recitation.");
+            else
+                simple_monster_message(mon, " is aghast at the heresy of your recitation.");
             affected = true;
         }
         break;
@@ -1059,14 +1060,16 @@ bool zin_recite_to_single_monster(const coord_def& where,
                 }
                 break;
             case RECITE_CHAOTIC:
-                simple_monster_message(mon,
-                    minor ? "'s chaotic flesh is covered in bleeding sores."
-                          : "'s chaotic flesh erupts into weeping sores!");
+                if (minor)
+                    simple_monster_message(mon, "'s chaotic flesh is covered in bleeding sores.");
+                else
+                    simple_monster_message(mon, "'s chaotic flesh erupts into weeping sores!");
                 break;
             case RECITE_IMPURE:
-                simple_monster_message(mon,
-                    minor ? "'s impure flesh is covered in bleeding sores."
-                          : "'s impure flesh erupts into weeping sores!");
+                if (minor)
+                    simple_monster_message(mon, "'s impure flesh is covered in bleeding sores.");
+                else
+                    simple_monster_message(mon, "'s impure flesh erupts into weeping sores!");
                 break;
             default:
                 die("bad recite bleed");
@@ -1109,9 +1112,10 @@ bool zin_recite_to_single_monster(const coord_def& where,
         if (mon->add_ench(mon_enchant(ENCH_ANTIMAGIC, degree, &you,
                           (degree + random2(spellpower)) * BASELINE_DELAY)))
         {
-            simple_monster_message(mon,
-                minor ? " quails at your recitation."
-                      : " looks feeble and powerless before your recitation.");
+            if (minor)
+                simple_monster_message(mon, " quails at your recitation.");
+            else
+                simple_monster_message(mon, " looks feeble and powerless before your recitation.");
             affected = true;
         }
         break;
@@ -1154,10 +1158,12 @@ bool zin_recite_to_single_monster(const coord_def& where,
 
                 if (mon->alive())
                 {
-                    simple_monster_message(mon,
-                      (damage < 25) ? "'s chaotic flesh sizzles and spatters!" :
-                      (damage < 50) ? "'s chaotic flesh bubbles and boils."
-                                    : "'s chaotic flesh runs like molten wax.");
+                    if (damage < 25)
+                        simple_monster_message(mon, "'s chaotic flesh sizzles and spatters!");
+                    else if (damage < 50)
+                        simple_monster_message(mon, "'s chaotic flesh bubbles and boils.");
+                    else
+                        simple_monster_message(mon, "'s chaotic flesh runs like molten wax.");
 
                     print_wounds(mon);
                     behaviour_event(mon, ME_WHACK, &you);
@@ -1185,9 +1191,10 @@ bool zin_recite_to_single_monster(const coord_def& where,
         {
             mon->add_ench(mon_enchant(ENCH_SICK, degree, &you,
                           (degree + random2(spellpower)) * BASELINE_DELAY));
-            simple_monster_message(mon,
-                minor ? "'s impure flesh begins to rot away."
-                      : "'s impure flesh sloughs off!");
+            if (minor)
+                simple_monster_message(mon, "'s impure flesh begins to rot away.");
+            else
+                simple_monster_message(mon, "'s impure flesh sloughs off!");
             affected = true;
         }
         break;
@@ -1854,8 +1861,10 @@ bool kiku_receive_corpses(int pow)
     {
         if (you_worship(GOD_KIKUBAAQUDGHA))
         {
-            simple_god_message(corpses_created > 1 ? " delivers you corpses!"
-                                                   : " delivers you a corpse!");
+            if (corpses_created > 1)
+                simple_god_message(" delivers you corpses!");
+            else
+                simple_god_message(" delivers you a corpse!");
         }
         maybe_update_stashes();
         return true;
@@ -2990,19 +2999,15 @@ bool fedhas_evolve_flora()
     case MONS_PLANT:
     case MONS_BUSH:
     {
-        string evolve_desc = " can now spit acid";
-        int skill = you.skill(SK_INVOCATIONS);
+        const int skill = you.skill(SK_INVOCATIONS);
         if (skill >= 20)
-            evolve_desc += " continuously";
+            simple_monster_message(plant, " can now spit acid continuously.");
         else if (skill >= 15)
-            evolve_desc += " quickly";
+            simple_monster_message(plant, " can now spit acid quickly.");
         else if (skill >= 10)
-            evolve_desc += " rather quickly";
+            simple_monster_message(plant, " can now spit acid rather quickly.");
         else if (skill >= 5)
-            evolve_desc += " somewhat quickly";
-        evolve_desc += ".";
-
-        simple_monster_message(plant, evolve_desc.c_str());
+            simple_monster_message(plant, " can now spit acid somewhat quickly.");
         break;
     }
 

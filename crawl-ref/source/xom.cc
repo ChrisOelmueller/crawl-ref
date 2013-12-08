@@ -2134,9 +2134,10 @@ static int _xom_inner_flame(int sever, bool debug = false)
             if (!rc)
                 god_speaks(GOD_XOM, _get_xom_speech("inner flame").c_str());
 
-            simple_monster_message(*mi, (mi->body_size(PSIZE_BODY) > SIZE_BIG)
-                                   ? " is filled with an intense inner flame!"
-                                   : " is filled with an inner flame.");
+            if (mi->body_size(PSIZE_BODY) > SIZE_BIG)
+                simple_monster_message(*mi, " is filled with an intense inner flame!");
+            else
+                simple_monster_message(*mi, " is filled with an inner flame.");
             rc = true;
         }
     }

@@ -122,10 +122,10 @@ static bool _tso_retribution()
                 success = true;
         }
 
-        simple_god_message(success ? " sends the divine host to punish "
-                                     "you for your evil ways!"
-                                   : "'s divine host fails to appear.", god);
-
+        if (success)
+            simple_god_message(" sends the divine host to punish you for your evil ways!", god);
+        else
+            simple_god_message("'s divine host fails to appear.", god);
         break;
     }
     case 3:
@@ -406,10 +406,10 @@ static bool _makhleb_retribution()
         temp.extra_flags |= (MF_NO_REWARD | MF_HARD_RESET);
 
         bool success = create_monster(temp, false);
-
-        simple_god_message(success ? " sends a greater servant after you!"
-                                   : "'s greater servant is unavoidably "
-                                     "detained.", god);
+        if (success)
+            simple_god_message(" sends a greater servant after you!", god);
+        else
+            simple_god_message("'s greater servant is unavoidably detained.", god);
     }
     else
     {
@@ -431,9 +431,12 @@ static bool _makhleb_retribution()
                 count++;
         }
 
-        simple_god_message(count > 1 ? " sends minions to punish you." :
-                           count > 0 ? " sends a minion to punish you."
-                                     : "'s minions fail to arrive.", god);
+        if (count > 1)
+            simple_god_message(" sends minions to punish you.", god);
+        else if (count == 1)
+            simple_god_message(" sends a minion to punish you.", god);
+        else
+            simple_god_message("'s minions fail to arrive.", god);
     }
 
     return true;
@@ -444,8 +447,10 @@ static bool _kikubaaqudgha_retribution()
     // death/necromancy theme
     const god_type god = GOD_KIKUBAAQUDGHA;
 
-    god_speaks(god, coinflip() ? "You hear Kikubaaqudgha cackling."
-                               : "Kikubaaqudgha's malice focuses upon you.");
+    if (coinflip())
+        god_speaks(god, "You hear Kikubaaqudgha cackling.");
+    else
+        god_speaks(god, "Kikubaaqudgha's malice focuses upon you.");
 
     if (random2(you.experience_level) > 4)
     {
@@ -518,9 +523,12 @@ static bool _yredelemnul_retribution()
                     count += yred_random_servants(0, true);
             }
 
-            simple_god_message(count > 1 ? " sends servants to punish you." :
-                               count > 0 ? " sends a servant to punish you."
-                                         : "'s servants fail to arrive.", god);
+            if (count > 1)
+                simple_god_message(" sends servants to punish you.", god);
+            else if (count == 1)
+                simple_god_message(" sends a servant to punish you.", god);
+            else
+                simple_god_message("'s servants fail to arrive.", god);
         }
     }
     else
@@ -564,10 +572,12 @@ static bool _trog_retribution()
             }
         }
 
-        simple_god_message(count > 1 ? " sends monsters to punish you." :
-                           count > 0 ? " sends a monster to punish you."
-                                     : " has no time to punish you... now.",
-                           god);
+        if (count > 1)
+            simple_god_message(" sends monsters to punish you.", god);
+        else if (count == 1)
+            simple_god_message(" sends a monster to punish you.", god);
+        else
+            simple_god_message(" has no time to punish you... now.", god);
     }
     else if (!one_chance_in(3))
     {
@@ -687,11 +697,10 @@ static bool _beogh_retribution()
 
         if (num_created > 0)
         {
-            ostringstream msg;
-            msg << " throws "
-                << (num_created == 1 ? "an implement" : "implements")
-                << " of electrocution at you.";
-            simple_god_message(msg.str().c_str(), god);
+            if (num_created == 1)
+                simple_god_message(" throws an implement of electrocution at you.", god);
+            else
+                simple_god_message(" throws implements of electrocution at you.", god);
             break;
         } // else fall through
     }
@@ -750,8 +759,10 @@ static bool _okawaru_retribution()
     for (; how_many > 0; --how_many)
         count += _okawaru_random_servant();
 
-    simple_god_message(count > 0 ? " sends forces against you!"
-                                 : "'s forces are busy with other wars.", god);
+    if (count > 0)
+        simple_god_message(" sends forces against you!", god);
+    else
+        simple_god_message("'s forces are busy with other wars.", god);
 
     return true;
 }
@@ -873,8 +884,10 @@ static bool _lugonu_retribution()
             success = true;
     }
 
-    simple_god_message(success ? " sends minions to punish you."
-                                : "'s minions fail to arrive.", god);
+    if (success)
+        simple_god_message(" sends minions to punish you.", god);
+    else
+        simple_god_message("'s minions fail to arrive.", god);
 
     return false;
 }
@@ -1008,8 +1021,10 @@ static bool _jiyva_retribution()
                 success = true;
         }
 
-        god_speaks(god, success ? "Some slimes ooze up out of the ground!"
-                                : "The ground quivers slightly.");
+        if (success)
+            god_speaks(god, "Some slimes ooze up out of the ground!");
+        else
+            god_speaks(god, "The ground quivers slightly.");
     }
 
     return true;
