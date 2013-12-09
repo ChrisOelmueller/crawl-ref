@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <libintl.h>
 #include <math.h>
 
 #include <sstream>
@@ -4021,7 +4022,7 @@ static void _output_expiring_message(duration_type dur, const char* msg)
     if (you.duration[dur])
     {
         const bool expires = dur_expiring(dur);
-        mprf("%s%s", expires ? "Expiring: " : "", msg);
+        mprf("%s%s", expires ? "Expiring: " : "", gettext(msg));
     }
 }
 
