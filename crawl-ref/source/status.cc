@@ -723,13 +723,12 @@ static void _describe_glow(status_info* inf)
     if (cont > 0)
     {
         inf->short_text =
-                 (cont == 1) ? "very slightly " :
-                 (cont == 2) ? "slightly " :
-                 (cont == 3) ? "" :
-                 (cont == 4) ? "moderately " :
-                 (cont == 5) ? "heavily "
-                             : "really heavily ";
-        inf->short_text += "contaminated";
+                 (cont == 1) ? "very slightly contaminated" :
+                 (cont == 2) ? "slightly contaminated" :
+                 (cont == 3) ? "contaminated" :
+                 (cont == 4) ? "moderately contaminated" :
+                 (cont == 5) ? "heavily contaminated"
+                             : "really heavily contaminated";
         inf->long_text = describe_contamination(cont);
     }
 }

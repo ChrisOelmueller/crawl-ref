@@ -270,10 +270,9 @@ bool ugly_thing_mutate(monster* ugly, bool proximity)
                 proximity_type = 2;
             }
 
-            src  = " from ";
-            src += proximity_type == 0 ? "you" :
-                   proximity_type == 1 ? "its kin"
-                                       : "its neighbour";
+            src = proximity_type == 0 ? " from you" :
+                  proximity_type == 1 ? " from its kin"
+                                      : " from its neighbour";
 
             success = true;
         }

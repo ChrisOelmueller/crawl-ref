@@ -1480,9 +1480,10 @@ string mpr_monster_list(bool past)
 
     describe.push_back(_get_monster_name(mons[mons.size()-1], count, true).c_str());
 
-    msg = "You ";
-    msg += (past ? "could" : "can");
-    msg += " see ";
+    if (past)
+        msg = "You could see ";
+    else
+        msg = "You can see ";
 
     if (describe.size() == 1)
         msg += describe[0];
@@ -2361,19 +2362,19 @@ void print_overview_screen()
 
 string stealth_desc(int stealth)
 {
-    string prefix =
-         (stealth <  10) ? "extremely un" :
-         (stealth <  30) ? "very un" :
-         (stealth <  60) ? "un" :
-         (stealth <  90) ? "fairly " :
-         (stealth < 120) ? "" :
-         (stealth < 160) ? "quite " :
-         (stealth < 220) ? "very " :
-         (stealth < 300) ? "extremely " :
-         (stealth < 400) ? "extraordinarily " :
-         (stealth < 520) ? "incredibly "
-                         : "uncannily ";
-    return prefix + "stealthy";
+    string stealth_words =
+         (stealth <  10) ? "extremely unstealthy" :
+         (stealth <  30) ? "very unstealthy" :
+         (stealth <  60) ? "unstealthy" :
+         (stealth <  90) ? "fairly stealthy" :
+         (stealth < 120) ? "stealthy" :
+         (stealth < 160) ? "quite stealthy" :
+         (stealth < 220) ? "very stealthy" :
+         (stealth < 300) ? "extremely stealthy" :
+         (stealth < 400) ? "extraordinarily stealthy" :
+         (stealth < 520) ? "incredibly stealthy"
+                         : "uncannily stealthy";
+    return stealth_words;
 }
 
 string magic_res_adjective(int mr)
@@ -2381,18 +2382,18 @@ string magic_res_adjective(int mr)
     if (mr == MAG_IMMUNE)
         return "immune";
 
-    string prefix =
-            (mr <  10) ? "not" :
-            (mr <  30) ? "slightly" :
-            (mr <  60) ? "somewhat" :
-            (mr <  90) ? "quite" :
-            (mr < 120) ? "very" :
-            (mr < 150) ? "extremely" :
-            (mr < 190) ? "extraordinarily" :
-            (mr < 240) ? "incredibly" :
-            (mr < 300) ? "uncannily"
-                       : "almost entirely";
-    return prefix + " resistant";
+    string mr_words =
+            (mr <  10) ? "not resistant" :
+            (mr <  30) ? "slightly resistant" :
+            (mr <  60) ? "somewhat resistant" :
+            (mr <  90) ? "quite resistant" :
+            (mr < 120) ? "very resistant" :
+            (mr < 150) ? "extremely resistant" :
+            (mr < 190) ? "extraordinarily resistant" :
+            (mr < 240) ? "incredibly resistant" :
+            (mr < 300) ? "uncannily resistant"
+                       : "almost entirely resistant";
+    return mr_words;
 }
 
 static string _annotate_form_based(string desc, bool suppressed)
@@ -2579,13 +2580,10 @@ static string _status_mut_abilities(int sw)
     case SP_MUMMY:
         mutations.push_back("no food or potions");
         mutations.push_back("fire vulnerability");
-        if (you.experience_level > 12)
-        {
-            string help = "in touch with death";
-            if (you.experience_level > 25)
-                help = "strongly " + help;
-            mutations.push_back(help);
-        }
+        if (you.experience_level > 25)
+            mutations.push_back("strongly in touch with death");
+        else if (you.experience_level > 12)
+            mutations.push_back("in touch with death");
         mutations.push_back("restore body");
         break;
 

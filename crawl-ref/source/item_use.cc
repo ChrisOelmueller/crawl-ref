@@ -3580,12 +3580,11 @@ static bool _prompt_eat_bad_food(const item_def food)
                                 is_forbidden_food(food) ? "forbidden" : "")
                              + colour_off;
 
-    string prompt  = "Really ";
-           prompt += (you.species == SP_VAMPIRE ? "drink from" : "eat");
-           prompt += " this " + qualifier;
-           prompt += (food.base_type == OBJ_CORPSES ? " corpse"
-                                                    : " chunk of meat");
-           prompt += "?";
+    string prompt  = (you.species == SP_VAMPIRE ? "Really drink from this "
+                                                : "Really eat this ");
+           prompt += qualifier;
+           prompt += (food.base_type == OBJ_CORPSES ? " corpse?"
+                                                    : " chunk of meat?");
 
     if (!yesno(prompt.c_str(), false, 'n'))
     {
