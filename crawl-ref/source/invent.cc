@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <libintl.h>
 #include <sstream>
 #include <iomanip>
 
@@ -1442,7 +1443,7 @@ vector<SelItem> prompt_invent_items(
         if (need_prompt)
         {
             mprf(MSGCH_PROMPT, "%s (<w>?</w> for menu, <w>Esc</w> to quit)",
-                 prompt);
+                 gettext(prompt));
         }
 
         if (need_getch)
@@ -1906,7 +1907,7 @@ int prompt_invent_item(const char *prompt,
         if (need_prompt)
         {
             mprf(MSGCH_PROMPT, "%s (<w>?</w> for menu, <w>Esc</w> to quit)",
-                 prompt);
+                 gettext(prompt));
         }
         else
             flush_prev_message();
