@@ -7,6 +7,7 @@
 #include "mutation.h"
 
 #include <math.h>
+#include <libintl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -281,6 +282,7 @@ static bool _player_can_transform()
 
 static string _annotate_form_based(string desc, bool suppressed)
 {
+    desc = string(gettext(desc.c_str()));
     if (suppressed)
     {
         desc = "<darkgrey>((" + desc + "))</darkgrey>";
