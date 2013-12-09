@@ -73,6 +73,7 @@
 #include "viewchar.h"
 #include "xom.h"
 
+#include <libintl.h>
 #include <vector>
 #include <algorithm>
 
@@ -3848,14 +3849,11 @@ bool simple_monster_message(const monster* mons, const char *event,
         && (channel == MSGCH_MONSTER_SPELL || channel == MSGCH_FRIEND_SPELL
             || mons->visible_to(&you)))
     {
-        string msg = mons->name(descrip);
-        msg += event;
-        msg = apostrophise_fixup(msg);
-
         if (channel == MSGCH_PLAIN && mons->wont_attack())
             channel = MSGCH_FRIEND_ACTION;
-
-        mprf(channel, param, "%s", msg.c_str());
+        ////TODO
+        ////apostrophise_fixup
+        mprf(channel, param, "%s%s", mons->name(descrip).c_str(), gettext(event));
         return true;
     }
 

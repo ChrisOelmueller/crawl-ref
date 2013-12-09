@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <cmath>
+#include <libintl.h>
 
 #include "externs.h"
 
@@ -4096,7 +4097,9 @@ void handle_god_time()
 // yet another wrapper for mpr() {dlb}:
 void simple_god_message(const char *event, god_type which_deity)
 {
-    string msg = uppercase_first(god_name(which_deity)) + event;
+    string msg = make_stringf("%s%s",
+        uppercase_first(god_name(which_deity)).c_str(),
+        gettext(event));
     msg = apostrophise_fixup(msg);
     god_speaks(which_deity, msg.c_str());
 }
