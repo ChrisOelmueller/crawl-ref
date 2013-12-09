@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <math.h>
+#include <libintl.h>
 
 #include "abyss.h"
 #include "cio.h"
@@ -556,7 +557,7 @@ bool yes_or_no(const char* fmt, ...)
     char buf[200];
     va_list args;
     va_start(args, fmt);
-    vsnprintf(buf, sizeof buf, fmt, args);
+    vsnprintf(buf, sizeof buf, gettext(fmt), args);
     va_end(args);
     buf[sizeof(buf)-1] = 0;
 
@@ -580,7 +581,7 @@ bool yesno(const char *str, bool safe, int safeanswer, bool clear_after,
     if (interrupt_delays && !crawl_state.is_repeating_cmd())
         interrupt_activity(AI_FORCE_INTERRUPT);
 
-    string prompt = make_stringf("%s ", str ? str : "Buggy prompt?");
+    string prompt = make_stringf("%s ", str ? gettext(str) : "Buggy prompt?");
 
 #ifdef TOUCH_UI
     Popup *pop = new Popup(prompt);
