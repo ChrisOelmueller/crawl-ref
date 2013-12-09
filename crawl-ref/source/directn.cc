@@ -9,6 +9,7 @@
 #include "format.h"
 
 #include <cstdarg>
+#include <libintl.h>
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
@@ -1319,7 +1320,7 @@ bool direction_chooser::select(bool allow_out_of_range, bool endpoint)
     if ((restricts == DIR_JUMP || !allow_out_of_range) && !in_range(target()))
     {
         if (hitfunc)
-            mprf(MSGCH_EXAMINE_FILTER, "%s", hitfunc->why_not.c_str());
+            mprf(MSGCH_EXAMINE_FILTER, "%s", gettext(hitfunc->why_not.c_str()));
         else
             mprf(MSGCH_EXAMINE_FILTER, "That is beyond the maximum range.");
         return false;
@@ -1411,7 +1412,7 @@ void direction_chooser::print_target_description(bool &did_cloud) const
     if (!in_range(target()))
     {
         if (hitfunc)
-            mprf(MSGCH_EXAMINE_FILTER, "%s", hitfunc->why_not.c_str());
+            mprf(MSGCH_EXAMINE_FILTER, "%s", gettext(hitfunc->why_not.c_str()));
         else
             mprf(MSGCH_EXAMINE_FILTER, "Out of range.");
     }
