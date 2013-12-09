@@ -990,13 +990,13 @@ static void do_message_print(msg_channel_type channel, int param, bool cap,
     va_list ap;
     va_copy(ap, argp);
     char buff[200];
-    size_t len = vsnprintf(buff, sizeof(buff), format, argp);
+    size_t len = vsnprintf(buff, sizeof(buff), gettext(format), argp);
     if (len < sizeof(buff))
         _mpr(buff, channel, param, nojoin, cap);
     else
     {
         char *heapbuf = (char*)malloc(len + 1);
-        vsnprintf(heapbuf, len + 1, format, ap);
+        vsnprintf(heapbuf, len + 1, gettext(format), ap);
         _mpr(heapbuf, channel, param, nojoin, cap);
         free(heapbuf);
     }
