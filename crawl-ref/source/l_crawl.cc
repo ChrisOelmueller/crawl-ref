@@ -20,7 +20,6 @@ module "crawl"
 #include "command.h"
 #include "delay.h"
 #include "directn.h"
-#include "format.h"
 #include "hiscores.h"
 #include "hints.h"
 #include "initfile.h"
@@ -82,36 +81,6 @@ static int crawl_mpr(lua_State *ls)
         ch = MSGCH_PLAIN;
 
     mprf(static_cast<msg_channel_type>(ch), "%s", message);
-    return 0;
-}
-
-/*
----
-function formatted_mpr(message, channel) */
-static int crawl_formatted_mpr(lua_State *ls)
-{
-    if (!crawl_state.io_inited)
-        return 0;
-
-    const char *message = luaL_checkstring(ls, 1);
-    if (!message)
-        return 0;
-
-    int ch = MSGCH_PLAIN;
-    if (lua_isnumber(ls, 2))
-        ch = luaL_checkint(ls, 2);
-    else
-    {
-        const char *channel = lua_tostring(ls, 2);
-        if (channel)
-            ch = str_to_channel(channel);
-    }
-
-    if (ch < 0 || ch >= NUM_MESSAGE_CHANNELS)
-        ch = MSGCH_PLAIN;
-
-    formatted_mpr(formatted_string::parse_string(message),
-                  static_cast<msg_channel_type>(ch));
     return 0;
 }
 
@@ -987,7 +956,6 @@ static int crawl_call_dlua(lua_State *ls)
 static const struct luaL_reg crawl_clib[] =
 {
     { "mpr",            crawl_mpr },
-    { "formatted_mpr",  crawl_formatted_mpr },
     { "dpr",            crawl_dpr },
     { "stderr",         crawl_stderr },
     { "more",           crawl_more },
