@@ -331,7 +331,11 @@ end
 
 function toggle_autothrow()
   AUTOFIGHT_THROW = not AUTOFIGHT_THROW
-  crawl.mpr(AUTOFIGHT_THROW and "Enabling autothrow." or "Disabling autothrow.")
+  if AUTOFIGHT_THROW then
+      crawl.mpr("Enabling autothrow.")
+  else
+      crawl.mpr("Disabling autothrow.")
+  end
 end
 
 chk_lua_option.autofight_stop = set_stop_level

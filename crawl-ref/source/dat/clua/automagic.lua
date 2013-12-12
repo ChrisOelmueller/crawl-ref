@@ -276,7 +276,7 @@ function am_set_spell()
     return false
 
   elseif slot == "null" then
-    crawl.mpr("Deactivated automagic.")
+    crawl.mpr("Automagic disabled.")
     crawl.setopt("automagic_enable = false")
     return false
 
@@ -285,17 +285,16 @@ function am_set_spell()
     return false
 
   else
-    message = ""
     -- All conditional checks completed, continue to assign a slot now. If automagic
     -- had been disabled, enable it now.
     if AUTOMAGIC_ACTIVE == false then
       crawl.setopt("automagic_enable = true")
-      message = " enabled,"
+      crawl.mpr("Automagic enabled.")
     end
     AUTOMAGIC_SPELL_SLOT = slot
     spell_name = you.spell_table()[AUTOMAGIC_SPELL_SLOT] or "no spell currently"
-    crawl.mpr("Automagic" .. message .. " will cast spell in slot " .. slot .. " (" ..
-        spell_name .. ")" .. ".")
+    crawl.mpr("Automagic will cast spell in slot " .. slot .. " (" ..
+        spell_name .. ").")
     return false
 
   end
