@@ -14,6 +14,7 @@
 #include <sstream>
 #include <iomanip>
 #include <numeric>
+#include <libintl.h>
 
 #include "externs.h"
 #include "options.h"
@@ -3939,23 +3940,24 @@ static string _describe_favour(god_type which_god)
     if (player_under_penance())
     {
         const int penance = you.penance[which_god];
-        return (penance >= 50) ? "Godly wrath is upon you!" :
-               (penance >= 20) ? "You've transgressed heavily! Be penitent!" :
-               (penance >=  5) ? "You are under penance."
-                               : "You should show more discipline.";
+        return (penance >= 50) ? _("Godly wrath is upon you!") :
+               (penance >= 20) ? _("You've transgressed heavily! Be penitent!") :
+               (penance >=  5) ? _("You are under penance.")
+                               : _("You should show more discipline.");
     }
 
     if (which_god == GOD_XOM)
         return uppercase_first(describe_xom_favour());
 
-    const string godname = god_name(which_god);
-    return (you.piety >= piety_breakpoint(5)) ? "A prized avatar of " + godname + ".":
-           (you.piety >= piety_breakpoint(4)) ? "A favoured servant of " + godname + ".":
-           (you.piety >= piety_breakpoint(3)) ? "A shining star in the eyes of " + godname + "." :
-           (you.piety >= piety_breakpoint(2)) ? "A rising star in the eyes of " + godname + "." :
-           (you.piety >= piety_breakpoint(1)) ? uppercase_first(godname) + " is most pleased with you." :
-           (you.piety >= piety_breakpoint(0)) ? uppercase_first(godname) + " is pleased with you."
-                                              : uppercase_first(godname) + " is noncommittal.";
+    const char * const godname = god_name(which_god).c_str();
+    const char * const Godname = uppercase_first(godname).c_str();
+    return (you.piety >= piety_breakpoint(5)) ? make_stringf(_("A prized avatar of %s."), godname) :
+           (you.piety >= piety_breakpoint(4)) ? make_stringf(_("A favoured servant of %s."), godname) :
+           (you.piety >= piety_breakpoint(3)) ? make_stringf(_("A shining star in the eyes of %s."), godname) :
+           (you.piety >= piety_breakpoint(2)) ? make_stringf(_("A rising star in the eyes of %s."), godname) :
+           (you.piety >= piety_breakpoint(1)) ? make_stringf(_("%s is most pleased with you."), Godname) :
+           (you.piety >= piety_breakpoint(0)) ? make_stringf(_("%s is pleased with you."), Godname)
+                                              : make_stringf(_("%s is noncommittal."), Godname);
 }
 
 static string _religion_help(god_type god)
@@ -3965,7 +3967,7 @@ static string _religion_help(god_type god)
     switch (god)
     {
     case GOD_ZIN:
-        result += "You can pray at an altar to donate your money.";
+        result += _("You can pray at an altar to donate your money.");
         if (!player_under_penance()
             && you.piety >= piety_breakpoint(5)
             && !you.one_time_ability_used[god])
@@ -3973,7 +3975,7 @@ static string _religion_help(god_type god)
             if (!result.empty())
                 result += " ";
 
-            result += "You can have all your mutations cured.";
+            result += _("You can have all your mutations cured.");
         }
         break;
 
@@ -3985,17 +3987,12 @@ static string _religion_help(god_type god)
             if (!result.empty())
                 result += " ";
 
-            result += "You radiate a ";
-
             if (halo_size > 37)
-                result += "large ";
+                result += _("You radiate a large righteous aura, and all beings within it are easier to hit.");
             else if (halo_size > 10)
-                result += "";
+                result += _("You radiate a righteous aura, and all beings within it are easier to hit.");
             else
-                result += "small ";
-
-            result += "righteous aura, and all beings within it are "
-                      "easier to hit.";
+                result += _("You radiate a small righteous aura, and all beings within it are easier to hit.");
         }
         if (!player_under_penance()
             && you.piety >= piety_breakpoint(5)
@@ -4004,17 +4001,18 @@ static string _religion_help(god_type god)
             if (!result.empty())
                 result += " ";
 
-            result += "You can pray at an altar to have your weapon "
-                      "blessed, especially a long blade or demon "
-                      "weapon.";
+            result += _("You can pray at an altar to have your weapon "
+                        "blessed, especially a long blade or demon weapon.");
         }
         break;
     }
 
     case GOD_ELYVILON:
-        result += "You can pray to destroy weapons on the ground in "
-                + apostrophise(god_name(god)) + " name. Inscribe them "
-                + "with !p, !* or =p to avoid sacrificing them accidentally.";
+        result += make_stringf(_(
+            //i18n: in [Elyvilon's] name - automatically adds apostrophe!
+            "You can pray to destroy weapons on the ground in %s name."
+            " Inscribe them with !p, !* or =p to avoid sacrificing them"
+            " accidentally."), apostrophise(god_name(god)).c_str());
         break;
 
     case GOD_LUGONU:
@@ -4022,8 +4020,8 @@ static string _religion_help(god_type god)
             && you.piety >= piety_breakpoint(5)
             && !you.one_time_ability_used[god])
         {
-            result += "You can pray at an altar to have your weapon "
-                      "corrupted.";
+            result += _("You can pray at an altar to have your weapon"
+                        " corrupted.");
         }
         break;
 
@@ -4032,28 +4030,29 @@ static string _religion_help(god_type god)
             && you.piety >= piety_breakpoint(5)
             && !you.one_time_ability_used[god])
         {
-            result += "You can pray at an altar to have your necromancy "
-                      "enhanced.";
+            result += _("You can pray at an altar to have your necromancy"
+                        " enhanced.");
         }
         break;
 
     case GOD_BEOGH:
-        result += "You can pray to sacrifice all orcish remains on your "
-                  "square.";
+        result += _("You can pray to sacrifice all orcish remains on your"
+                    " square.");
         break;
 
     case GOD_NEMELEX_XOBEH:
-        result += "You can pray to sacrifice all items on your square. "
-                  "Inscribe items with !p, !* or =p to avoid sacrificing "
-                  "them accidentally. See the detailed description to "
-                  "sacrifice only some kinds of items.";
+        result += _("You can pray to sacrifice all items on your square. "
+                    "Inscribe items with !p, !* or =p to avoid sacrificing"
+                    " them accidentally. "
+                    "See the detailed description to sacrifice only some"
+                    " kinds of items.");
         break;
 
     case GOD_FEDHAS:
         if (you.piety >= piety_breakpoint(0))
         {
-            result += "Evolving plants requires fruit, and evolving "
-                      "fungi requires piety.";
+            result += _("Evolving plants requires fruit, and evolving "
+                        "fungi requires piety.");
         }
 
     default:
@@ -4065,8 +4064,8 @@ static string _religion_help(god_type god)
         if (!result.empty())
             result += " ";
 
-        result += "You can pray to sacrifice all fresh corpses on your "
-                  "square.";
+        result += _("You can pray to sacrifice all fresh corpses on your "
+                    "square.");
     }
 
     return result;
@@ -4184,8 +4183,8 @@ static string _describe_ash_skill_boost()
 {
     if (!you.bondage_level)
     {
-        return "Ashenzari won't support your skills until you bind yourself "
-               "with cursed items.";
+        return _("Ashenzari won't support your skills until you bind yourself "
+                 "with cursed items.");
     }
 
     static const char* bondage_parts[NUM_ET] = { "Weapon hand", "Shield hand",
@@ -4298,20 +4297,20 @@ static void _detailed_god_description(god_type which_god)
         switch (which_god)
         {
         case GOD_TROG:
-            broken = "Note that Trog does not demand training of the "
-                     "Invocations skill. All abilities are purely based on "
-                     "piety.";
+            broken = _("Note that Trog does not demand training of the "
+                       "Invocations skill. All abilities are purely based on "
+                       "piety.");
             break;
 
         case GOD_ELYVILON:
-            broken = "Healing hostile monsters may pacify them, turning them "
-                     "neutral. Pacification works best on natural beasts, "
-                     "worse on monsters of your species, worse on other "
-                     "species, worst of all on demons and undead, and not at "
-                     "all on sleeping or mindless monsters. If it succeeds, "
-                     "you gain half of the monster's experience value and "
-                     "possibly some piety. Pacified monsters try to leave the "
-                     "level.";
+            broken = _("Healing hostile monsters may pacify them, turning them "
+                       "neutral. Pacification works best on natural beasts, "
+                       "worse on monsters of your species, worse on other "
+                       "species, worst of all on demons and undead, and not at "
+                       "all on sleeping or mindless monsters. If it succeeds, "
+                       "you gain half of the monster's experience value and "
+                       "possibly some piety. "
+                       "Pacified monsters try to leave the level.");
             break;
 
         case GOD_NEMELEX_XOBEH:
@@ -4423,7 +4422,8 @@ void describe_god(god_type which_god, bool give_title)
 
     if (which_god == GOD_NO_GOD) //mv: No god -> say it and go away.
     {
-        cprintf("\nYou are not religious.");
+        cprintf("\n");
+        cprintf(_("You are not religious."));
         get_ch();
         return;
     }
@@ -4446,7 +4446,8 @@ void describe_god(god_type which_god, bool give_title)
     if (you_worship(which_god))
     {
         // Print title based on piety.
-        cprintf("\nTitle - ");
+        cprintf("\n");
+        cprintf(_("Title - "));
         textcolor(colour);
 
         string title = god_title(which_god, you.species, you.piety);
@@ -4458,7 +4459,8 @@ void describe_god(god_type which_god, bool give_title)
     // something better, do it.
 
     textcolor(LIGHTGREY);
-    cprintf("\n\nFavour - ");
+    cprintf("\n\n");
+    cprintf(_("Favour - "));
     textcolor(colour);
 
     //mv: Player is praying at altar without appropriate religion.
@@ -4480,13 +4482,13 @@ void describe_god(god_type which_god, bool give_title)
 
         cprintf((which_god == GOD_NEMELEX_XOBEH
                      && which_god_penance > 0 && which_god_penance <= 100)
-                                             ? "%s doesn't play fair with you." :
-                 (which_god_penance >= 50)   ? "%s's wrath is upon you!" :
-                 (which_god_penance >= 20)   ? "%s is annoyed with you." :
-                 (which_god_penance >=  5)   ? "%s well remembers your sins." :
-                 (which_god_penance >   0)   ? "%s is ready to forgive your sins." :
-                 (you.worshipped[which_god]) ? "%s is ambivalent towards you."
-                                             : "%s is neutral towards you.",
+                                             ? _("%s doesn't play fair with you.") :
+                 (which_god_penance >= 50)   ? _("%s's wrath is upon you!") :
+                 (which_god_penance >= 20)   ? _("%s is annoyed with you.") :
+                 (which_god_penance >=  5)   ? _("%s well remembers your sins.") :
+                 (which_god_penance >   0)   ? _("%s is ready to forgive your sins.") :
+                 (you.worshipped[which_god]) ? _("%s is ambivalent towards you.")
+                                             : _("%s is neutral towards you."),
                  uppercase_first(god_name(which_god)).c_str());
     }
     else
@@ -4498,8 +4500,8 @@ void describe_god(god_type which_god, bool give_title)
         //mv: The following code shows abilities given by your god (if any).
 
         textcolor(LIGHTGREY);
-        const char *header = "Granted powers:";
-        const char *cost   = "(Cost)";
+        const char *header = _("Granted powers:");
+        const char *cost   = _("(Cost)");
         cprintf("\n\n%s%*s%s\n", header,
                 get_number_of_cols() - 1 - strwidth(header) - strwidth(cost),
                 "", cost);
