@@ -278,10 +278,10 @@ static void _ely_dull_inventory_weapons()
         if (x_chance_in_y(chance + 1, 100))
             dec_penance(GOD_ELYVILON, 1);
 
-        simple_god_message(
-            make_stringf(" dulls %syour weapons.",
-                         num_dulled == 1 ? "one of " : "").c_str(),
-            GOD_ELYVILON);
+        if (num_dulled == 1)
+            simple_god_message(" dulls one of your weapons.", GOD_ELYVILON);
+        else
+            simple_god_message(" dulls your weapons.", GOD_ELYVILON);
     }
 }
 

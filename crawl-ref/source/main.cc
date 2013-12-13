@@ -3380,23 +3380,18 @@ static void _player_reacts_to_monsters()
     // We have to do the messaging here, because a simple wand of flame will
     // call _maybe_melt_player_enchantments twice. It also avoid duplicate
     // messages when melting because of several heating sources.
-    string what;
+    if (you.props.exists("melt_armour") && you.props.exists("melt_shield"))
+        mprf(MSGCH_DURATION, "The heat melts your icy armour and shield.");
+    else if (you.props.exists("melt_armour"))
+        mprf(MSGCH_DURATION, "The heat melts your icy armour.");
+    else if (you.props.exists("melt_shield"))
+        mprf(MSGCH_DURATION, "The heat melts your icy shield.");
+
     if (you.props.exists("melt_armour"))
-    {
-        what = "armour";
         you.props.erase("melt_armour");
-    }
 
     if (you.props.exists("melt_shield"))
-    {
-        if (what != "")
-            what += " and ";
-        what += "shield";
         you.props.erase("melt_shield");
-    }
-
-    if (what != "")
-        mprf(MSGCH_DURATION, "The heat melts your icy %s.", what.c_str());
 
     handle_starvation();
     _decrement_paralysis(you.time_taken);

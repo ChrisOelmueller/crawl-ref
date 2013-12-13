@@ -845,8 +845,10 @@ void MiscastEffect::_conjuration(int severity)
             // Player only (for now).
             bool plural;
             string hair = _hair_str(target, plural);
-            you_msg = make_stringf("Your %s stand%s on end.", hair.c_str(),
-                                   plural ? "" : "s");
+            if (plural)
+                you_msg = make_stringf("Your %s stand on end.", hair.c_str());
+            else
+                you_msg = make_stringf("Your %s stands on end.", hair.c_str());
         }
         }
         do_msg();
@@ -1922,8 +1924,10 @@ void MiscastEffect::_transmutation(int severity)
             // Player only (for now).
             bool plural;
             string hair = _hair_str(target, plural);
-            you_msg = make_stringf("Your %s momentarily turn%s into snakes!",
-                                   hair.c_str(), plural ? "" : "s");
+            if (plural)
+                you_msg = make_stringf("Your %s momentarily turns into snakes!", hair.c_str());
+            else
+                you_msg = make_stringf("Your %s momentarily turn into snakes!", hair.c_str());
         }
         }
         do_msg();

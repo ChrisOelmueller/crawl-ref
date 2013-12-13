@@ -532,11 +532,15 @@ bool lose_stat(stat_type which_stat, int stat_loss, bool force,
         }
     }
 
-    mprf(stat_loss > 0 ? MSGCH_WARN : MSGCH_PLAIN,
-         "You feel %s%s%s.",
-         stat_loss > 0 && player_sust_abil(false) ? "somewhat " : "",
-         stat_desc(which_stat, SD_LOSS),
-         stat_loss > 0 ? "" : " for a moment");
+    if (stat_loss > 0)
+    {
+        if (player_sust_abil(false))
+            mprf(MSGCH_WARN, "You feel somewhat %s.", stat_desc(which_stat, SD_LOSS));
+        else
+            mprf(MSGCH_WARN, "You feel %s.", stat_desc(which_stat, SD_LOSS));
+    }
+    else
+        mprf(MSGCH_PLAIN, "You feel %s for a moment.", stat_desc(which_stat, SD_LOSS));
 
     if (stat_loss > 0)
     {

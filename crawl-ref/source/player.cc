@@ -8098,9 +8098,12 @@ static string _constriction_description()
     const int num_free_tentacles = you.usable_tentacles();
     if (num_free_tentacles)
     {
-        cinfo += make_stringf("You have %d tentacle%s available for constriction.",
-                              num_free_tentacles,
-                              num_free_tentacles > 1 ? "s" : "");
+        if (num_free_tentacles == 1)
+            cinfo += make_stringf("You have %d tentacle available for constriction.",
+                         num_free_tentacles);
+        else
+            cinfo += make_stringf("You have %d tentacles available for constriction.",
+                         num_free_tentacles);
     }
     // name of what this monster is constricted by, if any
     if (you.is_constricted())
@@ -8108,8 +8111,11 @@ static string _constriction_description()
         if (!cinfo.empty())
             cinfo += "\n";
 
-        cinfo += make_stringf("You are being %s by %s.",
-                      you.held == HELD_MONSTER ? "held" : "constricted",
+        if (you.held == HELD_MONSTER)
+            cinfo += make_stringf("You are being held by %s.",
+                      monster_by_mid(you.constricted_by)->name(DESC_A).c_str());
+        else
+            cinfo += make_stringf("You are being constricted by %s.",
                       monster_by_mid(you.constricted_by)->name(DESC_A).c_str());
     }
 

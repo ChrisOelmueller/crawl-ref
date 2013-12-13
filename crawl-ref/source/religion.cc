@@ -979,14 +979,13 @@ void dec_penance(god_type god, int val)
                        "mollified " + god_name(god) + ".");
 
         const bool dead_jiyva = (god == GOD_JIYVA && jiyva_is_dead());
-
-        simple_god_message(
-            make_stringf(" seems mollified%s.",
-                         dead_jiyva ? ", and vanishes" : "").c_str(),
-            god);
-
         if (dead_jiyva)
+        {
             add_daction(DACT_REMOVE_JIYVA_ALTARS);
+            simple_god_message(" seems mollified, and vanishes.", god);
+        }
+        else
+            simple_god_message(" seems mollified.", god);
 
         take_note(Note(NOTE_MOLLIFY_GOD, god));
 
@@ -1889,21 +1888,19 @@ bool bless_follower(monster* follower,
 
 blessing_done:
 
-    string whom = "";
     if (!follower)
-        whom = "you";
+        simple_god_message(make_stringf("blesses you with %s.",
+                               result.c_str()).c_str(), god);
     else
     {
         if (you.can_see(follower))
-            whom = follower->name(DESC_THE);
+            simple_god_message(make_stringf(" blesses %s with %s.",
+                                   follower->name(DESC_THE).c_str(),
+                                   result.c_str()).c_str(), god);
         else
-            whom = "a follower";
+            simple_god_message(make_stringf("blesses a follower with %s.",
+                                   result.c_str()).c_str(), god);
     }
-
-    simple_god_message(
-        make_stringf(" blesses %s with %s.",
-                     whom.c_str(), result.c_str()).c_str(),
-        god);
 
 #ifndef USE_TILE_LOCAL
     flash_monster_colour(follower, god_colour(god), 200);
@@ -3252,11 +3249,20 @@ void print_sacrifice_message(god_type god, const item_def &item,
     {
         // Weapons blessed by TSO don't get destroyed but are instead
         // returned whence they came. (jpeg)
-        simple_god_message(
-            make_stringf(" %sreclaims %s.",
-                         piety_gain ? "gladly " : "",
-                         item.name(DESC_THE).c_str()).c_str(),
-            GOD_SHINING_ONE);
+        if (piety_gain)
+        {
+            simple_god_message(
+                make_stringf(" gladly reclaims %s.",
+                             item.name(DESC_THE).c_str()).c_str(),
+                GOD_SHINING_ONE);
+        }
+        else
+        {
+            simple_god_message(
+                make_stringf(" reclaims %s.",
+                             item.name(DESC_THE).c_str()).c_str(),
+                GOD_SHINING_ONE);
+        }
         return;
     }
     const string itname = item.name(your ? DESC_YOUR : DESC_THE);
@@ -3587,9 +3593,10 @@ void god_pitch(god_type which_god)
     mark_milestone("god.worship", "became a worshipper of "
                    + god_name(you.religion) + ".");
 
-    simple_god_message(
-        make_stringf(" welcomes you%s!",
-                     you.worshipped[which_god] ? " back" : "").c_str());
+    if (you.worshipped[which_god])
+        simple_god_message(" welcomes you back!");
+    else
+        simple_god_message(" welcomes you!");
     more();
     if (crawl_state.game_is_tutorial())
     {

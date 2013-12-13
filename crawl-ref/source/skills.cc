@@ -158,15 +158,21 @@ static void _change_skill_level(skill_type exsk, int n)
     }
     else if (abs(n) == 1 && you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill %s to level %d!",
-             skill_name(exsk), (n > 0) ? "increases" : "decreases",
-             you.skills[exsk]);
+        if (n > 0)
+            mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill increases to level %d!",
+                 skill_name(exsk), you.skills[exsk]);
+        else
+            mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill decreases to level %d!",
+                 skill_name(exsk), you.skills[exsk]);
     }
     else if (you.num_turns)
     {
-        mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill %s %d levels and is now at "
-             "level %d!", skill_name(exsk), (n > 0) ? "gained" : "lost",
-             abs(n), you.skills[exsk]);
+        if (n > 0)
+            mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill gained %d levels and is now"
+                 " at level %d!", skill_name(exsk), abs(n), you.skills[exsk]);
+        else
+            mprf(MSGCH_INTRINSIC_GAIN, "Your %s skill lost %d levels and is now"
+                 " at level %d!", skill_name(exsk), abs(n), you.skills[exsk]);
     }
 
     if (you.skills[exsk] == n && n > 0)

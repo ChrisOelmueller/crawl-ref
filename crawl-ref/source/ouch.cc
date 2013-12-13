@@ -608,10 +608,10 @@ static bool _expose_invent_to_element(beam_type flavour, int strength)
 
     if (jiyva_block)
     {
-        simple_god_message(
-            make_stringf(" shields %s delectables from destruction.",
-                         (total_dest > 0) ? "some of your" : "your").c_str(),
-            GOD_JIYVA);
+        if (total_dest > 0)
+            simple_god_message(" shields some of your delectables from destruction.", GOD_JIYVA);
+        else
+            simple_god_message(" shields your delectables from destruction.", GOD_JIYVA);
     }
 
     if (!total_dest)
