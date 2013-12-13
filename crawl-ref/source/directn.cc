@@ -361,16 +361,16 @@ void direction_chooser::print_key_hints() const
         if (get_item)
         {
             if (you.see_cell(target()))
-                prompt = "Press: ? - help, v - describe, . - travel, g - get item";
+                prompt = _("Press: ? - help, v - describe, . - travel, g - get item");
             else
-                prompt = "Press: ? - help, . - travel, g - get item";
+                prompt = _("Press: ? - help, . - travel, g - get item");
         }
         else
         {
             if (you.see_cell(target()))
-                prompt = "Press: ? - help, v - describe, . - travel";
+                prompt = _("Press: ? - help, v - describe, . - travel");
             else
-                prompt = "Press: ? - help, . - travel";
+                prompt = _("Press: ? - help, . - travel");
         }
     }
     else
@@ -380,19 +380,19 @@ void direction_chooser::print_key_hints() const
         {
         case DIR_NONE:
             if (!target_unshifted)
-                prompt = "Press: ? - help, Shift-Dir - straight line";
+                prompt = _("Press: ? - help, Shift-Dir - straight line");
             else
-                prompt = "Press: ? - help";
+                prompt = _("Press: ? - help");
             prompt += hint_string;
             break;
         case DIR_TARGET:
         case DIR_JUMP:
-            prompt = "Press: ? - help, Dir - move target cursor";
+            prompt = _("Press: ? - help, Dir - move target cursor");
             prompt += hint_string;
             break;
         case DIR_DIR:
         case DIR_TARGET_OBJECT:
-            prompt = "Press: ? - help";
+            prompt = _("Press: ? - help");
             break;
         }
     }
@@ -832,8 +832,8 @@ void do_look_around(const coord_def &whence)
     args.restricts = DIR_TARGET;
     args.just_looking = true;
     args.needs_path = false;
-    args.target_prefix = "Here";
-    args.may_target_monster = "Move the cursor around to observe a square.";
+    args.target_prefix = _("Here");
+    args.may_target_monster = _("Move the cursor around to observe a square.");
     args.default_place = whence;
     direction(lmove, args);
     if (lmove.isValid && lmove.isTarget && !lmove.isCancel
@@ -1501,7 +1501,7 @@ void direction_chooser::print_target_monster_description(bool &did_cloud) const
     }
 
     mprf(MSGCH_PROMPT, "%s: <lightgrey>%s</lightgrey>",
-         target_prefix ? target_prefix : "Aim",
+         target_prefix ? target_prefix : _("Aim"),
          text.c_str());
 
     // If there's a cloud here, it's been described.
@@ -1546,7 +1546,7 @@ void direction_chooser::print_target_object_description() const
 
     // FIXME: remove the duplication with print_items_description().
     mprf(MSGCH_PROMPT, "%s: %s",
-         target_prefix ? target_prefix : "Aim",
+         target_prefix ? target_prefix : _("Aim"),
          get_menu_colour_prefix_tags(*item, DESC_A).c_str());
 }
 
