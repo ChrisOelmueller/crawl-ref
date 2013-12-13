@@ -1,5 +1,6 @@
 #include "AppHdr.h"
 #include <math.h>
+#include <libintl.h>
 
 #include "godpassive.h"
 
@@ -281,71 +282,90 @@ void ash_check_bondage(bool msg)
 
 string ash_describe_bondage(int flags, bool level)
 {
+    const char * const yourhand = you.hand_name(false).c_str();
+    const char * const yourhands = you.hand_name(true).c_str();
     string desc;
     if (flags & ETF_WEAPON && flags & ETF_SHIELD
         && you.bondage[ET_WEAPON] != -1)
     {
         if (you.bondage[ET_WEAPON] == you.bondage[ET_SHIELD])
         {
-            desc = make_stringf("Your %s are %sbound.\n",
-                                you.hand_name(true).c_str(),
-                                you.bondage[ET_WEAPON] ? "" : "not ");
+            if (you.bondage[ET_WEAPON])
+                desc = make_stringf(_("Your %s are bound."), yourhands);
+            else
+                desc = make_stringf(_("Your %s are not bound."), yourhands);
         }
         else
         {
-            desc = make_stringf("Your %s %s is bound but not your %s %s.\n",
-                                you.bondage[ET_WEAPON] ? "weapon" : "shield",
-                                you.hand_name(false).c_str(),
-                                you.bondage[ET_WEAPON] ? "shield" : "weapon",
-                                you.hand_name(false).c_str());
+            if (you.bondage[ET_WEAPON])
+                desc = make_stringf(_("Your weapon %s is bound but not your shield %s."), yourhand, yourhand);
+            else
+                desc = make_stringf(_("Your shield %s is bound but not your weapon %s."), yourhand, yourhand);
         }
     }
     else if (flags & ETF_WEAPON && you.bondage[ET_WEAPON] != -1)
     {
-        desc = make_stringf("Your weapon %s is %sbound.\n",
-                            you.hand_name(false).c_str(),
-                            you.bondage[ET_WEAPON] ? "" : "not ");
+        if (you.bondage[ET_WEAPON])
+            desc = make_stringf("Your weapon %s is bound.", yourhand);
+        else
+            desc = make_stringf("Your weapon %s is not bound.", yourhand);
     }
     else if (flags & ETF_SHIELD && you.bondage[ET_SHIELD] != -1)
     {
-        desc = make_stringf("Your shield %s is %sbound.\n",
-                            you.hand_name(false).c_str(),
-                            you.bondage[ET_SHIELD] ? "" : "not ");
+        if (you.bondage[ET_SHIELD])
+            desc = make_stringf(_("Your shield %s is bound."), yourhand);
+        else
+            desc = make_stringf(_("Your shield %s is not bound."), yourhand);
     }
+
+    desc += "\n";
 
     if (flags & ETF_ARMOUR && flags & ETF_JEWELS
         && you.bondage[ET_ARMOUR] == you.bondage[ET_JEWELS]
         && you.bondage[ET_ARMOUR] != -1)
     {
-        desc += make_stringf("You are %s bound in armour and magic.\n",
-                             you.bondage[ET_ARMOUR] == 0 ? "not" :
-                             you.bondage[ET_ARMOUR] == 1 ? "partially"
-                                                         : "fully");
+        switch (you.bondage[ET_ARMOUR])
+        {
+        case 0:  desc += _("You are not bound in armour and magic.");       break;
+        case 1:  desc += _("You are partially bound in armour and magic."); break;
+        default: desc += _("You are fully bound in armour and magic.");     break;
+        }
     }
     else
     {
         if (flags & ETF_ARMOUR && you.bondage[ET_ARMOUR] != -1)
-            desc += make_stringf("You are %s bound in armour.\n",
-                                 you.bondage[ET_ARMOUR] == 0 ? "not" :
-                                 you.bondage[ET_ARMOUR] == 1 ? "partially"
-                                                             : "fully");
-
+        {
+            switch (you.bondage[ET_ARMOUR])
+            {
+            case 0:  desc += _("You are not bound in armour.");       break;
+            case 1:  desc += _("You are partially bound in armour."); break;
+            default: desc += _("You are fully bound in armour.");     break;
+            }
+        }
         if (flags & ETF_JEWELS && you.bondage[ET_JEWELS] != -1)
-            desc += make_stringf("You are %s bound in magic.\n",
-                                 you.bondage[ET_JEWELS] == 0 ? "not" :
-                                 you.bondage[ET_JEWELS] == 1 ? "partially"
-                                                             : "fully");
+        {
+            switch (you.bondage[ET_JEWELS])
+            {
+            case 0:  desc += _("You are not bound in magic.");       break;
+            case 1:  desc += _("You are partially bound in magic."); break;
+            default: desc += _("You are fully bound in magic.");     break;
+            }
+        }
     }
+
+    desc += "\n";
 
     if (level)
     {
-        desc += make_stringf("You are %s bound.",
-                             you.bondage_level == 0 ? "not" :
-                             you.bondage_level == 1 ? "slightly" :
-                             you.bondage_level == 2 ? "moderately" :
-                             you.bondage_level == 3 ? "seriously" :
-                             you.bondage_level == 4 ? "fully"
-                                                    : "buggily");
+        switch (you.bondage_level)
+        {
+        case 0: desc += _("You are not bound.");        break;
+        case 1: desc += _("You are slightly bound.");   break;
+        case 2: desc += _("You are moderately bound."); break;
+        case 3: desc += _("You are seriously bound.");  break;
+        case 4: desc += _("You are fully bound.");      break;
+        default: desc += "You are buggily bound.";      break;
+        }
     }
 
     return trim_string(desc);
