@@ -1318,7 +1318,7 @@ static void _mpr(string text, msg_channel_type channel, int param, bool nojoin, 
 
 static string show_prompt(string prompt)
 {
-    mprf(MSGCH_PROMPT, "%s", prompt.c_str());
+    mprf(MSGCH_PROMPT, "%s", gettext(prompt.c_str()));
 
     // FIXME: duplicating mpr code.
     msg_colour_type colour = prepare_message(prompt, MSGCH_PROMPT, 0);
