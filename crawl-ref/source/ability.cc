@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <cmath>
+#include <libintl.h>
 
 #include "externs.h"
 
@@ -1207,9 +1208,12 @@ talent get_talent(ability_type ability, bool check_confused)
     return result;
 }
 
-const char* ability_name(ability_type ability)
+const char* ability_name(ability_type ability, bool translate)
 {
-    return get_ability_def(ability).name;
+    if (translate)
+        return gettext(get_ability_def(ability).name);
+    else
+        return get_ability_def(ability).name;
 }
 
 vector<const char*> get_ability_names()
@@ -1224,7 +1228,7 @@ vector<const char*> get_ability_names()
 // XXX: should this be in describe.cc?
 string get_ability_desc(const ability_type ability)
 {
-    const string& name = ability_name(ability);
+    const string& name = ability_name(ability, false);
 
     string lookup = getLongDescription(name + " ability");
 

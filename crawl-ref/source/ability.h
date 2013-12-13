@@ -78,7 +78,7 @@ struct talent
 const string make_cost_description(ability_type ability);
 const ability_def& get_ability_def(ability_type abil);
 talent get_talent(ability_type ability, bool check_confused);
-const char* ability_name(ability_type ability);
+const char* ability_name(ability_type ability, bool translate = true);
 vector<const char*> get_ability_names();
 string get_ability_desc(const ability_type ability);
 int choose_ability_menu(const vector<talent>& talents);
