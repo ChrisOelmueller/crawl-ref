@@ -655,15 +655,19 @@ const string make_cost_description(ability_type ability)
         }
         else
         {
-            ret += make_stringf(", %d %sMP", abil.mp_cost,
-                abil.flags & ABFLAG_PERMANENT_MP ? "Permanent " : "");
+            if (abil.flags & ABFLAG_PERMANENT_MP)
+                ret += make_stringf(", %d Permanent MP", abil.mp_cost);
+            else
+                ret += make_stringf(", %d MP", abil.mp_cost);
         }
 
     if (abil.hp_cost || ep)
     {
-        ret += make_stringf(", %d %s%s", ep + abil.hp_cost.cost(you.hp_max),
-            abil.flags & ABFLAG_PERMANENT_HP ? "Permanent " : "",
-            you.species == SP_DJINNI ? "EP" : "HP");
+        ////TODO Dj
+        if (abil.flags & ABFLAG_PERMANENT_HP)
+            ret += make_stringf(", %d Permanent HP", ep + abil.hp_cost.cost(you.hp_max));
+        else
+            ret += make_stringf(", %d HP", ep + abil.hp_cost.cost(you.hp_max));
     }
 
     if (abil.zp_cost)
@@ -2090,8 +2094,10 @@ static bool _do_ability(const ability_def& abil)
             if (you.form == TRAN_DRAGON)
                 power += 12;
 
-            snprintf(info, INFO_SIZE, "You breathe a blast of fire%c",
-                     (power < 15) ? '.':'!');
+            if (power < 15)
+                snprintf(info, INFO_SIZE, "You breathe a blast of fire.");
+            else
+                snprintf(info, INFO_SIZE, "You breathe a blast of fire!");
 
             if (!zapping(ZAP_BREATHE_FIRE, power, beam, true, info))
                 return false;
@@ -2428,9 +2434,10 @@ static bool _do_ability(const ability_def& abil)
         break;
 
     case ABIL_OKAWARU_HEROISM:
-        mprf(MSGCH_DURATION, you.duration[DUR_HEROISM]
-             ? "You feel more confident with your borrowed prowess."
-             : "You gain the combat prowess of a mighty hero.");
+        if (you.duration[DUR_HEROISM])
+            mprf(MSGCH_DURATION, you.duration[DUR_HEROISM], "You feel more confident with your borrowed prowess.");
+        else
+            mprf(MSGCH_DURATION, you.duration[DUR_HEROISM], "You gain the combat prowess of a mighty hero.");
 
         you.increase_duration(DUR_HEROISM,
             35 + random2(you.skill(SK_INVOCATIONS, 8)), 80);
@@ -2447,9 +2454,10 @@ static bool _do_ability(const ability_def& abil)
             break;
         }
 
-        mprf(MSGCH_DURATION, you.duration[DUR_FINESSE]
-             ? "Your hands get new energy."
-             : "You can now deal lightning-fast blows.");
+        if (you.duration[DUR_FINESSE])
+            mprf(MSGCH_DURATION, you.duration[DUR_FINESSE], "Your hands get new energy.");
+        else
+            mprf(MSGCH_DURATION, you.duration[DUR_FINESSE], "You can now deal lightning-fast blows.");
 
         you.increase_duration(DUR_FINESSE,
             40 + random2(you.skill(SK_INVOCATIONS, 8)), 80);
