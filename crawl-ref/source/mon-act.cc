@@ -2962,22 +2962,20 @@ static void _mons_open_door(monster* mons, const coord_def &pos)
     {
         viewwindow();
 
-        string open_str = "opens the ";
+        string open_str;
         open_str += adj;
         open_str += noun;
-        open_str += ".";
-
         // Should this be conditionalized on you.can_see(mons?)
         mons->seen_context = (all_door.size() <= 2) ? SC_DOOR : SC_GATE;
 
         if (!you.can_see(mons))
         {
-            mprf("Something unseen %s", open_str.c_str());
+            mprf("Something unseen opens the %s.", open_str.c_str());
             interrupt_activity(AI_FORCE_INTERRUPT);
         }
         else if (!you_are_delayed())
         {
-            mprf("%s %s", mons->name(DESC_A).c_str(),
+            mprf("%s opens the %s.", mons->name(DESC_A).c_str(),
                  open_str.c_str());
         }
     }

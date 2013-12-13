@@ -2503,51 +2503,51 @@ static void _decrement_durations()
             {
             case SPWPN_VORPAL:
                 if (get_vorpal_type(weapon) == DVORP_SLICING)
-                    msg = " seems blunter.";
+                    msg = "%s seems blunter.";
                 else
-                    msg = " feels lighter.";
+                    msg = "%s feels lighter.";
                 break;
             case SPWPN_FLAME:
             case SPWPN_FLAMING:
-                msg = " goes out.";
+                msg = "%s goes out.";
                 break;
             case SPWPN_FREEZING:
-                msg = " stops glowing.";
+                msg = "%s stops glowing.";
                 break;
             case SPWPN_FROST:
                 msg = "'s frost melts away.";
                 break;
             case SPWPN_VENOM:
-                msg = " stops dripping with poison.";
+                msg = "%s stops dripping with poison.";
                 break;
             case SPWPN_DRAINING:
-                msg = " stops crackling.";
+                msg = "%s stops crackling.";
                 break;
             case SPWPN_DISTORTION:
-                msg = " seems straighter.";
+                msg = "%s seems straighter.";
                 break;
             case SPWPN_PAIN:
-                msg = " seems less pained.";
+                msg = "%s seems less pained.";
                 break;
             case SPWPN_CHAOS:
-                msg = " seems more stable.";
+                msg = "%s seems more stable.";
                 break;
             case SPWPN_ELECTROCUTION:
-                msg = " stops emitting sparks.";
+                msg = "%s stops emitting sparks.";
                 break;
             case SPWPN_HOLY_WRATH:
                 msg = "'s light goes out.";
                 break;
             case SPWPN_ANTIMAGIC:
-                msg = " stops repelling magic.";
+                msg = "%s stops repelling magic.";
                 calc_mp();
                 break;
             default:
-                msg = " seems inexplicably less special.";
+                msg = "%s seems inexplicably less special.";
                 break;
             }
 
-            mprf(MSGCH_DURATION, "%s%s", weapon.name(DESC_YOUR).c_str(), msg);
+            mprf(MSGCH_DURATION, msg, weapon.name(DESC_YOUR).c_str());
             you.wield_change = true;
         }
     }

@@ -8132,9 +8132,8 @@ static string _constriction_description()
         if (!cinfo.empty())
             cinfo += "\n";
 
-        cinfo += "You are constricting ";
-        cinfo += comma_separated_line(c_name.begin(), c_name.end());
-        cinfo += ".";
+        cinfo += make_stringf("You are constricting %s.",
+                    comma_separated_line(c_name.begin(), c_name.end()).c_str());
     }
 
     return cinfo;

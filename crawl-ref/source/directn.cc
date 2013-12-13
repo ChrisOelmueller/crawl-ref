@@ -353,15 +353,24 @@ void direction_chooser::print_top_prompt() const
 
 void direction_chooser::print_key_hints() const
 {
-    string prompt = "Press: ? - help";
-
+    string prompt;
     if (just_looking)
     {
-        if (you.see_cell(target()))
-            prompt += ", v - describe";
-        prompt += ", . - travel";
-        if (in_bounds(target()) && env.map_knowledge(target()).item())
-            prompt += ", g - get item";
+        const bool get_item = in_bounds(target()) && env.map_knowledge(target()).item();
+        if (get_item)
+        {
+            if (you.see_cell(target()))
+                prompt = "Press: ? - help, v - describe, . - travel, g - get item";
+            else
+                prompt = "Press: ? - help, . - travel, g - get item";
+        }
+        else
+        {
+            if (you.see_cell(target()))
+                prompt = "Press: ? - help, v - describe, . - travel";
+            else
+                prompt = "Press: ? - help, . - travel";
+        }
     }
     else
     {
@@ -370,16 +379,19 @@ void direction_chooser::print_key_hints() const
         {
         case DIR_NONE:
             if (!target_unshifted)
-                prompt += ", Shift-Dir - straight line";
+                prompt = "Press: ? - help, Shift-Dir - straight line";
+            else
+                prompt = "Press: ? - help";
             prompt += hint_string;
             break;
         case DIR_TARGET:
         case DIR_JUMP:
-            prompt += ", Dir - move target cursor";
+            prompt = "Press: ? - help, Dir - move target cursor";
             prompt += hint_string;
             break;
         case DIR_DIR:
         case DIR_TARGET_OBJECT:
+            prompt = "Press: ? - help";
             break;
         }
     }

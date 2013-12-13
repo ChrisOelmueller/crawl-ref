@@ -1233,19 +1233,19 @@ static bool _safe_to_remove_or_wear(const item_def &item, bool remove, bool quie
     if (remove)
     {
         if (item.base_type == OBJ_WEAPONS)
-            verb = "Unwield";
+            verb = "Unwielding";
         else
-            verb = "Remov"; // -ing, not a typo
+            verb = "Removing";
     }
     else
     {
         if (item.base_type == OBJ_WEAPONS)
-            verb = "Wield";
+            verb = "Wielding";
         else
-            verb = "Wear";
+            verb = "Wearing";
     }
 
-    string prompt = make_stringf("%sing this item will reduce your %s to zero "
+    string prompt = make_stringf("%s this item will reduce your %s to zero "
                                  "or below. Continue?", verb.c_str(),
                                  stat_desc(red_stat, SD_NAME));
     if (!yesno(prompt.c_str(), true, 'n', true, false))
@@ -1302,9 +1302,10 @@ bool safe_to_remove(const item_def &item, bool quiet)
             return false;
         else
         {
-            string fname = (feat == DNGN_LAVA ? "lava" : "deep water");
-            string prompt = "Really remove this item over " + fname + "?";
-            return yesno(prompt.c_str(), false, 'n');
+            if (feat == DNGN_LAVA)
+                return yesno("Really remove this item over lava?", false, 'n');
+            else
+                return yesno("Really remove this item over deep water?", false, 'n');
         }
     }
 

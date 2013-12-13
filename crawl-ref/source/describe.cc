@@ -571,37 +571,37 @@ static string _describe_demon(const string& name, flight_type fly)
 
     const char* body_descs[] =
     {
-        "huge, barrel-shaped ",
-        "wispy, insubstantial ",
-        "spindly ",
-        "skeletal ",
-        "horribly deformed ",
-        "spiny ",
-        "waif-like ",
-        "scaly ",
-        "sickeningly deformed ",
-        "bruised and bleeding ",
-        "sickly ",
-        "mass of writhing tentacles for a ",
-        "mass of ropey tendrils for a ",
-        "tree trunk-like ",
-        "hairy ",
-        "furry ",
-        "fuzzy ",
-        "obese ",
-        "fat ",
-        "slimy ",
-        "wrinkled ",
-        "metallic ",
-        "glassy ",
-        "crystalline ",
-        "muscular ",
-        "icky ",
-        "swollen ",
-        "lumpy ",
-        "armoured ",
-        "carapaced ",
-        "slender ",
+        "huge, barrel-shaped body",
+        "wispy, insubstantial body",
+        "spindly body",
+        "skeletal body",
+        "horribly deformed body",
+        "spiny body",
+        "waif-like body",
+        "scaly body",
+        "sickeningly deformed body",
+        "bruised and bleeding body",
+        "sickly body",
+        "mass of writhing tentacles for a body",
+        "mass of ropey tendrils for a body",
+        "tree trunk-like body",
+        "hairy body",
+        "furry body",
+        "fuzzy body",
+        "obese body",
+        "fat body",
+        "slimy body",
+        "wrinkled body",
+        "metallic body",
+        "glassy body",
+        "crystalline body",
+        "muscular body",
+        "icky body",
+        "swollen body",
+        "lumpy body",
+        "armoured body",
+        "carapaced body",
+        "slender body",
     };
 
     const char* wing_names[] =
@@ -658,31 +658,31 @@ static string _describe_demon(const string& name, flight_type fly)
 
     const char* misc_descs[] =
     {
-        " It seethes with hatred of the living.",
-        " Tiny orange flames dance around it.",
-        " Tiny purple flames dance around it.",
-        " It is surrounded by a weird haze.",
-        " It glows with a malevolent light.",
-        " It looks incredibly angry.",
-        " It oozes with slime.",
-        " It dribbles constantly.",
-        " Mould grows all over it.",
-        " It looks diseased.",
-        " It looks as frightened of you as you are of it.",
-        " It moves in a series of hideous convulsions.",
-        " It moves with an unearthly grace.",
-        " It hungers for your soul!",
-        " It leaves a glistening oily trail.",
-        " It shimmers before your eyes.",
-        " It is surrounded by a brilliant glow.",
-        " It radiates an aura of extreme power.",
+        _(" It seethes with hatred of the living."),
+        _(" Tiny orange flames dance around it."),
+        _(" Tiny purple flames dance around it."),
+        _(" It is surrounded by a weird haze."),
+        _(" It glows with a malevolent light."),
+        _(" It looks incredibly angry."),
+        _(" It oozes with slime."),
+        _(" It dribbles constantly."),
+        _(" Mould grows all over it."),
+        _(" It looks diseased."),
+        _(" It looks as frightened of you as you are of it."),
+        _(" It moves in a series of hideous convulsions."),
+        _(" It moves with an unearthly grace."),
+        _(" It hungers for your soul!"),
+        _(" It leaves a glistening oily trail."),
+        _(" It shimmers before your eyes."),
+        _(" It is surrounded by a brilliant glow."),
+        _(" It radiates an aura of extreme power."),
     };
 
     ostringstream description;
     description << "A powerful demon, " << name << " has ";
 
     const string a_body = HRANDOM_ELEMENT(body_descs, 1);
-    description << article_a(a_body) << "body";
+    description << article_a(a_body);
 
     switch (fly)
     {
@@ -3307,8 +3307,9 @@ static string _monster_stat_description(const monster_info& mi)
 
     if (mons_is_statue(mi.type, true))
     {
-        result << uppercase_first(pronoun) << " is very brittle "
-               << "and susceptible to disintegration.\n";
+        result << uppercase_first(pronoun)
+               << " is very brittle and susceptible to disintegration."
+               << "\n";
     }
 
     // Is monster susceptible to anything? (On a new line.)
