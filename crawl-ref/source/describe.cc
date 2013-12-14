@@ -1256,91 +1256,91 @@ static string _describe_armour(const item_def &item, bool verbose)
         {
         case SPARM_RUNNING:
             if (item.sub_type == ARM_NAGA_BARDING)
-                description += "It allows its wearer to slither at a great speed.";
+                description += _("It allows its wearer to slither at a great speed.");
             else
-                description += "It allows its wearer to run at a great speed.";
+                description += _("It allows its wearer to run at a great speed.");
             break;
         case SPARM_FIRE_RESISTANCE:
-            description += "It protects its wearer from heat and fire.";
+            description += _("It protects its wearer from heat and fire.");
             break;
         case SPARM_COLD_RESISTANCE:
-            description += "It protects its wearer from cold.";
+            description += _("It protects its wearer from cold.");
             break;
         case SPARM_POISON_RESISTANCE:
-            description += "It protects its wearer from poison.";
+            description += _("It protects its wearer from poison.");
             break;
         case SPARM_SEE_INVISIBLE:
-            description += "It allows its wearer to see invisible things.";
+            description += _("It allows its wearer to see invisible things.");
             break;
         case SPARM_DARKNESS:
-            description += "When activated it hides its wearer from "
+            description += _("When activated it hides its wearer from "
                 "the sight of others, but also increases "
-                "their metabolic rate by a large amount.";
+                "their metabolic rate by a large amount.");
             break;
         case SPARM_STRENGTH:
-            description += "It increases the physical power of its wearer (+3 to strength).";
+            description += _("It increases the physical power of its wearer (+3 to strength).");
             break;
         case SPARM_DEXTERITY:
-            description += "It increases the dexterity of its wearer (+3 to dexterity).";
+            description += _("It increases the dexterity of its wearer (+3 to dexterity).");
             break;
         case SPARM_INTELLIGENCE:
-            description += "It makes you more clever (+3 to intelligence).";
+            description += _("It makes you more clever (+3 to intelligence).");
             break;
         case SPARM_PONDEROUSNESS:
-            description += "It is very cumbersome, thus slowing your movement.";
+            description += _("It is very cumbersome, thus slowing your movement.");
             break;
         case SPARM_FLYING:
-            description += "It can be activated to allow its wearer to "
-                "fly indefinitely.";
+            description += _("It can be activated to allow its wearer to "
+                "fly indefinitely.");
             break;
         case SPARM_JUMPING:
-            description += "It can be activated to allow its wearer to "
-                "perform a jumping attack.";
+            description += _("It can be activated to allow its wearer to "
+                "perform a jumping attack.");
             break;
         case SPARM_MAGIC_RESISTANCE:
-            description += "It increases its wearer's resistance "
-                "to enchantments.";
+            description += _("It increases its wearer's resistance "
+                "to enchantments.");
             break;
         case SPARM_PROTECTION:
-            description += "It protects its wearer from harm (+3 to AC).";
+            description += _("It protects its wearer from harm (+3 to AC).");
             break;
         case SPARM_STEALTH:
-            description += "It enhances the stealth of its wearer.";
+            description += _("It enhances the stealth of its wearer.");
             break;
         case SPARM_RESISTANCE:
-            description += "It protects its wearer from the effects "
-                "of both cold and heat.";
+            description += _("It protects its wearer from the effects "
+                "of both cold and heat.");
             break;
 
         // These two are only for robes.
         case SPARM_POSITIVE_ENERGY:
-            description += "It protects its wearer from "
-                "the effects of negative energy.";
+            description += _("It protects its wearer from "
+                "the effects of negative energy.");
             break;
         case SPARM_ARCHMAGI:
-            description += "It increases the power of its wearer's "
-                "magical spells.";
+            description += _("It increases the power of its wearer's "
+                "magical spells.");
             break;
 
         case SPARM_PRESERVATION:
-            description += "It protects its wearer's possessions "
-                "from damage and destruction.";
+            description += _("It protects its wearer's possessions "
+                "from damage and destruction.");
             break;
 
         case SPARM_REFLECTION:
-            description += "It reflects blocked things back in the "
-                "direction they came from.";
+            description += _("It reflects blocked things back in the "
+                "direction they came from.");
             break;
 
         case SPARM_SPIRIT_SHIELD:
-            description += "It shields its wearer from harm at the cost "
-                "of magical power.";
+            description += _("It shields its wearer from harm at the cost "
+                "of magical power.");
             break;
 
         // This is only for gloves.
         case SPARM_ARCHERY:
-            description += "These improve your skills with ranged weaponry "
-                "but interfere slightly with melee combat.";
+            description += _("These improve your skills with ranged weaponry "
+                "but interfere slightly with melee combat.");
             break;
         }
     }
@@ -1356,7 +1356,10 @@ static string _describe_armour(const item_def &item, bool verbose)
 
         // Can't happen, right? (XXX)
         if (!item_ident(item, ISFLAG_KNOW_PROPERTIES) && item_type_known(item))
-            description += "\nThis armour may have some hidden properties.";
+        {
+            description += "\n";
+            description += _("This armour may have some hidden properties.");
+        }
     }
     else if (get_equip_race(item) != ISFLAG_NO_RACE)
     {
@@ -1366,41 +1369,52 @@ static string _describe_armour(const item_def &item, bool verbose)
         iflags_t race = get_equip_race(item);
 
         if (race == ISFLAG_DWARVEN)
-            description += "\nIt is well-crafted and durable.";
+        {
+            description += "\n";
+            description += _("It is well-crafted and durable.");
+        }
         else if (race == ISFLAG_ELVEN)
         {
-            if (get_item_slot(item) == EQ_BODY_ARMOUR)
-            description += "\nIt is well-crafted and unobstructive";
-            else
-                description += "\nIt is well-crafted and lightweight";
+            description += "\n";
+
             if (item.sub_type == ARM_CLOAK || item.sub_type == ARM_BOOTS)
-                description += ", and helps its wearer avoid being noticed";
-            description += ".";
+            {
+                if (get_item_slot(item) == EQ_BODY_ARMOUR)
+                    description += _("It is well-crafted and unobstructive, and helps its wearer avoid being noticed.");
+                else
+                    description += _("It is well-crafted and lightweight, and helps its wearer avoid being noticed.");
+            }
+            else
+            {
+                if (get_item_slot(item) == EQ_BODY_ARMOUR)
+                    description += _("It is well-crafted and unobstructive.");
+                else
+                    description += _("It is well-crafted and lightweight.");
+            }
         }
 
-        description += "\nIt fits ";
-        description += (race == ISFLAG_DWARVEN) ? "dwarves" :
-                       (race == ISFLAG_ELVEN)   ? "elves"
-                                                : "orcs";
-        description += " well.";
+        description += "\n";
+        if (race == ISFLAG_DWARVEN)
+            description += _("It fits dwarves well.");
+        else if (race == ISFLAG_ELVEN)
+            description += _("It fits elves well.");
+        else
+            description += _("It fits orcs well.");
     }
 
     if (!is_artefact(item))
     {
         const int max_ench = armour_max_enchant(item);
+        description += "\n";
         if (armour_is_hide(item))
         {
-            description += "\nEnchanting it will turn it into a suit of "
-                           "magical armour.";
+            description += _("Enchanting it will turn it into a suit of "
+                             "magical armour.");
         }
         else if (item.plus < max_ench || !item_ident(item, ISFLAG_KNOW_PLUSES))
-        {
-            description += "\nIt can be maximally enchanted to +";
-            _append_value(description, max_ench, false);
-            description += ".";
-        }
+            description += make_stringf(_("It can be maximally enchanted to %+d."), max_ench);
         else
-            description += "\nIt cannot be enchanted further.";
+            description += _("It cannot be enchanted further.");
     }
 
     const string rcorr = _corrosion_resistance_string(item);
