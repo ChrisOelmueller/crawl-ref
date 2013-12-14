@@ -273,7 +273,7 @@ static vector<string> _randart_propnames(const item_def& item,
              || is_artefact(item)
                 && artefact_known_wpn_property(item, ARTP_BRAND))
     {
-        string ego;
+        string ego = "";
         if (item.base_type == OBJ_WEAPONS)
             ego = weapon_brand_name(item, true);
         else if (item.base_type == OBJ_ARMOUR)
@@ -405,7 +405,7 @@ struct property_descriptor
 
 static string _randart_descrip(const item_def &item)
 {
-    string description;
+    string description = "";
 
     artefact_properties_t  proprt;
     artefact_known_props_t known;
@@ -792,7 +792,7 @@ static string _corrosion_resistance_string(const item_def &item)
 
 static string _handedness_string(const item_def &item)
 {
-    string description;
+    string description = "";
 
     switch (you.hands_reqd(item))
     {
@@ -820,7 +820,7 @@ static string _handedness_string(const item_def &item)
 //---------------------------------------------------------------
 static string _describe_weapon(const item_def &item, bool verbose)
 {
-    string description;
+    string description = "";
 
     description.reserve(200);
 
@@ -1088,7 +1088,7 @@ static string _describe_weapon(const item_def &item, bool verbose)
 //---------------------------------------------------------------
 static string _describe_ammo(const item_def &item)
 {
-    string description;
+    string description = "";
 
     description.reserve(64);
 
@@ -1234,7 +1234,7 @@ void append_missile_info(string &description)
 //---------------------------------------------------------------
 static string _describe_armour(const item_def &item, bool verbose)
 {
-    string description;
+    string description = "";
 
     description.reserve(200);
 
@@ -1434,7 +1434,7 @@ static string _describe_armour(const item_def &item, bool verbose)
 //---------------------------------------------------------------
 static string _describe_jewellery(const item_def &item, bool verbose)
 {
-    string description;
+    string description = "";
 
     description.reserve(200);
 
@@ -1540,7 +1540,7 @@ static bool _check_buggy_deck(const item_def &deck, string &desc)
 
 static string _describe_deck(const item_def &item)
 {
-    string description;
+    string description = "";
 
     description.reserve(100);
 
@@ -1814,7 +1814,7 @@ string get_item_description(const item_def &item, bool verbose,
     }
 
     bool need_extra_line = true;
-    string desc;
+    string desc = "";
     switch (item.base_type)
     {
     // Weapons, armour, jewellery, books might be artefacts.
@@ -2957,7 +2957,7 @@ static string _describe_draconian_colour(int species)
 
 static string _describe_draconian(const monster_info& mi)
 {
-    string description;
+    string description = "";
     const int subsp = mi.draco_subspecies();
 
     switch (subsp)
@@ -4144,7 +4144,7 @@ static int _piety_level(int piety)
 
 string god_title(god_type which_god, species_type which_species, int piety)
 {
-    string title;
+    string title = "";
     if (player_under_penance(which_god))
         title = divine_title[which_god][0];
     else
@@ -4184,7 +4184,7 @@ static string _describe_ash_skill_boost()
         else
             desc << bondage_parts[i];
 
-        string skills;
+        string skills = "";
         map<skill_type, int8_t> boosted_skills = ash_get_boosted_skills(eq_type(i));
         const int8_t bonus = boosted_skills.begin()->second;
         map<skill_type, int8_t>::iterator it = boosted_skills.begin();
@@ -4242,7 +4242,7 @@ static void _detailed_god_description(god_type which_god)
     textcolor(LIGHTGREY);
     cprintf("\n");
 
-    string broken;
+    string broken = "";
     if (which_god != GOD_NEMELEX_XOBEH)
     {
         broken = get_god_powers(which_god);
