@@ -1552,7 +1552,7 @@ static string _describe_deck(const item_def &item)
     const vector<card_type> drawn_cards = get_drawn_cards(item);
     if (!drawn_cards.empty())
     {
-        description += "Drawn card(s): ";
+        description += _("Drawn card(s): ");
         for (unsigned int i = 0; i < drawn_cards.size(); ++i)
         {
             if (i != 0)
@@ -1566,7 +1566,7 @@ static string _describe_deck(const item_def &item)
     int last_known_card = -1;
     if (top_card_is_known(item))
     {
-        description += "Next card(s): ";
+        description += _("Next card(s): ");
         for (int i = 0; i < num_cards; ++i)
         {
             uint8_t flags;
@@ -1598,7 +1598,7 @@ static string _describe_deck(const item_def &item)
         sort(marked_cards.begin(), marked_cards.end(),
                   _compare_card_names);
 
-        description += "Marked card(s): ";
+        description += _("Marked card(s): ");
         for (unsigned int i = 0; i < marked_cards.size(); ++i)
         {
             if (i != 0)
@@ -1624,7 +1624,7 @@ static string _describe_deck(const item_def &item)
         sort(seen_cards.begin(), seen_cards.end(),
                   _compare_card_names);
 
-        description += "Seen card(s): ";
+        description += _("Seen card(s): ");
         for (unsigned int i = 0; i < seen_cards.size(); ++i)
         {
             if (i != 0)
