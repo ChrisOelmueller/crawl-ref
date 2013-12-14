@@ -413,38 +413,38 @@ static string _randart_descrip(const item_def &item)
 
     const property_descriptor propdescs[] =
     {
-        { ARTP_AC, "It affects your AC (%d).", false },
-        { ARTP_EVASION, "It affects your evasion (%d).", false},
-        { ARTP_STRENGTH, "It affects your strength (%d).", false},
-        { ARTP_INTELLIGENCE, "It affects your intelligence (%d).", false},
-        { ARTP_DEXTERITY, "It affects your dexterity (%d).", false},
-        { ARTP_ACCURACY, "It affects your accuracy (%d).", false},
-        { ARTP_DAMAGE, "It affects your damage-dealing abilities (%d).", false},
+        { ARTP_AC, no_("It affects your AC (%d)."), false },
+        { ARTP_EVASION, no_("It affects your evasion (%d)."), false},
+        { ARTP_STRENGTH, no_("It affects your strength (%d)."), false},
+        { ARTP_INTELLIGENCE, no_("It affects your intelligence (%d)."), false},
+        { ARTP_DEXTERITY, no_("It affects your dexterity (%d)."), false},
+        { ARTP_ACCURACY, no_("It affects your accuracy (%d)."), false},
+        { ARTP_DAMAGE, no_("It affects your damage-dealing abilities (%d)."), false},
         { ARTP_FIRE, "fire", true},
         { ARTP_COLD, "cold", true},
-        { ARTP_ELECTRICITY, "It insulates you from electricity.", false},
-        { ARTP_POISON, "It protects you from poison.", false},
+        { ARTP_ELECTRICITY, no_("It insulates you from electricity."), false},
+        { ARTP_POISON, no_("It protects you from poison."), false},
         { ARTP_NEGATIVE_ENERGY, "negative energy", true},
-        { ARTP_MAGIC, "It affects your resistance to hostile enchantments.", false},
-        { ARTP_HP, "It affects your health (%d).", false},
-        { ARTP_MAGICAL_POWER, "It affects your magic capacity (%d).", false},
-        { ARTP_EYESIGHT, "It enhances your eyesight.", false},
-        { ARTP_INVISIBLE, "It lets you turn invisible.", false},
-        { ARTP_FLY, "It lets you fly.", false},
-        { ARTP_BLINK, "It lets you blink.", false},
-        { ARTP_BERSERK, "It lets you go berserk.", false},
-        { ARTP_NOISES, "It makes noises.", false},
-        { ARTP_PREVENT_SPELLCASTING, "It prevents spellcasting.", false},
-        { ARTP_CAUSE_TELEPORTATION, "It causes teleportation.", false},
-        { ARTP_PREVENT_TELEPORTATION, "It prevents most forms of teleportation.",
+        { ARTP_MAGIC, no_("It affects your resistance to hostile enchantments."), false},
+        { ARTP_HP, no_("It affects your health (%d)."), false},
+        { ARTP_MAGICAL_POWER, no_("It affects your magic capacity (%d)."), false},
+        { ARTP_EYESIGHT, no_("It enhances your eyesight."), false},
+        { ARTP_INVISIBLE, no_("It lets you turn invisible."), false},
+        { ARTP_FLY, no_("It lets you fly."), false},
+        { ARTP_BLINK, no_("It lets you blink."), false},
+        { ARTP_BERSERK, no_("It lets you go berserk."), false},
+        { ARTP_NOISES, no_("It makes noises."), false},
+        { ARTP_PREVENT_SPELLCASTING, no_("It prevents spellcasting."), false},
+        { ARTP_CAUSE_TELEPORTATION, no_("It causes teleportation."), false},
+        { ARTP_PREVENT_TELEPORTATION, no_("It prevents most forms of teleportation."),
           false},
-        { ARTP_ANGRY,  "It makes you angry.", false},
-        { ARTP_CURSED, "It may recurse itself.", false},
-        { ARTP_CLARITY, "It protects you against confusion.", false},
-        { ARTP_MUTAGENIC, "It causes magical contamination when unequipped.", false},
-        { ARTP_RMSL, "It protects you from missiles.", false},
-        { ARTP_FOG, "It can be evoked to emit clouds of fog.", false},
-        { ARTP_REGENERATION, "It increases your rate of regeneration.", false},
+        { ARTP_ANGRY,  no_("It makes you angry."), false},
+        { ARTP_CURSED, no_("It may recurse itself."), false},
+        { ARTP_CLARITY, no_("It protects you against confusion."), false},
+        { ARTP_MUTAGENIC, no_("It causes magical contamination when unequipped."), false},
+        { ARTP_RMSL, no_("It protects you from missiles."), false},
+        { ARTP_FOG, no_("It can be evoked to emit clouds of fog."), false},
+        { ARTP_REGENERATION, no_("It increases your rate of regeneration."), false},
     };
 
     for (unsigned i = 0; i < ARRAYSZ(propdescs); ++i)
@@ -458,30 +458,34 @@ static string _randart_descrip(const item_def &item)
                 continue;
             }
 
-            string sdesc = propdescs[i].desc;
-
-            // FIXME Not the nicest hack.
-            char buf[80];
-            snprintf(buf, sizeof buf, "%+d", proprt[propdescs[i].property]);
-            sdesc = replace_all(sdesc, "%d", buf);
-
+            string sdesc = "";
             if (propdescs[i].is_graded_resist)
             {
+                sdesc = propdescs[i].desc;
                 int idx = proprt[propdescs[i].property] + 3;
                 idx = min(idx, 6);
                 idx = max(idx, 0);
 
+                ////TODO Split these into only feasible, and one string per resist.
                 const char* prefixes[] =
                 {
-                    "It makes you extremely vulnerable to ",
-                    "It makes you very vulnerable to ",
-                    "It makes you vulnerable to ",
+                    "It makes you extremely vulnerable to %s.",
+                    _("It makes you very vulnerable to %s."),
+                    _("It makes you vulnerable to %s."),
                     "Buggy descriptor!",
-                    "It protects you from ",
-                    "It greatly protects you from ",
-                    "It renders you almost immune to "
+                    _("It protects you from %s."),
+                    _("It greatly protects you from %s."),
+                    "It renders you almost immune to %s.",
                 };
-                sdesc = prefixes[idx] + sdesc + '.';
+                sdesc = make_stringf(prefixes[idx], sdesc.c_str());
+            }
+            else
+            {
+                sdesc = gettext(propdescs[i].desc);
+                // FIXME Not the nicest hack.
+                char buf[80];
+                snprintf(buf, sizeof buf, "%+d", proprt[propdescs[i].property]);
+                sdesc = replace_all(sdesc, "%d", buf);
             }
 
             description += '\n';
@@ -492,23 +496,32 @@ static string _randart_descrip(const item_def &item)
     // Some special cases which don't fit into the above.
     if (known_proprt(ARTP_METABOLISM))
     {
+        description += "\n";
         if (proprt[ARTP_METABOLISM] >= 3)
-            description += "\nIt greatly speeds your metabolism.";
+            description += _("It greatly speeds your metabolism.");
         else if (proprt[ARTP_METABOLISM] >= 1)
-            description += "\nIt speeds your metabolism. ";
+            description += _("It speeds your metabolism.");
         if (proprt[ARTP_METABOLISM] <= -3)
-            description += "\nIt greatly slows your metabolism.";
+            description += _("It greatly slows your metabolism.");
         else if (proprt[ARTP_METABOLISM] <= -1)
-            description += "\nIt slows your metabolism. ";
+            description += _("It slows your metabolism.");
     }
 
     if (known_proprt(ARTP_STEALTH))
     {
         const int stval = proprt[ARTP_STEALTH];
-        char buf[80];
-        snprintf(buf, sizeof buf, "\nIt makes you %s%s stealthy.",
-                 (stval < -20 || stval > 20) ? "much " : "",
-                 (stval < 0) ? "less" : "more");
+        description += "\n";
+
+        string buf = "";
+        if (stval > 20)
+            buf = _("It makes you much more stealthy.");
+        else if (stval >= 0)
+            buf = _("It makes you more stealthy.");
+        else if (stval < -20)
+            buf = _("It makes you much less stealthy.");
+        else
+            buf = _("It makes you less stealthy.");
+
         description += buf;
     }
 
