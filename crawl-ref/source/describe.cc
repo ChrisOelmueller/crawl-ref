@@ -1448,52 +1448,30 @@ static string _describe_jewellery(const item_def &item, bool verbose)
             || item.sub_type == RING_SLAYING && item.plus2 != 0
             || is_artefact(item))
         {
+            description += "\n";
             switch (item.sub_type)
             {
             case RING_PROTECTION:
-                description += "\nIt affects your AC (";
-                _append_value(description, item.plus, true);
-                description += ").";
+                description += make_stringf(_("It affects your AC (%+d)."), item.plus);
                 break;
-
             case RING_EVASION:
-                description += "\nIt affects your evasion (";
-                _append_value(description, item.plus, true);
-                description += ").";
+                description += make_stringf(_("It affects your evasion (%+d)."), item.plus);
                 break;
-
             case RING_STRENGTH:
-                description += "\nIt affects your strength (";
-                _append_value(description, item.plus, true);
-                description += ").";
+                description += make_stringf(_("It affects your strength (%+d)."), item.plus);
                 break;
-
             case RING_INTELLIGENCE:
-                description += "\nIt affects your intelligence (";
-                _append_value(description, item.plus, true);
-                description += ").";
+                description += make_stringf(_("It affects your intelligence (%+d)."), item.plus);
                 break;
-
             case RING_DEXTERITY:
-                description += "\nIt affects your dexterity (";
-                _append_value(description, item.plus, true);
-                description += ").";
+                description += make_stringf(_("It affects your dexterity (%+d)."), item.plus);
                 break;
-
             case RING_SLAYING:
                 if (item.plus != 0)
-                {
-                    description += "\nIt affects your accuracy (";
-                    _append_value(description, item.plus, true);
-                    description += ").";
-                }
+                    description += make_stringf(_("It affects your accuracy (%+d)."), item.plus);
 
                 if (item.plus2 != 0)
-                {
-                    description += "\nIt affects your damage-dealing abilities (";
-                    _append_value(description, item.plus2, true);
-                    description += ").";
-                }
+                    description += make_stringf(_("It affects your damage-dealing abilities (%+d)."), item.plus);
 
                 if (item.plus == 0 && item.plus2 == 0)
                 {
@@ -1518,9 +1496,11 @@ static string _describe_jewellery(const item_def &item, bool verbose)
         if (!item_ident(item, ISFLAG_KNOW_PROPERTIES) ||
             !item_ident(item, ISFLAG_KNOW_TYPE))
         {
-            description += "\nThis ";
-            description += (jewellery_is_amulet(item) ? "amulet" : "ring");
-            description += " may have hidden properties.";
+            description += "\n";
+            if (jewellery_is_amulet(item))
+                description += _("This amulet may have hidden properties.");
+            else
+                description += _("This ring may have hidden properties.");
         }
     }
 
