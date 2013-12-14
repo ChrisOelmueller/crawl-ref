@@ -744,19 +744,20 @@ static string _describe_demon(const string& name, flight_type fly)
 
 void append_weapon_stats(string &description, const item_def &item)
 {
-    description += "\nBase accuracy: ";
+    description += "\n";
+    description += _("Base accuracy: ");
     _append_value(description, property(item, PWPN_HIT), true);
     description += "  ";
 
-    description += "Base damage: ";
+    description += _("Base damage: ");
     _append_value(description, property(item, PWPN_DAMAGE), false);
     description += "  ";
 
-    description += "Base attack delay: ";
+    description += _("Base attack delay: ");
     _append_value(description, property(item, PWPN_SPEED) / 10.0f, false);
     description += "  ";
 
-    description += "Minimum delay: ";
+    description += _("Minimum delay: ");
     _append_value(description, weapon_min_delay(item) / 10.0f, false);
 }
 
@@ -1092,94 +1093,65 @@ static string _describe_ammo(const item_def &item)
     {
         if (item.plus > 1 || item.plus < 0)
         {
-            string how;
+            description += "\n\n";
 
             if (item.plus > 1)
-                how = "brand-new";
+                description += _("It looks brand-new.");
             else if (item.plus < 0)
             {
                 if (item.plus > -3)
-                    how = "a little worn";
+                    description += _("It looks a little worn.");
                 else if (item.plus > -5)
-                    how = "slightly damaged";
+                    description += _("It looks slightly damaged.");
                 else if (item.plus > -7)
-                    how = "damaged";
+                    description += _("It looks damaged.");
                 else
-                    how = "heavily frayed";
+                    description += _("It looks heavily frayed.");
             }
-
-            description += "\n\nIt looks ";
-            description += how;
-            description += ".";
         }
     }
 
-    const bool can_launch = has_launcher(item);
-    const bool can_throw  = is_throwable(&you, item, true);
     bool always_destroyed = false;
 
     if (item.special && item_type_known(item))
     {
         description += "\n\n";
-        string bolt_name;
-
-        string threw_or_fired;
-        if (can_throw)
-        {
-            threw_or_fired += "threw";
-            if (can_launch)
-                threw_or_fired += " or ";
-        }
-        if (can_launch)
-            threw_or_fired += "fired";
+        string bolt_name = "";
 
         switch (item.special)
         {
         case SPMSL_FLAME:
-            description += "It turns into a bolt of flame.";
+            description += _("It turns into a bolt of flame.");
             break;
         case SPMSL_FROST:
-            description += "It turns into a bolt of frost.";
+            description += _("It turns into a bolt of frost.");
             break;
             break;
         case SPMSL_CHAOS:
             if (bolt_name.empty())
                 bolt_name = "a random type";
 
-            description += "When ";
-
-            if (can_throw)
-            {
-                description += "thrown, ";
-                if (can_launch)
-                    description += "or ";
-            }
-
-            if (can_launch)
-                description += "fired from an appropriate launcher, ";
-
-            description += "it turns into a bolt of ";
-            description += bolt_name;
-            description += ".";
+            ////TODO bolt_name
+            description += _("When thrown or fired from an appropriate launcher, it turns into a bolt of %s.");
             always_destroyed = true;
             break;
         case SPMSL_POISONED:
-            description += "It is coated with poison.";
+            description += _("It is coated with poison.");
             break;
         case SPMSL_CURARE:
-            description += "It is tipped with asphyxiating poison.";
+            description += _("It is tipped with asphyxiating poison.");
             break;
         case SPMSL_PARALYSIS:
-            description += "It is tipped with a paralysing substance.";
+            description += _("It is tipped with a paralysing substance.");
             break;
         case SPMSL_SLOW:
-            description += "It is coated with a substance that causes slowness of the body.";
+            description += _("It is coated with a substance that causes slowness of the body.");
             break;
         case SPMSL_SLEEP:
-            description += "It is coated with a fast-acting tranquilizer.";
+            description += _("It is coated with a fast-acting tranquilizer.");
             break;
         case SPMSL_CONFUSION:
-            description += "It is tipped with a substance that causes confusion.";
+            description += _("It is tipped with a substance that causes confusion.");
             break;
 #if TAG_MAJOR_VERSION == 34
         case SPMSL_SICKNESS:
@@ -1187,49 +1159,51 @@ static string _describe_ammo(const item_def &item)
             break;
 #endif
         case SPMSL_FRENZY:
-            description += "It is tipped with a substance that causes a mindless "
-                "rage, making people attack friend and foe alike.";
+            description += _("It is tipped with a substance that causes a mindless "
+                "rage, making people attack friend and foe alike.");
             break;
        case SPMSL_RETURNING:
-            description += "A skilled user can throw it in such a way "
-                "that it will return to its owner.";
+            description += _("A skilled user can throw it in such a way "
+                "that it will return to its owner.");
             break;
         case SPMSL_PENETRATION:
-            description += "It will pass through any targets it hits, "
+            description += _("It will pass through any targets it hits, "
                 "potentially hitting all targets in its path until it "
-                "reaches maximum range.";
+                "reaches maximum range.");
             break;
         case SPMSL_DISPERSAL:
-            description += "Any target it hits will blink, with a "
-                "tendency towards blinking further away from the one "
-                "who " + threw_or_fired + " it.";
+            description += _("Any target it hits will blink, with a tendency"
+                " towards blinking further away from the one who threw or fired it.");
             always_destroyed = true;
             break;
         case SPMSL_EXPLODING:
-            description += "It will explode into fragments upon "
+            description += _("It will explode into fragments upon "
                 "hitting a target, hitting an obstruction, or reaching "
-                "the end of its range.";
+                "the end of its range.");
             always_destroyed = true;
             break;
         case SPMSL_STEEL:
-            description += "Compared to normal ammo, it does 30% more "
+            description += _("Compared to normal ammo, it does 30% more "
                 "damage, is destroyed upon impact only 1/10th of the "
-                "time, and weighs three times as much.";
+                "time, and weighs three times as much.");
             break;
         case SPMSL_SILVER:
-            description += "Silver sears all those touched by chaos. "
+            description += _("Silver sears all those touched by chaos. "
                 "Compared to normal ammo, it does 75% more damage to "
                 "chaotic and magically transformed beings. It also does "
                 "extra damage against mutated beings according to how "
                 "mutated they are. With due care, silver ammo can still "
                 "be handled by those it affects. It weighs twice as much "
-                "as normal ammo.";
+                "as normal ammo.");
             break;
         }
     }
 
     if (always_destroyed)
-        description += "\nIt will always be destroyed upon impact.";
+    {
+        description += "\n";
+        description += _("It will always be destroyed upon impact.");
+    }
     else if (item.sub_type != MI_THROWING_NET)
         append_missile_info(description);
 
@@ -1238,17 +1212,16 @@ static string _describe_ammo(const item_def &item)
 
 void append_armour_stats(string &description, const item_def &item)
 {
-    description += "\nBase armour rating: ";
-    _append_value(description, property(item, PARM_AC), false);
-    description += "       ";
-
-    description += "Encumbrance rating: ";
-    _append_value(description, -property(item, PARM_EVASION), false);
+    description += "\n";
+    description += make_stringf(
+        _("Base armour rating: %d       Encumbrance rating: %d"),
+        property(item, PARM_AC), property(item, PARM_EVASION));
 }
 
 void append_missile_info(string &description)
 {
-    description += "\nAll pieces of ammunition may get destroyed upon impact.";
+    description += "\n";
+    description += _("All pieces of ammunition may get destroyed upon impact.");
 }
 
 //---------------------------------------------------------------
