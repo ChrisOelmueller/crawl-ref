@@ -4486,6 +4486,11 @@ void describe_god(god_type which_god, bool give_title)
         // his life.
         bool have_any = false;
 
+        const char *buf = "";
+        const char * const godname = god_name(which_god).c_str();
+        const char * const Godname = uppercase_first(god_name(which_god)).c_str();
+        const char * const godsname = apostrophise(god_name(which_god)).c_str();
+
         if (god_can_protect_from_harm(which_god))
         {
             have_any = true;
@@ -4496,58 +4501,47 @@ void describe_god(god_type which_god, bool give_title)
             switch (elyvilon_lifesaving())
             {
             case 1:
-                when = ", especially when called upon";
+                when = _(" (especially when called upon)");
                 prot_chance += 100 - 3000/you.piety;
                 break;
             case 2:
-                when = ", and always does so when called upon";
+                when = _(" (and always does so when called upon)");
                 prot_chance = 100;
             }
 
-            const char *how = (prot_chance >= 85) ? "carefully" :
-                              (prot_chance >= 55) ? "often" :
-                              (prot_chance >= 25) ? "sometimes"
-                                                  : "occasionally";
-
-            string buf = uppercase_first(god_name(which_god));
-            buf += " ";
-            buf += how;
-            buf += " watches over you";
-            buf += when;
-            buf += ".";
-
-            _print_final_god_abil_desc(which_god, buf, ABIL_NON_ABILITY);
+            buf = (prot_chance >= 85) ? _("%1$s carefully watches over you%2$s.") :
+                  (prot_chance >= 55) ? _("%1$s often watches over you%2$s.") :
+                  (prot_chance >= 25) ? _("%1$s sometimes watches over you%2$s.")
+                                      : _("%1$s occasionally watches over you%2$s.");
+            cprintf(buf, Godname, when);
+            cprintf("\n");
         }
 
         if (which_god == GOD_ZIN)
         {
             have_any = true;
-            const char *how = (you.piety >= 150) ? "carefully" :
-                              (you.piety >= 100) ? "often" :
-                              (you.piety >=  50) ? "sometimes" :
-                                                   "occasionally";
-
-            cprintf("%s %s shields you from chaos.\n",
-                    uppercase_first(god_name(which_god)).c_str(), how);
+            buf = (you.piety >= 150) ? _("%s carefully shields you from chaos.") :
+                  (you.piety >= 100) ? _("%s often shields you from chaos.") :
+                  (you.piety >=  50) ? _("%s sometimes shields you from chaos.") :
+                                       _("%s occasionally shields you from chaos.");
+            cprintf(buf, Godname);
+            cprintf("\n");
         }
         else if (which_god == GOD_SHINING_ONE)
         {
             have_any = true;
-            const char *how = (you.piety >= 150) ? "carefully" :
-                              (you.piety >= 100) ? "often" :
-                              (you.piety >=  50) ? "sometimes" :
-                                                   "occasionally";
-
-            cprintf("%s %s shields you from negative energy.\n",
-                    uppercase_first(god_name(which_god)).c_str(), how);
+            buf = (you.piety >= 150) ? _("%s carefully shields you from negative energy.") :
+                  (you.piety >= 100) ? _("%s often shields you from negative energy.") :
+                  (you.piety >=  50) ? _("%s sometimes shields you from negative energy.") :
+                                       _("%s occasionally shields you from negative energy.");
+            cprintf(buf, Godname);
+            cprintf("\n");
         }
         else if (which_god == GOD_TROG)
         {
             have_any = true;
-            string buf = "You can call upon "
-                         + god_name(which_god)
-                         + " to burn spellbooks in your surroundings.";
-            _print_final_god_abil_desc(which_god, buf,
+            buf = _("You can call upon %s to burn spellbooks in your surroundings.");
+            _print_final_god_abil_desc(which_god, make_stringf(buf, godname),
                                        ABIL_TROG_BURN_SPELLBOOKS);
         }
         else if (which_god == GOD_JIYVA)
@@ -4555,54 +4549,52 @@ void describe_god(god_type which_god, bool give_title)
             if (!player_under_penance())
             {
                 have_any = true;
-                const char *how = (you.piety >= 150) ? "carefully" :
-                                  (you.piety >= 100) ? "often" :
-                                  (you.piety >=  50) ? "sometimes" :
-                                                       "occasionally";
-
-                cprintf("%s %s shields your consumables from destruction.\n",
-                        uppercase_first(god_name(which_god)).c_str(), how);
+                buf = (you.piety >= 150) ? _("%s carefully shields your consumables from destruction.") :
+                      (you.piety >= 100) ? _("%s often shields your consumables from destruction.") :
+                      (you.piety >=  50) ? _("%s sometimes shields your consumables from destruction.") :
+                                           _("%s occasionally shields your consumables from destruction.");
+                cprintf(buf, Godname);
+                cprintf("\n");
             }
             if (you.piety >= piety_breakpoint(2))
             {
                 have_any = true;
-                cprintf("%s shields you from corrosive effects.\n",
-                        uppercase_first(god_name(which_god)).c_str());
+                cprintf(_("%s shields you from corrosive effects."), Godname);
+                cprintf("\n");
             }
             if (you.piety >= piety_breakpoint(1))
             {
                 have_any = true;
-                string buf = "You gain nutrition";
                 if (you.piety >= piety_breakpoint(4))
-                    buf += ", power and health";
+                    buf = _("You gain nutrition, power and health when your jellies consume items.");
                 else if (you.piety >= piety_breakpoint(3))
-                    buf += " and power";
-                buf += " when your fellow slimes consume items.\n";
-                _print_final_god_abil_desc(which_god, buf,
-                                           ABIL_NON_ABILITY);
+                    buf = _("You gain nutrition and power when your jellies consume items.");
+                else
+                    buf = _("You gain nutrition when your jellies consume items.");
+                _print_final_god_abil_desc(which_god, buf, ABIL_NON_ABILITY);
             }
         }
         else if (which_god == GOD_FEDHAS)
         {
             have_any = true;
             _print_final_god_abil_desc(which_god,
-                                       "You can pray to speed up decomposition.",
+                                       _("You can pray to speed up decomposition."),
                                        ABIL_NON_ABILITY);
             _print_final_god_abil_desc(which_god,
-                                       "You can walk through plants and "
-                                       "fire through allied plants.",
+                                       _("You can walk through plants and "
+                                         "fire through allied plants."),
                                        ABIL_NON_ABILITY);
         }
         else if (which_god == GOD_ASHENZARI)
         {
             have_any = true;
             _print_final_god_abil_desc(which_god,
-                "You are provided with a bounty of information.",
+                _("You are provided with a bounty of information."),
                 ABIL_NON_ABILITY);
-            string buf = "You can pray to bestow "
-                         + apostrophise(god_name(which_god))
-                         + " curse upon scrolls that usually remove them.";
-            _print_final_god_abil_desc(which_god, buf,
+            //i18n: bestow [Ashenzari's] curse - automatically adds apostrophe!
+            buf = _("You can pray to bestow %s curse upon scrolls"
+                    " that usually remove them.");
+            _print_final_god_abil_desc(which_god, make_stringf(buf, godsname),
                                        ABIL_NON_ABILITY);
         }
         else if (which_god == GOD_CHEIBRIADOS)
@@ -4610,9 +4602,8 @@ void describe_god(god_type which_god, bool give_title)
             if (you.piety >= piety_breakpoint(0))
             {
                 have_any = true;
-                _print_final_god_abil_desc(which_god,
-                                           uppercase_first(god_name(which_god))
-                                           + " slows and strengthens your metabolism.",
+                buf = _("%s slows and strengthens your metabolism.");
+                _print_final_god_abil_desc(which_god, make_stringf(buf, Godname),
                                            ABIL_NON_ABILITY);
             }
         }
@@ -4623,7 +4614,7 @@ void describe_god(god_type which_god, bool give_title)
             {
                 have_any = true;
                 _print_final_god_abil_desc(which_god,
-                                           "You can provide lesser healing for others.",
+                                           _("You can provide lesser healing for others."),
                                            ABIL_ELYVILON_LESSER_HEALING_OTHERS);
             }
         }
@@ -4656,7 +4647,8 @@ void describe_god(god_type which_god, bool give_title)
                 }
         }
         if (!have_any)
-            cprintf("None.\n");
+            cprintf(_("None."));
+            cprintf("\n");
     }
 
     const int bottom_line = min(30, get_number_of_lines());
@@ -4712,14 +4704,14 @@ string get_skill_description(skill_type skill, bool need_title)
         else if (you_worship(GOD_TROG))
         {
             result += "\n";
-            result += "Note that Trog doesn't use Invocations, due to its "
-                      "close connection to magic.";
+            result += _("Note that Trog doesn't use Invocations, due to its "
+                        "close connection to magic.");
         }
         else if (you_worship(GOD_NEMELEX_XOBEH))
         {
             result += "\n";
-            result += "Note that Nemelex uses Evocations rather than "
-                      "Invocations.";
+            result += _("Note that Nemelex uses Evocations rather than "
+                        "Invocations.");
         }
         break;
 
@@ -4727,7 +4719,7 @@ string get_skill_description(skill_type skill, bool need_title)
         if (you_worship(GOD_NEMELEX_XOBEH))
         {
             result += "\n";
-            result += "This is the skill all of Nemelex's abilities rely on.";
+            result += _("This is the skill all of Nemelex's abilities rely on.");
         }
         break;
 
@@ -4735,8 +4727,8 @@ string get_skill_description(skill_type skill, bool need_title)
         if (you_worship(GOD_TROG))
         {
             result += "\n";
-            result += "Keep in mind, though, that Trog will greatly disapprove "
-                      "of this.";
+            result += _("Keep in mind, though, that Trog will greatly disapprove "
+                        "of this.");
         }
         break;
     default:
