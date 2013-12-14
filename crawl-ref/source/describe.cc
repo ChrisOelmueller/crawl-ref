@@ -3894,12 +3894,9 @@ static bool _print_god_abil_desc(int god, int numpower)
     if (buf.empty())
         return false;
 
-    if (!isupper(pmsg[0])) // Complete sentence given?
-        buf = "You can " + buf + ".";
-
     // This might be ABIL_NON_ABILITY for passive abilities.
     const ability_type abil = god_abilities[god][numpower];
-    _print_final_god_abil_desc(god, buf, abil);
+    _print_final_god_abil_desc(god, gettext(buf.c_str()), abil);
 
     return true;
 }

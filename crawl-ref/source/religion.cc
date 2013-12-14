@@ -221,113 +221,109 @@ const char* god_gain_power_messages[NUM_GODS][MAX_GOD_ABILITIES] =
     // no god
     { "", "", "", "", "" },
     // Zin
-    { "recite Zin's Axioms of Law",
-      "call upon Zin for vitalisation",
-      "call upon Zin to imprison the lawless",
+    { _("You can recite Zin's Axioms of Law."),
+      _("You can call upon Zin for vitalisation."),
+      _("You can call upon Zin to imprison the lawless."),
       "",
-      "call upon Zin to create a sanctuary" },
+      _("You can call upon Zin to create a sanctuary.") },
     // TSO
-    { "You and your allies can gain power from killing the unholy and evil.",
-      "call upon the Shining One for a divine shield",
+    { _("You and your allies can gain power from killing the unholy and evil."),
+      _("You can call upon the Shining One for a divine shield."),
       "",
-      "channel blasts of cleansing flame",
-      "summon a divine warrior" },
+      _("You can channel blasts of cleansing flame."),
+      _("You can summon a divine warrior.") },
     // Kikubaaqudgha
-    { "receive cadavers from Kikubaaqudgha",
-      "Kikubaaqudgha is protecting you from miscast death magic.",
+    { _("You can receive cadavers from Kikubaaqudgha."),
+      _("Kikubaaqudgha is protecting you from miscast death magic."),
       "",
-      "Kikubaaqudgha is protecting you from unholy torment.",
-      "invoke torment by sacrificing a corpse" },
+      _("Kikubaaqudgha is protecting you from unholy torment."),
+      _("You can invoke torment by sacrificing a corpse.") },
     // Yredelemnul
-    { "animate {yred_dead}",
-      "recall your undead slaves and mirror injuries on your foes",
-      "[animate {yred_dead}]",
-      "drain ambient lifeforce",
-      "enslave living souls" },
+    { _("You can animate {yred_dead}."),
+      _("You can recall your undead slaves and mirror injuries on your foes."),
+      _("You can [animate {yred_dead}]."),
+      _("You can drain ambient lifeforce."),
+      _("You can enslave living souls.") },
     // Xom
     { "", "", "", "", "" },
     // Vehumet
-    { "gain magical power from killing",
+    { _("You can gain magical power from killing."),
       "",
-      "Vehumet is aiding your destructive magics.",
-      "Vehumet is extending the range of your destructive magics.",
+      _("Vehumet is aiding your destructive magics."),
+      _("Vehumet is extending the range of your destructive magics."),
       "" },
     // Okawaru
-    { "gain great but temporary skills",
+    { _("You can gain great but temporary skills."),
       "",
       "",
       "",
-      "speed up your combat" },
+      _("You can speed up your combat.") },
     // Makhleb
-    { "gain health from killing",
-      "harness Makhleb's destructive might",
-      "summon a lesser servant of Makhleb",
-      "hurl Makhleb's greater destruction",
-      "summon a greater servant of Makhleb" },
+    { _("You can gain health from killing."),
+      _("You can harness Makhleb's destructive might."),
+      _("You can summon a lesser servant of Makhleb."),
+      _("You can hurl Makhleb's greater destruction."),
+      _("You can summon a greater servant of Makhleb.") },
     // Sif Muna
-    { "tap ambient magical fields",
-      "freely open your mind to new spells",
+    { _("You can tap ambient magical fields."),
+      _("You can freely open your mind to new spells."),
       "",
-      "Sif Muna is protecting you from miscast magic.",
+      _("Sif Muna is protecting you from miscast magic."),
       "" },
     // Trog
-    { "go berserk at will",
-      "regenerate and be protected from hostile enchantments",
+    { _("You can go berserk at will."),
+      _("You can regenerate and be protected from hostile enchantments."),
       "",
-      "call in reinforcements",
+      _("You can call in reinforcements."),
       "" },
     // Nemelex
-    { "draw cards from decks in your inventory",
-      "peek at two random cards from a deck",
-      "choose one out of three cards",
-      "deal four cards at a time",
-      "order the top five cards of a deck, losing the rest" },
+    { _("You can draw cards from decks in your inventory."),
+      _("You can peek at two random cards from a deck."),
+      _("You can choose one out of three cards."),
+      _("You can deal four cards at a time."),
+      _("You can order the top five cards of a deck, losing the rest.") },
     // Elyvilon
-    { "provide lesser healing for yourself",
-      "purify yourself",
-      "provide greater healing for yourself and others",
+    { _("You can provide lesser healing for yourself."),
+      _("You can purify yourself."),
+      _("You can provide greater healing for yourself and others."),
       "",
-      "call upon Elyvilon for divine vigour" },
+      _("You can call upon Elyvilon for divine vigour.") },
     // Lugonu
-    { "depart the Abyss",
-      "bend space around yourself",
-      "banish your foes",
-      "corrupt the fabric of space",
-      "gate yourself to the Abyss" },
+    { _("You can depart the Abyss."),
+      _("You can bend space around yourself."),
+      _("You can banish your foes."),
+      _("You can corrupt the fabric of space."),
+      _("You can gate yourself to the Abyss.") },
     // Beogh
-    { "Beogh supports the use of orcish gear.",
-      "smite your foes",
-      "gain orcish followers",
-      "recall your orcish followers",
-      "walk on water" },
+    { _("Beogh supports the use of orcish gear."),
+      _("You can smite your foes."),
+      _("You can gain orcish followers."),
+      _("You can recall your orcish followers."),
+      _("You can walk on water.") },
     // Jiyva
-    { "request a jelly",
-      "temporarily halt your jellies' item consumption",
+    { _("You can request a jelly."),
+      _("You can temporarily halt your jellies' item consumption."),
       "",
-      "turn your foes to slime",
-      "call upon Jiyva to remove your harmful mutations"
-    },
+      _("You can turn your foes to slime."),
+      _("You can call upon Jiyva to remove your harmful mutations.") },
     // Fedhas
-    { "induce evolution",
-      "call sunshine",
-      "cause a ring of plants to grow",
-      "spawn explosive spores",
-      "control the weather"
-    },
+    { _("You can induce evolution."),
+      _("You can call sunshine."),
+      _("You can cause a ring of plants to grow."),
+      _("You can spawn explosive spores."),
+      _("You can control the weather.") },
     // Cheibriados
     { "",
       "",
-      "warp the flow of time around you",
-      "inflict damage on those overly hasty",
-      "step out of the time flow"
-    },
+      _("You can warp the flow of time around you."),
+      _("You can inflict damage on those overly hasty."),
+      _("You can step out of the time flow.") },
     // Ashenzari
     { "",
-      "The more cursed you are, the more Ashenzari supports your skills.",
-      "Ashenzari keeps your vision and mind clear.",
-      "scry through walls",
-      "Ashenzari helps you to reconsider your skills."
-    },
+      _("The more cursed you are, the more Ashenzari supports your skills."),
+      _("Ashenzari keeps your vision and mind clear."),
+      _("You can scry through walls."),
+      _("Ashenzari helps you to reconsider your skills.") },
 };
 
 /**
@@ -338,113 +334,109 @@ const char* god_lose_power_messages[NUM_GODS][MAX_GOD_ABILITIES] =
     // no god
     { "", "", "", "", "" },
     // Zin
-    { "recite Zin's Axioms of Law",
-      "call upon Zin for vitalisation",
-      "call upon Zin to imprison the lawless",
+    { _("You can no longer recite Zin's Axioms of Law."),
+      _("You can no longer call upon Zin for vitalisation."),
+      _("You can no longer call upon Zin to imprison the lawless."),
       "",
-      "call upon Zin to create a sanctuary" },
+      _("You can no longer call upon Zin to create a sanctuary.") },
     // TSO
-    { "You and your allies can no longer gain power from killing the unholy and evil.",
-      "call upon the Shining One for a divine shield",
+    { _("You and your allies can no longer gain power from killing the unholy and evil."),
+      _("You can no longer call upon the Shining One for a divine shield."),
       "",
-      "channel blasts of cleansing flame",
-      "summon a divine warrior" },
+      _("You can no longer channel blasts of cleansing flame."),
+      _("You can no longer summon a divine warrior.") },
     // Kikubaaqudgha
-    { "receive cadavers from Kikubaaqudgha",
-      "Kikubaaqudgha is no longer protecting you from miscast death magic.",
+    { _("You can no longer receive cadavers from Kikubaaqudgha."),
+      _("Kikubaaqudgha is no longer protecting you from miscast death magic."),
       "",
-      "Kikubaaqudgha will no longer protect you from unholy torment.",
-      "invoke torment by sacrificing a corpse" },
+      _("Kikubaaqudgha will no longer protect you from unholy torment."),
+      _("You can no longer invoke torment by sacrificing a corpse.") },
     // Yredelemnul
-    { "animate {yred_dead}",
-      "recall your undead slaves and mirror injuries on your foes",
-      "[animate {yred_dead}]",
-      "drain ambient lifeforce",
-      "enslave living souls" },
+    { _("You can no longer animate {yred_dead}."),
+      _("You can no longer recall your undead slaves and mirror injuries on your foes."),
+      _("You can no longer [animate {yred_dead}]."),
+      _("You can no longer drain ambient lifeforce."),
+      _("You can no longer enslave living souls.") },
     // Xom
     { "", "", "", "", "" },
     // Vehumet
-    { "gain magical power from killing",
+    { _("You can no longer gain magical power from killing."),
       "",
-      "Vehumet will no longer aid your destructive magics.",
-      "Vehumet will no longer extend the range of your destructive magics.",
+      _("Vehumet will no longer aid your destructive magics."),
+      _("Vehumet will no longer extend the range of your destructive magics."),
       "" },
     // Okawaru
-    { "gain great but temporary skills",
+    { _("You can no longer gain great but temporary skills."),
       "",
       "",
       "",
-      "speed up your combat" },
+      _("You can no longer speed up your combat.") },
     // Makhleb
-    { "gain health from killing",
-      "harness Makhleb's destructive might",
-      "summon a lesser servant of Makhleb",
-      "hurl Makhleb's greater destruction",
-      "summon a greater servant of Makhleb" },
+    { _("You can no longer gain health from killing."),
+      _("You can no longer harness Makhleb's destructive might."),
+      _("You can no longer summon a lesser servant of Makhleb."),
+      _("You can no longer hurl Makhleb's greater destruction."),
+      _("You can no longer summon a greater servant of Makhleb.") },
     // Sif Muna
-    { "tap ambient magical fields",
-      "forget spells at will",
+    { _("You can no longer tap ambient magical fields."),
+      _("You can no longer forget spells at will."),
       "",
-      "Sif Muna will no longer protect you from miscast magic.",
+      _("Sif Muna will no longer protect you from miscast magic."),
       "" },
     // Trog
-    { "go berserk at will",
-      "regenerate and be protected from hostile enchantments",
+    { _("You can no longer go berserk at will."),
+      _("You can no longer regenerate and be protected from hostile enchantments."),
       "",
-      "call in reinforcements",
+      _("You can no longer call in reinforcements."),
       "" },
     // Nemelex
-    { "draw cards from decks in your inventory",
-      "peek at random cards",
-      "choose one out of three cards",
-      "deal four cards at a time",
-      "stack decks" },
+    { _("You can no longer draw cards from decks in your inventory."),
+      _("You can no longer peek at random cards."),
+      _("You can no longer choose one out of three cards."),
+      _("You can no longer deal four cards at a time."),
+      _("You can no longer stack decks.") },
     // Elyvilon
-    { "provide lesser healing for yourself",
-      "purify yourself",
-      "provide greater healing",
+    { _("You can no longer provide lesser healing for yourself."),
+      _("You can no longer purify yourself."),
+      _("You can no longer provide greater healing."),
       "",
-      "call upon Elyvilon for divine vigour" },
+      _("You can no longer call upon Elyvilon for divine vigour.") },
     // Lugonu
-    { "depart the Abyss at will",
-      "bend space around yourself",
-      "banish your foes",
-      "corrupt the fabric of space",
-      "gate yourself to the Abyss" },
+    { _("You can no longer depart the Abyss at will."),
+      _("You can no longer bend space around yourself."),
+      _("You can no longer banish your foes."),
+      _("You can no longer corrupt the fabric of space."),
+      _("You can no longer gate yourself to the Abyss.") },
     // Beogh
-    { "Beogh no longer supports the use of orcish gear.",
-      "smite your foes",
-      "gain orcish followers",
-      "recall your orcish followers",
-      "walk on water" },
+    { _("Beogh no longer supports the use of orcish gear."),
+      _("You can no longer smite your foes."),
+      _("You can no longer gain orcish followers."),
+      _("You can no longer recall your orcish followers."),
+      _("You can no longer walk on water.") },
     // Jiyva
-    { "request a jelly",
-      "temporarily halt your jellies' item consumption",
+    { _("You can no longer request a jelly."),
+      _("You can no longer temporarily halt your jellies' item consumption."),
       "",
-      "turn your foes to slime",
-      "call upon Jiyva to remove your harmful mutations"
-    },
+      _("You can no longer turn your foes to slime."),
+      _("You can no longer call upon Jiyva to remove your harmful mutations.") },
     // Fedhas
-    { "induce evolution",
-      "call sunshine",
-      "cause a ring of plants to grow",
-      "spawn explosive spores",
-      "control the weather"
-    },
+    { _("You can no longer induce evolution."),
+      _("You can no longer call sunshine."),
+      _("You can no longer cause a ring of plants to grow."),
+      _("You can no longer spawn explosive spores."),
+      _("You can no longer control the weather.") },
     // Cheibriados
-    { "bend time to slow others",
+    { _("You can no longer bend time to slow others."),
       "",
-      "warp the flow of time around you",
-      "inflict damage on those overly hasty",
-      "step out of the time flow"
-    },
+      _("You can no longer warp the flow of time around you."),
+      _("You can no longer inflict damage on those overly hasty."),
+      _("You can no longer step out of the time flow.") },
     // Ashenzari
     { "",
-      "Ashenzari no longer supports your skills.",
-      "Ashenzari no longer keeps your vision and mind clear.",
-      "scry through walls",
-      "Ashenzari no longer helps you to reconsider your skills."
-    },
+      _("Ashenzari no longer supports your skills."),
+      _("Ashenzari no longer keeps your vision and mind clear."),
+      _("You can no longer scry through walls."),
+      _("Ashenzari no longer helps you to reconsider your skills.") },
 };
 
 typedef void (*delayed_callback)(const mgen_data &mg, monster *&mon, int placed);
@@ -2517,8 +2509,7 @@ string adjust_abil_message(const char *pmsg, bool allow_upgrades)
     return pm;
 }
 
-static bool _abil_chg_message(const char *pmsg, const char *youcanmsg,
-                              int breakpoint)
+static bool _abil_chg_message(const char *pmsg, int breakpoint)
 {
     if (!*pmsg)
         return false;
@@ -2537,13 +2528,7 @@ static bool _abil_chg_message(const char *pmsg, const char *youcanmsg,
 
     you.piety = old_piety;
 
-    if (isupper(pmsg[0]))
-        god_speaks(you.religion, pm.c_str());
-    else
-    {
-        god_speaks(you.religion,
-                   make_stringf(youcanmsg, pm.c_str()).c_str());
-    }
+    god_speaks(you.religion, gettext(pm.c_str()));
 
     return true;
 }
@@ -2704,8 +2689,7 @@ static void _gain_piety_point()
 
             gain_god_ability(i);
 
-            if (_abil_chg_message(god_gain_power_messages[you.religion][i],
-                                  "You can now %s.", i))
+            if (_abil_chg_message(god_gain_power_messages[you.religion][i], i))
             {
 #ifdef USE_TILE_LOCAL
                 tiles.layout_statcol();
@@ -2876,8 +2860,7 @@ void lose_piety(int pgn)
                 you.redraw_title = true;
 
                 lose_god_ability(i);
-                _abil_chg_message(god_lose_power_messages[you.religion][i],
-                                  "You can no longer %s.", i);
+                _abil_chg_message(god_lose_power_messages[you.religion][i], i);
 
                 if (_need_water_walking() && !beogh_water_walk())
                     fall_into_a_pool(you.pos(), true, grd(you.pos()));
