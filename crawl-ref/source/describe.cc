@@ -2960,28 +2960,21 @@ static string _describe_draconian(const monster_info& mi)
     string description;
     const int subsp = mi.draco_subspecies();
 
-    if (subsp == MONS_DRACONIAN)
-        description += "A ";
-    else
-        description += "A muscular ";
-
     switch (subsp)
     {
-    case MONS_DRACONIAN:            description += "brown-";   break;
-    case MONS_BLACK_DRACONIAN:      description += "black-";   break;
-    case MONS_MOTTLED_DRACONIAN:    description += "mottled-"; break;
-    case MONS_YELLOW_DRACONIAN:     description += "yellow-";  break;
-    case MONS_GREEN_DRACONIAN:      description += "green-";   break;
-    case MONS_PURPLE_DRACONIAN:     description += "purple-";  break;
-    case MONS_RED_DRACONIAN:        description += "red-";     break;
-    case MONS_WHITE_DRACONIAN:      description += "white-";   break;
-    case MONS_GREY_DRACONIAN:       description += "grey-";    break;
-    case MONS_PALE_DRACONIAN:       description += "pale-";    break;
+    case MONS_DRACONIAN:            description = "A brown-scaled humanoid with wings.";            break;
+    case MONS_BLACK_DRACONIAN:      description = "A muscular black-scaled humanoid with wings.";   break;
+    case MONS_MOTTLED_DRACONIAN:    description = "A muscular mottled-scaled humanoid with wings."; break;
+    case MONS_YELLOW_DRACONIAN:     description = "A muscular yellow-scaled humanoid with wings.";  break;
+    case MONS_GREEN_DRACONIAN:      description = "A muscular green-scaled humanoid with wings.";   break;
+    case MONS_PURPLE_DRACONIAN:     description = "A muscular purple-scaled humanoid with wings.";  break;
+    case MONS_RED_DRACONIAN:        description = "A muscular red-scaled humanoid with wings.";     break;
+    case MONS_WHITE_DRACONIAN:      description = "A muscular white-scaled humanoid with wings.";   break;
+    case MONS_GREY_DRACONIAN:       description = "A muscular grey-scaled humanoid with wings.";    break;
+    case MONS_PALE_DRACONIAN:       description = "A muscular pale-scaled humanoid with wings.";    break;
     default:
         break;
     }
-
-    description += "scaled humanoid with wings.";
 
     if (subsp != MONS_DRACONIAN)
     {
