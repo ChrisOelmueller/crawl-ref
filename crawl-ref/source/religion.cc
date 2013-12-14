@@ -2933,17 +2933,17 @@ static string _god_hates_your_god_reaction(god_type god, god_type your_god)
     {
         // Non-good gods always hate your current god.
         if (!is_good_god(god))
-            return "";
+            return _(" does not appreciate desertion!");
 
         // Zin hates chaotic gods.
         if (god == GOD_ZIN && is_chaotic_god(your_god))
-            return " for chaos";
+            return _(" does not appreciate desertion for chaos!");
 
         if (is_evil_god(your_god))
-            return " for evil";
+            return _(" does not appreciate desertion for evil!");
     }
 
-    return "";
+    return _(" does not appreciate desertion!");
 }
 
 void excommunication(god_type new_god)
@@ -3002,8 +3002,7 @@ void excommunication(god_type new_god)
     if (god_hates_your_god(old_god, new_god))
     {
         simple_god_message(
-            make_stringf(" does not appreciate desertion%s!",
-                         _god_hates_your_god_reaction(old_god, new_god).c_str()).c_str(),
+            _god_hates_your_god_reaction(old_god, new_god).c_str(),
             old_god);
     }
 
