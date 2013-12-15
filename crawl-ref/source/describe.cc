@@ -3849,24 +3849,23 @@ static bool _print_final_god_abil_desc(int god, const string &final_msg,
         return false;
 
     string buf = final_msg;
+    string cost;
 
     // For ability slots that give more than one ability, display
     // "Various" instead of the cost of the first ability.
-    const string cost =
-        "(" +
-              ((abil == ABIL_ELYVILON_LESSER_HEALING_SELF
-                || abil == ABIL_ELYVILON_GREATER_HEALING_OTHERS
-                || abil == ABIL_YRED_RECALL_UNDEAD_SLAVES) ?
-                    "Various" : make_cost_description(abil))
-            + ")";
-
-    if (cost != "(None)")
+    if (abil == ABIL_ELYVILON_LESSER_HEALING_SELF
+        || abil == ABIL_ELYVILON_GREATER_HEALING_OTHERS
+        || abil == ABIL_YRED_RECALL_UNDEAD_SLAVES)
     {
-        // XXX: Handle the display better when the description and cost
-        // are too long for the screen.
-        buf = chop_string(buf, get_number_of_cols() - 1 - strwidth(cost));
-        buf += cost;
+        cost = make_stringf("(%s)", _("Various"));
     }
+    else
+        cost = make_stringf("(%s)", make_cost_description(abil).c_str());
+
+    // XXX: Handle the display better when the description and cost
+    // are too long for the screen.
+    buf = chop_string(buf, get_number_of_cols() - 1 - strwidth(cost));
+    buf += cost;
 
     cprintf("%s\n", buf.c_str());
 
