@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <ctype.h>
 #include <string.h>
+#include <libintl.h>
 
 #include "clua.h"
 
@@ -2526,7 +2527,7 @@ void display_runes()
 
     InvMenu menu;
 
-    menu.set_title(make_stringf("Runes of Zot: %d/%d",
+    menu.set_title(make_stringf(_("Runes of Zot: %d/%d"),
                                 has_orb ? (int)items.size() - 1
                                         : (int)items.size(),
                                 you.obtainable_runes));
