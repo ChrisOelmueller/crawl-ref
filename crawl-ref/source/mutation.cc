@@ -2054,12 +2054,12 @@ string mutation_desc(mutation_type mut, int level, bool colour)
     {
         if (fully_inactive)
         {
-            result = "((" + result + "))";
+            result = make_stringf("((%s))", result.c_str());
             ++_num_full_suppressed;
         }
         else if (partially_active)
         {
-            result = "(" + result + ")";
+            result = make_stringf("(%s)", result.c_str());
             ++_num_part_suppressed;
         }
 
@@ -2079,7 +2079,7 @@ string mutation_desc(mutation_type mut, int level, bool colour)
 
     if (temporary)
     {
-        result = "[" + result + "]";
+        result = make_stringf("[%s]", result.c_str());
         ++_num_transient;
     }
 
