@@ -3304,8 +3304,7 @@ static string _monster_stat_description(const monster_info& mi)
     if (mr >= 10)
     {
         result << uppercase_first(pronoun)
-               << make_stringf(" is %s to hostile enchantments.\n",
-                               magic_res_adjective(mr).c_str());
+               << make_stringf(" is %s.\n", magic_res_adjective(mr).c_str());
     }
 
     if (mons_class_flag(mi.type, M_STATIONARY)

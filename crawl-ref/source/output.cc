@@ -2380,19 +2380,19 @@ string stealth_desc(int stealth)
 string magic_res_adjective(int mr)
 {
     if (mr == MAG_IMMUNE)
-        return "immune";
+        return "immune to hostile enchantments";
 
     string mr_words =
-            (mr <  10) ? "not resistant" :
-            (mr <  30) ? "slightly resistant" :
-            (mr <  60) ? "somewhat resistant" :
-            (mr <  90) ? "quite resistant" :
-            (mr < 120) ? "very resistant" :
-            (mr < 150) ? "extremely resistant" :
-            (mr < 190) ? "extraordinarily resistant" :
-            (mr < 240) ? "incredibly resistant" :
-            (mr < 300) ? "uncannily resistant"
-                       : "almost entirely resistant";
+            (mr <  10) ? "not resistant to hostile enchantments" :
+            (mr <  30) ? "slightly resistant to hostile enchantments" :
+            (mr <  60) ? "somewhat resistant to hostile enchantments" :
+            (mr <  90) ? "quite resistant to hostile enchantments" :
+            (mr < 120) ? "very resistant to hostile enchantments" :
+            (mr < 150) ? "extremely resistant to hostile enchantments" :
+            (mr < 190) ? "extraordinarily resistant to hostile enchantments" :
+            (mr < 240) ? "incredibly resistant to hostile enchantments" :
+            (mr < 300) ? "uncannily resistant to hostile enchantments"
+                       : "almost entirely resistant to hostile enchantments";
     return mr_words;
 }
 
@@ -2516,8 +2516,7 @@ static string _status_mut_abilities(int sw)
         status.push_back(help);
     }
 
-    status.push_back(magic_res_adjective(player_res_magic(false))
-                     + " to hostile enchantments");
+    status.push_back(magic_res_adjective(player_res_magic(false)));
 
     // character evaluates their ability to sneak around:
     status.push_back(stealth_desc(check_stealth()));
