@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sstream>
 #include <ctype.h>
+#include <libintl.h>
 
 #include "externs.h"
 #include "options.h"
@@ -790,14 +791,14 @@ public:
 
     void set_prompt()
         {
-            string prompt = "Describe which? ";
+            string prompt = _("Describe which? ");
 
             if (showing_monsters)
             {
                 if (sort_alpha)
-                    prompt += "(CTRL-S to sort by monster toughness)";
+                    prompt += _("(Ctrl-S to sort by monster toughness)");
                 else
-                    prompt += "(CTRL-S to sort by name)";
+                    prompt += _("(Ctrl-S to sort by name)");
             }
             set_title(new MenuEntry(prompt, MEL_TITLE));
         }
@@ -1175,33 +1176,32 @@ static bool _append_books(string &desc, item_def &item, string key)
                 rods.push_back(item.name(DESC_BASENAME));
     }
 
+    bool found = false;
     if (!books.empty())
     {
-        desc += "\n\nThis spell can be found in the following book";
-        if (books.size() > 1)
-            desc += "s";
-        desc += ":\n";
+        found = true;
+        desc += "\n\n";
+        desc += ngettext("This spell can be found in the following book:",
+                         "This spell can be found in the following books:",
+                         books.size());
+        desc += "\n";
         desc += comma_separated_line(books.begin(), books.end(), "\n", "\n");
-
-        if (!rods.empty())
-        {
-            desc += "\n\n... and the following rod";
-            if (rods.size() > 1)
-                desc += "s";
-            desc += ":\n";
-            desc += comma_separated_line(rods.begin(), rods.end(), "\n", "\n");
-        }
     }
-    else if (!rods.empty()) // rods-only
+    if (!rods.empty())
     {
-        desc += "\n\nThis spell can be found in the following rod";
-        if (rods.size() > 1)
-            desc += "s";
-        desc += ":\n";
+        found = true;
+        desc += "\n\n";
+        desc += ngettext("This spell can be found in the following rod:",
+                         "This spell can be found in the following rods:",
+                         rods.size());
+        desc += "\n";
         desc += comma_separated_line(rods.begin(), rods.end(), "\n", "\n");
     }
-    else
-        desc += "\n\nThis spell is not found in any books or rods.";
+    if (!found)
+    {
+        desc += "\n\n";
+        desc += _("This spell is not found in any books or rods.");
+    }
 
     return true;
 }
