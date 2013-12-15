@@ -2364,36 +2364,36 @@ void print_overview_screen()
 string stealth_desc(int stealth)
 {
     string stealth_words =
-         (stealth <  10) ? "extremely unstealthy" :
-         (stealth <  30) ? "very unstealthy" :
-         (stealth <  60) ? "unstealthy" :
-         (stealth <  90) ? "fairly stealthy" :
-         (stealth < 120) ? "stealthy" :
-         (stealth < 160) ? "quite stealthy" :
-         (stealth < 220) ? "very stealthy" :
-         (stealth < 300) ? "extremely stealthy" :
-         (stealth < 400) ? "extraordinarily stealthy" :
-         (stealth < 520) ? "incredibly stealthy"
-                         : "uncannily stealthy";
+         (stealth <  10) ? _("extremely unstealthy") :
+         (stealth <  30) ? _("very unstealthy") :
+         (stealth <  60) ? _("unstealthy") :
+         (stealth <  90) ? _("fairly stealthy") :
+         (stealth < 120) ? _("stealthy") :
+         (stealth < 160) ? _("quite stealthy") :
+         (stealth < 220) ? _("very stealthy") :
+         (stealth < 300) ? _("extremely stealthy") :
+         (stealth < 400) ? _("extraordinarily stealthy") :
+         (stealth < 520) ? _("incredibly stealthy")
+                         : _("uncannily stealthy");
     return stealth_words;
 }
 
 string magic_res_adjective(int mr)
 {
     if (mr == MAG_IMMUNE)
-        return "immune to hostile enchantments";
+        return _("immune to hostile enchantments");
 
     string mr_words =
-            (mr <  10) ? "not resistant to hostile enchantments" :
-            (mr <  30) ? "slightly resistant to hostile enchantments" :
-            (mr <  60) ? "somewhat resistant to hostile enchantments" :
-            (mr <  90) ? "quite resistant to hostile enchantments" :
-            (mr < 120) ? "very resistant to hostile enchantments" :
-            (mr < 150) ? "extremely resistant to hostile enchantments" :
-            (mr < 190) ? "extraordinarily resistant to hostile enchantments" :
-            (mr < 240) ? "incredibly resistant to hostile enchantments" :
-            (mr < 300) ? "uncannily resistant to hostile enchantments"
-                       : "almost entirely resistant to hostile enchantments";
+            (mr <  10) ? _("not resistant to hostile enchantments") :
+            (mr <  30) ? _("slightly resistant to hostile enchantments") :
+            (mr <  60) ? _("somewhat resistant to hostile enchantments") :
+            (mr <  90) ? _("quite resistant to hostile enchantments") :
+            (mr < 120) ? _("very resistant to hostile enchantments") :
+            (mr < 150) ? _("extremely resistant to hostile enchantments") :
+            (mr < 190) ? _("extraordinarily resistant to hostile enchantments") :
+            (mr < 240) ? _("incredibly resistant to hostile enchantments") :
+            (mr < 300) ? _("uncannily resistant to hostile enchantments")
+                       : _("almost entirely resistant to hostile enchantments");
     return mr_words;
 }
 
