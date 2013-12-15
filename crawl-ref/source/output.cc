@@ -2151,19 +2151,26 @@ static vector<formatted_string> _get_overview_stats()
     else
         temperature[0] = 0;
 
+    if (you.experience_level < 27)
+        snprintf(buf, sizeof buf, _("XL: %d    Next: %2d%%\n"),
+                 you.experience_level, get_exp_progress());
+    else
+        snprintf(buf, sizeof buf, _("XL: %d\n"),
+                 you.experience_level);
+    cols1.add_formatted(3, buf, false);
+
+    snprintf(buf, sizeof buf, _("God: %s\n"), godpowers.c_str());
+    cols1.add_formatted(3, buf, false);
+
     snprintf(buf, sizeof buf,
-             "XL: %d%s\n"
-             "God: %s\n"
-             "Spells: %2d memorised, %2d level%s left\n"
-             "%s",
-             you.experience_level,
-             (you.experience_level < 27 ? make_stringf("   Next: %2d%%",
-                                                   get_exp_progress()).c_str()
-                                        : ""),
-             godpowers.c_str(),
-             you.spell_no, player_spell_levels(),
-             (player_spell_levels() == 1) ? "" : "s",
-             lives);
+             ngettext("Spells: %2d memorised, %2d level left\n",
+                      "Spells: %2d memorised, %2d levels left\n",
+                      player_spell_levels()),
+             you.spell_no, player_spell_levels());
+    cols1.add_formatted(3, buf, false);
+
+    snprintf(buf, sizeof buf, "%s", lives);
+
     cols1.add_formatted(3, buf, false);
 
     return cols1.formatted_lines();
