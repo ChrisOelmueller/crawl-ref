@@ -2046,7 +2046,7 @@ string mutation_desc(mutation_type mut, int level, bool colour)
         result = ostr.str();
     }
     else if (mut == MUT_DEFORMED && is_useless_skill(SK_ARMOUR))
-        result = "Your body is misshapen.";
+        result = _("Your body is misshapen.");
     else if (result.empty() && level > 0)
         result = mdef.have[level - 1];
 
@@ -2125,7 +2125,7 @@ string mutation_desc(mutation_type mut, int level, bool colour)
 
         // Build the result
         ostringstream ostr;
-        ostr << '<' << colourname << '>' << result
+        ostr << '<' << colourname << '>' << gettext(result.c_str())
              << "</" << colourname << '>';
         result = ostr.str();
     }

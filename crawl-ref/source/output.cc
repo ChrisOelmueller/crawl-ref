@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <math.h>
+#include <libintl.h>
 
 #include "externs.h"
 #include "options.h"
@@ -2399,9 +2400,9 @@ string magic_res_adjective(int mr)
 static string _annotate_form_based(string desc, bool suppressed)
 {
     if (suppressed)
-        return "<darkgrey>(" + desc + ")</darkgrey>";
+        return make_stringf("<darkgrey>(%s)</darkgrey>", gettext(desc.c_str()));
     else
-        return desc;
+        return gettext(desc.c_str());
 }
 
 static string _dragon_abil(string desc)
@@ -2550,9 +2551,9 @@ static string _status_mut_abilities(int sw)
     case SP_NAGA:
         // breathe poison replaces spit poison:
         if (!player_mutation_level(MUT_BREATHE_POISON))
-            mutations.push_back("spit poison");
+            mutations.push_back(_("spit poison"));
         else
-            mutations.push_back("breathe poison");
+            mutations.push_back(_("breathe poison"));
 
         if (you.experience_level > 12)
         {
@@ -2563,45 +2564,47 @@ static string _status_mut_abilities(int sw)
         break;
 
     case SP_GHOUL:
-        mutations.push_back("rotting body");
+        mutations.push_back(_("rotting body"));
         break;
 
     case SP_TENGU:
         if (you.experience_level > 4)
         {
-            string help = "able to fly";
+            string help;
             if (you.experience_level > 14)
-                help += " continuously";
+                help = _("able to fly continuously");
+            else
+                help = _("able to fly");
             mutations.push_back(help);
         }
         break;
 
     case SP_MUMMY:
-        mutations.push_back("no food or potions");
-        mutations.push_back("fire vulnerability");
+        mutations.push_back(_("no food or potions"));
+        mutations.push_back(_("fire vulnerability"));
         if (you.experience_level > 25)
-            mutations.push_back("strongly in touch with death");
+            mutations.push_back(_("strongly in touch with death"));
         else if (you.experience_level > 12)
-            mutations.push_back("in touch with death");
-        mutations.push_back("restore body");
+            mutations.push_back(_("in touch with death"));
+        mutations.push_back(_("restore body"));
         break;
 
     case SP_KOBOLD:
-        mutations.push_back("disease resistance");
+        mutations.push_back(_("disease resistance"));
         break;
 
     case SP_VAMPIRE:
         if (you.experience_level >= 6)
-            mutations.push_back("bottle blood");
+            mutations.push_back(_("bottle blood"));
         break;
 
     case SP_DEEP_DWARF:
-        mutations.push_back("damage resistance");
-        mutations.push_back("recharge devices");
+        mutations.push_back(_("damage resistance"));
+        mutations.push_back(_("recharge devices"));
         break;
 
     case SP_FELID:
-        mutations.push_back("paw claws");
+        mutations.push_back(_("paw claws"));
         break;
 
     case SP_RED_DRACONIAN:
@@ -2624,14 +2627,14 @@ static string _status_mut_abilities(int sw)
         break;
 
     case SP_GREY_DRACONIAN:
-        mutations.push_back("walk through water");
+        mutations.push_back(_("walk through water"));
         AC_change += 5;
         break;
 
     case SP_BLACK_DRACONIAN:
         mutations.push_back(_dragon_abil("breathe lightning"));
         if (you.experience_level >= 14)
-            mutations.push_back("able to fly continuously");
+            mutations.push_back(_("able to fly continuously"));
         break;
 
     case SP_PURPLE_DRACONIAN:
@@ -2647,10 +2650,10 @@ static string _status_mut_abilities(int sw)
         break;
 
     case SP_FORMICID:
-        mutations.push_back("permanent stasis");
-        mutations.push_back("dig shafts and tunnels");
-        mutations.push_back("four strong arms");
-        mutations.push_back("poison weakness");
+        mutations.push_back(_("permanent stasis"));
+        mutations.push_back(_("dig shafts and tunnels"));
+        mutations.push_back(_("four strong arms"));
+        mutations.push_back(_("poison weakness"));
         break;
 
     case SP_GARGOYLE:
@@ -2659,8 +2662,8 @@ static string _status_mut_abilities(int sw)
         break;
 
     case SP_DJINNI:
-        mutations.push_back("fire immunity");
-        mutations.push_back("cold vulnerability");
+        mutations.push_back(_("fire immunity"));
+        mutations.push_back(_("cold vulnerability"));
         break;
 
     default:
@@ -2671,7 +2674,7 @@ static string _status_mut_abilities(int sw)
     if (you.species == SP_OGRE || you.species == SP_TROLL
         || player_genus(GENPC_DRACONIAN) || you.species == SP_SPRIGGAN)
     {
-        mutations.push_back("unfitting armour");
+        mutations.push_back(_("unfitting armour"));
     }
 
     if (player_genus(GENPC_DRACONIAN))
@@ -2682,14 +2685,14 @@ static string _status_mut_abilities(int sw)
 
     if (you.species == SP_FELID)
     {
-        mutations.push_back("no armour");
-        mutations.push_back("no advanced items");
+        mutations.push_back(_("no armour"));
+        mutations.push_back(_("no advanced items"));
     }
 
     if (you.species == SP_OCTOPODE)
     {
-        mutations.push_back("almost no armour");
-        mutations.push_back("amphibious");
+        mutations.push_back(_("almost no armour"));
+        mutations.push_back(_("amphibious"));
         mutations.push_back(_annotate_form_based(
             "8 rings",
             !form_keeps_mutations() && you.form != TRAN_SPIDER));
@@ -2699,7 +2702,7 @@ static string _status_mut_abilities(int sw)
     }
 
     if (beogh_water_walk())
-        mutations.push_back("walk on water");
+        mutations.push_back(_("walk on water"));
 
     string current;
     for (unsigned i = 0; i < NUM_MUTATIONS; ++i)
@@ -2714,22 +2717,17 @@ static string _status_mut_abilities(int sw)
 
         current = "";
 
-        current += mdef.short_desc;
+        current += gettext(mdef.short_desc);
 
         if (mdef.levels > 1)
-        {
-            ostringstream ostr;
-            ostr << ' ' << level;
-
-            current += ostr.str();
-        }
+            current += make_stringf(" %d", level);
 
         if (!current.empty())
         {
             if (level == 0)
-                current = "(" + current + ")";
+                current = make_stringf("(%s)", current.c_str());
             if (lowered)
-                current = "<darkgrey>" + current + "</darkgrey>";
+                current = make_stringf("<darkgrey>(%s)</darkgrey>", current.c_str());
             mutations.push_back(current);
         }
     }
