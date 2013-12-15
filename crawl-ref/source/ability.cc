@@ -645,6 +645,7 @@ static int _zp_cost(const ability_def& abil)
 const string make_cost_description(ability_type ability)
 {
     const ability_def& abil = get_ability_def(ability);
+    vector<string> costs;
     string ret;
     int ep = 0;
     if (abil.mp_cost)
@@ -656,61 +657,68 @@ const string make_cost_description(ability_type ability)
         else
         {
             if (abil.flags & ABFLAG_PERMANENT_MP)
-                ret += make_stringf(", %d Permanent MP", abil.mp_cost);
+                costs.push_back(make_stringf(_("%d Permanent MP"), abil.mp_cost));
             else
-                ret += make_stringf(", %d MP", abil.mp_cost);
+                costs.push_back(make_stringf(_("%d MP"), abil.mp_cost));
         }
 
     if (abil.hp_cost || ep)
     {
         ////TODO Dj
+        const int hpc = ep + abil.hp_cost.cost(you.hp_max);
         if (abil.flags & ABFLAG_PERMANENT_HP)
-            ret += make_stringf(", %d Permanent HP", ep + abil.hp_cost.cost(you.hp_max));
+            costs.push_back(make_stringf(_("%d Permanent HP"), hpc));
         else
-            ret += make_stringf(", %d HP", ep + abil.hp_cost.cost(you.hp_max));
+            costs.push_back(make_stringf(_("%d HP"), hpc));
     }
 
     if (abil.zp_cost)
-        ret += make_stringf(", %d ZP", (int)_zp_cost(abil));
+        costs.push_back(make_stringf("%d ZP", (int)_zp_cost(abil)));
 
     if (abil.food_cost && !you_foodless(true)
         && (you.is_undead != US_SEMI_UNDEAD || you.hunger_state > HS_STARVING))
     {
         if (you.species == SP_DJINNI)
-            ret += ", Glow";
+            costs.push_back(_("Glow"));
         else
-            ret += ", Food"; // randomised and exact amount hidden from player
+            costs.push_back(_("Food")); // randomised and exact amount hidden from player
     }
 
     if (abil.piety_cost || abil.flags & ABFLAG_PIETY)
-        ret += ", Piety"; // randomised and exact amount hidden from player
+        costs.push_back(_("Piety")); // randomised and exact amount hidden from player
 
     if (abil.flags & ABFLAG_BREATH)
-        ret += ", Breath";
+        costs.push_back(_("Breath"));
 
     if (abil.flags & ABFLAG_DELAY)
-        ret += ", Delay";
+        costs.push_back(_("Delay"));
 
     if (abil.flags & ABFLAG_PAIN)
-        ret += ", Pain";
+        costs.push_back(_("Pain"));
 
     if (abil.flags & ABFLAG_EXHAUSTION)
-        ret += ", Exhaustion";
+        costs.push_back(_("Exhaustion"));
 
     if (abil.flags & ABFLAG_INSTANT)
-        ret += ", Instant"; // not really a cost, more of a bonus - bwr
+        costs.push_back(_("Instant")); // not really a cost, more of a bonus - bwr
 
     if (abil.flags & ABFLAG_FRUIT)
-        ret += ", Fruit";
+        costs.push_back(_("Fruit"));
 
     if (abil.flags & ABFLAG_VARIABLE_FRUIT)
-        ret += ", Fruit or Piety";
+        costs.push_back(_("Fruit or Piety"));
 
     if (abil.flags & ABFLAG_LEVEL_DRAIN)
-        ret += ", Level drain";
+        costs.push_back(_("Level drain"));
 
     if (abil.flags & ABFLAG_STAT_DRAIN)
-        ret += ", Stat drain";
+        costs.push_back(_("Stat drain"));
+
+    for (int i = 0, size = costs.size(); i < size; ++i)
+    {
+        ret += ", ";
+        ret += costs[i];
+    }
 
     // If we haven't output anything so far, then the effect has no cost
     if (ret.empty())
