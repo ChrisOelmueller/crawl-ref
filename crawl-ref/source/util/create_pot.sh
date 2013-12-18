@@ -3,7 +3,7 @@
 set -e
 
 #TODO Obtain this from anywhere.
-VERSION='0.14-a0-1425-g0bc4f04'
+VERSION=`git describe`
 # Where to write the message catalog template.
 OUTPUT_FILE=dat/po/messages.pot
 # Template containing strings to *not* extract.
