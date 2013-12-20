@@ -243,7 +243,7 @@ ifdef BUILD_ALL
 endif
 
 # Should be the first rule, but must come after $(GAME) is set.
-all: greet check-fonts $(GAME) docs webserver
+all: greet check-fonts $(GAME) docs webserver gettext
 
 LIBPCRE := contrib/install/$(ARCH)/lib/libpcre.a
 LIBSDL := contrib/install/$(ARCH)/lib/libSDL.a
@@ -1150,6 +1150,21 @@ else
 webserver:
 endif
 
+# Translations
+.PHONY: gettext clean-gettext
+
+MSGFMT = msgfmt
+LANG = $(notdir $(wildcard dat/po/??_??))
+TRANS_OBJ = $(LANG:%=dat/lang/%/LC_MESSAGES/messages.mo)
+
+dat/lang/%/LC_MESSAGES/messages.mo: dat/po/%/messages.po
+	mkdir -p $(dir $@)
+	$(MSGFMT) -o $@ dat/po/$*/messages.po
+
+gettext: ${TRANS_OBJ}
+
+clean-gettext:
+	$(RM) ${TRANS_OBJ}
 
 # There might not have been any goals passed on the commandline, so...
 GOALS = $(or $(MAKECMDGOALS),$(.DEFAULT_GOAL))
