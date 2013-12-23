@@ -5,9 +5,10 @@ set -e
 #TODO Obtain this from anywhere.
 VERSION=`git describe`
 # Where to write the message catalog template.
-OUTPUT_FILE=dat/po/messages.pot
+OUTPUT_DIR=dat/po
+OUTPUT_FILE=$OUTPUT_DIR/messages.pot
 # Template containing strings to *not* extract.
-EXCLUDE_FILE=dat/po/exclude.pot
+EXCLUDE_FILE=$OUTPUT_DIR/exclude.pot
 # Include comments starting with this keyword (and located either on the
 # previous or the same line as the string that will be extracted) as help
 # for translators. Useful to grasp string context, the meaning of format
@@ -89,3 +90,8 @@ COMMENT_KEYWORD='i18n'
 
 # Print some stats (amount of strings).
 msgfmt -o /dev/null --statistics "$OUTPUT_FILE"
+
+# Update language files
+for LANG in `cd $OUTPUT_DIR; ls -d ??_??`
+    do msgmerge -U $OUTPUT_DIR/$LANG/messages.po $OUTPUT_DIR/messages.pot
+done

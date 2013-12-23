@@ -1154,8 +1154,8 @@ endif
 .PHONY: gettext clean-gettext
 
 MSGFMT = msgfmt
-LANG = $(notdir $(wildcard dat/po/??_??))
-TRANS_OBJ = $(LANG:%=dat/lang/%/LC_MESSAGES/messages.mo)
+LANG_COUNTRY = $(notdir $(wildcard dat/po/??_??))
+TRANS_OBJ = $(LANG_COUNTRY:%=dat/lang/%/LC_MESSAGES/messages.mo)
 
 dat/lang/%/LC_MESSAGES/messages.mo: dat/po/%/messages.po
 	mkdir -p $(dir $@)
