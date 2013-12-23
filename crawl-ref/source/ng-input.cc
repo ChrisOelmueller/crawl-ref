@@ -1,5 +1,6 @@
 #include "AppHdr.h"
 
+#include <libintl.h>
 #include <wctype.h>
 #include "ng-input.h"
 
@@ -17,36 +18,36 @@ extern string init_file_error; // defined in main.cc
 // Eventually, this should be something more grand. {dlb}
 void opening_screen(void)
 {
-    string msg =
-    "<yellow>Hello, welcome to " CRAWL " " + string(Version::Long) + "!</yellow>\n"
-    "<brown>(c) Copyright 1997-2002 Linley Henzell, "
-    "2002-2013 Crawl DevTeam\n"
-    "Read the instructions for legal details."
-    "</brown> " ;
+    string msg = "<yellow>"
+        + make_stringf("Hello, welcome to %s %s !",
+                       CRAWL, Version::Long)
+        + "</yellow>\n<brown>"
+        + _("(c) Copyright 1997-2002 Linley Henzell, 2002-2013 Crawl DevTeam")
+        + "\n"
+        + _("Read the instructions for legal details.")
+        + "</brown> ";
 
     const bool init_found = init_file_error.empty();
 
-    if (!init_found)
-        msg += "<lightred>(No init file ";
-    else
-        msg += "<lightgrey>(Read options from ";
-
     if (init_found)
     {
+        msg += "<lightgrey>"
+               + make_stringf("(Read options from %s).",
 #ifdef DGAMELAUNCH
         // For dgl installs, show only the last segment of the .crawlrc
         // file name so that we don't leak details of the directory
         // structure to (untrusted) users.
-        msg += get_base_filename(Options.filename);
+        get_base_filename(Options.filename).c_str()
 #else
-        msg += Options.filename;
+        Options.filename.c_str()
 #endif
-        msg += ".)";
+        );
     }
     else
     {
-        msg += init_file_error;
-        msg += ", using defaults.)";
+        msg += "<lightred>"
+            + make_stringf("(No init file %s, using defaults.)",
+                           init_file_error.c_str());
     }
 
     msg += "\n";
