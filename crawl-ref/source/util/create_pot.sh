@@ -40,6 +40,7 @@ COMMENT_KEYWORD='i18n'
              --package-version="$VERSION" \
              --msgid-bugs-address='mail@example.com' \
              \
+             --add-comments=/ \
              --keyword=_ \
              --keyword=no_ \
              --keyword=mpr \
@@ -78,6 +79,7 @@ COMMENT_KEYWORD='i18n'
              \
              --join-existing \
              --language=Lua \
+             --add-comments=/ \
              --keyword \
              --keyword=crawl.mpr \
              --keyword=crawl.yesno \
