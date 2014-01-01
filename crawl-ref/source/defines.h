@@ -322,6 +322,7 @@ enum CHAR_ATTRIBUTES
 #define RANDOM_ELEMENT(x) (x[random2(ARRAYSZ(x))])
 
 #define _(str) gettext(str)
+#define P_(sing, plur, n) ngettext(sing, plur, n)
 #define no_(str) str
 
 const char * const MONSTER_HIT_DICE = "monster-hit-dice";
