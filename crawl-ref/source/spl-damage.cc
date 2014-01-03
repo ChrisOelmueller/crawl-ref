@@ -1464,10 +1464,8 @@ static int _ignite_poison_affect_item(item_def& item, bool in_inv)
             }
             else
             {
-                mprf_plural(item.quantity,
-                            "Your %s burns!",
-                            "Your %s burn!",
-                            item.name(DESC_PLAIN).c_str());
+                mprf(P_("Your %s burns!", "Your %s burn!", item.quantity),
+                     item.name(DESC_PLAIN).c_str());
             }
         }
 

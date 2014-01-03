@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <cmath>
+#include <libintl.h>
 
 #ifdef UNIX
 #include <sys/types.h>
@@ -570,39 +571,41 @@ static bool _expose_invent_to_element(beam_type flavour, int strength)
                 switch (target_class)
                 {
                 case OBJ_SCROLLS:
-                    mprf_plural(num_dest,
-                                "%s %s catches fire!", "%s %s catch fire!",
-                                part_stack_string(num_dest, quantity).c_str(),
-                                item_name.c_str());
+                    mprf(P_("%s %s catches fire!",
+                            "%s %s catch fire!", num_dest),
+                         part_stack_string(num_dest, quantity).c_str(),
+                         item_name.c_str());
                     break;
 
                 case OBJ_POTIONS:
-                    mprf_plural(num_dest,
-                                "%s %s freezes and shatters!",
-                                "%s %s freeze and shatter!",
-                                part_stack_string(num_dest, quantity).c_str(),
-                                item_name.c_str());
+                    mprf(P_("%s %s freezes and shatters!",
+                            "%s %s freeze and shatter!", num_dest),
+                         part_stack_string(num_dest, quantity).c_str(),
+                         item_name.c_str());
                     break;
 
                 case OBJ_FOOD:
                     if (flavour == BEAM_DEVOUR_FOOD)
-                        mprf_plural(num_dest,
-                            "%s %s is devoured!", "%s %s are devoured!",
-                            part_stack_string(num_dest, quantity).c_str(),
-                            item_name.c_str());
+                    {
+                        mprf(P_("%s %s is devoured!",
+                                "%s %s are devoured!", num_dest),
+                             part_stack_string(num_dest, quantity).c_str(),
+                             item_name.c_str());
+                    }
                     else
-                        mprf_plural(num_dest,
-                            "%s %s is covered with spores!",
-                            "%s %s are covered with spores!",
-                            part_stack_string(num_dest, quantity).c_str(),
-                            item_name.c_str());
+                    {
+                        mprf(P_("%s %s is covered with spores!",
+                                "%s %s are covered with spores!", num_dest),
+                             part_stack_string(num_dest, quantity).c_str(),
+                             item_name.c_str());
+                    }
                     break;
 
                 default:
-                    mprf_plural(num_dest,
-                                "%s %s is destroyed!", "%s %s are destroyed!",
-                                part_stack_string(num_dest, quantity).c_str(),
-                                item_name.c_str());
+                    mprf(P_("%s %s is destroyed!",
+                            "%s %s are destroyed!", num_dest),
+                         part_stack_string(num_dest, quantity).c_str(),
+                         item_name.c_str());
                     break;
                 }
 
@@ -901,17 +904,15 @@ static void _maybe_spawn_jellies(int dam, const char* aux,
             {
                 if (death_type == KILLED_BY_MONSTER)
                 {
-                    mprf_plural(count_created,
-                        "You shudder from the blow and a jelly pops out!",
-                        "You shudder from the blow and a flood of jellies pours"
-                        " out from you!");
+                    mpr(P_("You shudder from the blow and a jelly pops out!",
+                           "You shudder from the blow and a flood of jellies "
+                           "pours out from you!", count_created));
                 }
                 else
                 {
-                    mprf_plural(count_created,
-                        "You shudder from the blast and a jelly pops out!",
-                        "You shudder from the blast and a flood of jellies pours"
-                        " out from you!");
+                    mpr(P_("You shudder from the blast and a jelly pops out!",
+                           "You shudder from the blast and a flood of jellies "
+                           "pours out from you!", count_created));
                 }
             }
         }

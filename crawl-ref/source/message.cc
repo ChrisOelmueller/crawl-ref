@@ -1053,35 +1053,6 @@ void mprf(const char *format, ...)
     va_end(argp);
 }
 
-void mprf_plural(msg_channel_type channel, int param, int amount,
-                 const char *sing, const char *plur, ...)
-{
-    va_list argp;
-    va_start(argp, plur);
-    do_message_print(channel, param, true, false, ngettext(sing, plur, amount),
-                     argp);
-    va_end(argp);
-}
-
-void mprf_plural(msg_channel_type channel, int amount, const char *sing,
-                 const char *plur, ...)
-{
-    va_list argp;
-    va_start(argp, plur);
-    do_message_print(channel, 0, true, false, ngettext(sing, plur, amount),
-                     argp);
-    va_end(argp);
-}
-
-void mprf_plural(int amount, const char *sing, const char *plur, ...)
-{
-    va_list argp;
-    va_start(argp, plur);
-    do_message_print(MSGCH_PLAIN, 0, true, false, ngettext(sing, plur, amount),
-                     argp);
-    va_end(argp);
-}
-
 void mprf_nojoin(msg_channel_type channel, const char *format, ...)
 {
     va_list argp;

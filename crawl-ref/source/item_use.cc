@@ -2019,10 +2019,9 @@ void zap_wand(int slot)
                 "the power of this device...");
         }
 
-        mprf_plural(wand.plus,
-                    "This wand has %d charge left.",
-                    "This wand has %d charges left.",
-                    wand.plus);
+        mprf(P_("This wand has %d charge left.",
+                "This wand has %d charges left.", wand.plus),
+             wand.plus);
 
         set_ident_flags(wand, ISFLAG_KNOW_PLUSES);
     }
@@ -2596,10 +2595,9 @@ bool enchant_weapon(item_def &wpn, int acc, int dam, const char *colour)
                     wpn.plus2++, success = true;
             }
             if (success && colour)
-                mprf_plural(wpn.quantity,
-                            "%s glows %s for a moment.",
-                            "%s glow %s for a moment.",
-                            iname.c_str(), colour);
+                mprf(P_("%s glows %s for a moment.",
+                        "%s glow %s for a moment.", wpn.quantity),
+                     iname.c_str(), colour);
         }
         if (wpn.cursed())
         {
@@ -2607,10 +2605,9 @@ bool enchant_weapon(item_def &wpn, int acc, int dam, const char *colour)
             {
                 if (const char *space = strchr(colour, ' '))
                     colour = space + 1;
-                mprf_plural(wpn.quantity,
-                            "%s glows silvery %s for a moment.",
-                            "%s glow silvery %s for a moment.",
-                            iname.c_str(), colour);
+                mprf(P_("%s glows silvery %s for a moment.",
+                        "%s glow silvery %s for a moment.", wpn.quantity),
+                     iname.c_str(), colour);
             }
             do_uncurse_item(wpn, true, true);
             success = true;
@@ -2621,10 +2618,9 @@ bool enchant_weapon(item_def &wpn, int acc, int dam, const char *colour)
     {
         if (!wpn.defined())
             iname = make_stringf(_("Your %s"), you.hand_name(true).c_str());
-        mprf_plural(wpn.quantity,
-                    "%s very briefly gains a %s sheen.",
-                    "%s very briefly gain a %s sheen.",
-                    iname.c_str(), colour);
+        mprf(P_("%s very briefly gains a %s sheen.",
+                "%s very briefly gain a %s sheen.", wpn.quantity),
+             iname.c_str(), colour);
     }
 
     if (success)

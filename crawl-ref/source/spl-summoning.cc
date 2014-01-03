@@ -187,7 +187,7 @@ spret_type cast_sticks_to_snakes(int pow, god_type god, bool fail)
     }
 
     dec_inv_item_quantity(you.equip[EQ_WEAPON], count);
-    mprf_plural(count, "You create a snake!", "You create some snakes!");
+    mpr(P_("You create a snake!", "You create some snakes!", count));
     return SPRET_SUCCESS;
 }
 
@@ -770,10 +770,9 @@ spret_type cast_tukimas_dance(int pow, god_type god, bool force_hostile,
     {
         if (wpn)
         {
-            mprf_plural(wpn->quantity,
-                        "%s vibrates crazily for a second.",
-                        "%s vibrate crazily for a second.",
-                        wpn->name(DESC_YOUR).c_str());
+            mprf(P_("%s vibrates crazily for a second.",
+                    "%s vibrate crazily for a second.", wpn->quantity),
+                 wpn->name(DESC_YOUR).c_str());
         }
         else
             mprf("Your %s twitch.", you.hand_name(true).c_str());
@@ -2302,15 +2301,13 @@ spret_type cast_haunt(int pow, const coord_def& where, god_type god, bool fail)
     }
     else if (friendly)
     {
-        mprf_plural(success,
-                    "An insubstantial figure forms in the air.",
-                    "Insubstantial figures form in the air.");
+        mpr(P_("An insubstantial figure forms in the air.",
+               "Insubstantial figures form in the air.", success));
     }
     else
     {
-        mprf_plural(success,
-                    "You sense a hostile presence.",
-                    "You sense hostile presences.");
+        mpr(P_("You sense a hostile presence.",
+               "You sense hostile presences.", success));
     }
 
     //jmf: Kiku sometimes deflects this
@@ -2914,10 +2911,9 @@ spret_type cast_spectral_weapon(actor *agent, int pow, god_type god, bool fail)
         {
             if (wpn)
             {
-                mprf_plural(wpn->quantity,
-                            "%s vibrates crazily for a second.",
-                            "%s vibrate crazily for a second.",
-                            wpn->name(DESC_YOUR).c_str());
+                mprf(P_("%s vibrates crazily for a second.",
+                        "%s vibrate crazily for a second.", wpn->quantity),
+                     wpn->name(DESC_YOUR).c_str());
             }
             else
                 mprf("Your %s twitch.", you.hand_name(true).c_str());

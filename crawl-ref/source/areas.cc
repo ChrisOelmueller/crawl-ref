@@ -8,6 +8,8 @@
 
 #include "areas.h"
 
+#include <libintl.h>
+
 #include "act-iter.h"
 #include "art-enum.h"
 #include "beam.h"
@@ -470,9 +472,12 @@ void create_sanctuary(const coord_def& center, int time)
 
     if (cloud_count > 0)
     {
-        mprf_plural(MSGCH_GOD, cloud_count,
-            "By Zin's power, the foul cloud within the sanctuary is swept away.",
-            "By Zin's power, all foul fumes within the sanctuary are swept away.");
+        mprf(MSGCH_GOD,
+             P_("By Zin's power, the foul cloud within the sanctuary is swept "
+                "away.",
+                "By Zin's power, all foul fumes within the sanctuary are swept "
+                "away.",
+                cloud_count));
     }
 
     if (blood_count > 0)

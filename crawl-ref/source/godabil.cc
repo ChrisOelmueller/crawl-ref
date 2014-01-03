@@ -1562,9 +1562,9 @@ bool trog_burn_spellbooks()
             const int duration = min(4 + count + random2(rarity/2), 23);
             place_cloud(CLOUD_FIRE, *ri, duration, &you);
 
-            mprf_plural(MSGCH_GOD, count,
-                        "The spellbook bursts into flames.",
-                        "The spellbooks burst into flames.");
+            mprf(MSGCH_GOD,
+                 P_("The spellbook bursts into flames.",
+                    "The spellbooks burst into flames.", count));
         }
     }
 
@@ -1575,9 +1575,8 @@ bool trog_burn_spellbooks()
     }
     else if (totalblocked)
     {
-        mprf_plural(totalblocked,
-                    "The spellbook fails to ignite!",
-                    "The spellbooks fail to ignite!");
+        mpr(P_("The spellbook fails to ignite!",
+               "The spellbooks fail to ignite!", totalblocked));
 
         for (vector<coord_def>::iterator it = mimics.begin();
              it != mimics.end(); ++it)
@@ -1642,9 +1641,9 @@ void jiyva_paralyse_jellies()
 
     if (jelly_count > 0)
     {
-        mprf_plural(MSGCH_PRAY, jelly_count,
-                    "A nearby slime joins your prayer.",
-                    "The nearby slimes join your prayer.");
+        mprf(MSGCH_PRAY,
+             P_("A nearby slime joins your prayer.",
+                "The nearby slimes join your prayer.", jelly_count));
         lose_piety(5);
     }
 }
@@ -2213,9 +2212,9 @@ bool fedhas_sunlight()
 
     if (revealed_count)
     {
-        mprf_plural(revealed_count,
-                    "In the bright light, you notice an invisible shape",
-                    "In the bright light, you notice some invisible shapes");
+        mpr(P_("In the bright light, you notice an invisible shape",
+               "In the bright light, you notice some invisible shapes",
+               revealed_count));
     }
 
     return true;
@@ -2499,10 +2498,9 @@ static void _decrease_amount(vector<pair<int, int> >& available, int amount)
     }
     if (total_decrease > 0)
     {
-        mprf_plural(total_decrease,
-                    "A piece of fruit is consumed!",
-                    "%d pieces of fruit are consumed!",
-                    total_decrease);
+        mprf(P_("A piece of fruit is consumed!",
+                "%d pieces of fruit are consumed!", total_decrease),
+             total_decrease);
     }
 }
 
@@ -2703,9 +2701,8 @@ int fedhas_rain(const coord_def &target)
 
     if (spawned_count > 0)
     {
-        mprf_plural(spawned_count,
-                    "A plant grows in the rain.",
-                    "Some plants grow in the rain.");
+        mpr(P_("A plant grows in the rain.",
+               "Some plants grow in the rain.", spawned_count));
     }
 
     return processed_count;

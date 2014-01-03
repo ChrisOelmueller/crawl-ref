@@ -93,12 +93,6 @@ void mpr_nojoin(msg_channel_type channel, string text);
 void mprf(msg_channel_type channel, int param, PRINTF(2, ));
 void mprf(msg_channel_type channel, PRINTF(1, ));
 void mprf(PRINTF(0, ));
-// The plural form (*plur) is hidden in PRINTF for mprf_plural.
-void mprf_plural(msg_channel_type channel, int param, int amount,
-                 const char *sing, PRINTF(4, ));
-void mprf_plural(msg_channel_type channel, int amount, const char *sing,
-                 PRINTF(3, ));
-void mprf_plural(int amount, const char *sing, PRINTF(2, ));
 
 void mprf_nojoin(msg_channel_type channel, PRINTF(1,));
 void mprf_nojoin(PRINTF(0,));

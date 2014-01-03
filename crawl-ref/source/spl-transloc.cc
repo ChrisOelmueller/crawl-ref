@@ -8,6 +8,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <libintl.h>
 
 #include "spl-transloc.h"
 #include "externs.h"
@@ -964,9 +965,8 @@ spret_type cast_apportation(int pow, bolt& beam, bool fail)
     dprf("Apport: new spot is %d/%d", new_spot.x, new_spot.y);
 
     // Actually move the item.
-    mprf_plural(item.quantity,
-                "Yoink! You pull the item towards yourself.",
-                "Yoink! You pull the items towards yourself.");
+    mpr(P_("Yoink! You pull the item towards yourself.",
+           "Yoink! You pull the items towards yourself.", item.quantity));
     if (max_units < item.quantity)
     {
         if (!copy_item_to_grid(item, new_spot, max_units))

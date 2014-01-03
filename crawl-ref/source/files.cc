@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <libintl.h>
 
 #include <algorithm>
 #include <functional>
@@ -1063,16 +1064,16 @@ static void _grab_followers()
             // Summons won't follow and will time out.
             if (non_stair_using_summons > 0)
             {
-                mprf_plural(non_stair_using_allies,
-                            "Your summoned ally is left behind.",
-                            "Your summoned allies are left behind.");
+                mpr(P_("Your summoned ally is left behind.",
+                       "Your summoned allies are left behind.",
+                       non_stair_using_allies));
             }
             else
             {
                 // Permanent undead are left behind but stay.
-                mprf_plural(non_stair_using_allies,
-                            "Your mindless thrall stays behind.",
-                            "Your mindless thralls stay behind.");
+                mpr(P_("Your mindless thrall stays behind.",
+                       "Your mindless thralls stay behind.",
+                       non_stair_using_allies));
             }
         }
         memset(travel_point_distance, 0, sizeof(travel_distance_grid_t));

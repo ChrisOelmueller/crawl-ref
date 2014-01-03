@@ -1251,9 +1251,8 @@ int eat_from_floor(bool skip_chunks)
         {
             if (you.species == SP_VAMPIRE)
             {
-                mprf_plural(unusable_corpse,
-                            "This corpse is devoid of blood.",
-                            "These corpses are devoid of blood.");
+                mpr(P_("This corpse is devoid of blood.",
+                       "These corpses are devoid of blood.", unusable_corpse));
             }
             else
                 _player_can_eat_rotten_meat(true);
@@ -1391,9 +1390,9 @@ bool eat_from_inventory()
         {
             if (you.species == SP_VAMPIRE)
             {
-                mprf_plural(unusable_corpse,
-                            "The corpse you are carrying is devoid of blood.",
-                            "The corpses you are carrying are devoid of blood.");
+                mpr(P_("The corpse you are carrying is devoid of blood.",
+                       "The corpses you are carrying are devoid of blood.",
+                       unusable_corpse));
             }
             else
                 _player_can_eat_rotten_meat(true);

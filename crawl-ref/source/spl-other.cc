@@ -6,6 +6,8 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+
 #include "spl-other.h"
 #include "externs.h"
 
@@ -80,9 +82,9 @@ spret_type cast_sublimation_of_blood(int pow, bool fail)
             fail_check();
             success = true;
 
-            mprf_plural(you.inv[wielded].quantity,
-                "The blood within the flask you are holding froths and boils.",
-                "The blood within one of your flasks froths and boils.");
+            mpr(P_("The blood within the flask you are holding froths and boils.",
+                   "The blood within one of your flasks froths and boils.",
+                   you.inv[wielded].quantity));
 
             mpr("A flood of magical energy pours into your mind!");
 

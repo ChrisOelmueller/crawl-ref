@@ -1731,7 +1731,7 @@ static bool _seal_doors_and_stairs(const monster* warden)
                                           : "Someone"));
 
         if (num_closed > 0)
-            mprf_plural(num_closed, "A door slams shut!", "The doors slam shut!");
+            mprf(P_("A door slams shut!", "The doors slam shut!", num_closed));
 
         if (player_pushed)
             mpr("You are pushed out of the doorway!");

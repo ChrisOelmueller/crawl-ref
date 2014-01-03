@@ -1536,10 +1536,9 @@ static void _got_gold(item_def& item, int quant, bool quiet)
 
     if (!quiet)
     {
-        mprf_plural(you.gold,
-                    "You now have %d gold piece (gained %d).",
-                    "You now have %d gold pieces (gained %d).",
-                    you.gold, quant);
+        mprf(P_("You now have %d gold piece (gained %d).",
+                "You now have %d gold pieces (gained %d).", you.gold),
+             you.gold, quant);
         learned_something_new(HINT_SEEN_GOLD);
     }
 }
