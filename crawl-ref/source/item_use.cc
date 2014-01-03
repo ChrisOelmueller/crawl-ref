@@ -5,6 +5,8 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+
 #include "item_use.h"
 
 #include "ability.h"
@@ -1245,8 +1247,8 @@ static bool _safe_to_remove_or_wear(const item_def &item, bool remove, bool quie
             verb = "Wearing";
     }
 
-    string prompt = make_stringf("%s this item will reduce your %s to zero "
-                                 "or below. Continue?", verb.c_str(),
+    string prompt = make_stringf(_("%s this item will reduce your %s to zero "
+                                 "or below. Continue?"), verb.c_str(),
                                  stat_desc(red_stat, SD_NAME));
     if (!yesno(prompt.c_str(), true, 'n', true, false))
     {
@@ -2618,7 +2620,7 @@ bool enchant_weapon(item_def &wpn, int acc, int dam, const char *colour)
     if (!success && colour)
     {
         if (!wpn.defined())
-            iname = make_stringf("Your %s", you.hand_name(true).c_str());
+            iname = make_stringf(_("Your %s"), you.hand_name(true).c_str());
         mprf_plural(wpn.quantity,
                     "%s very briefly gains a %s sheen.",
                     "%s very briefly gain a %s sheen.",
@@ -3133,7 +3135,7 @@ void read_scroll(int slot)
     // For cancellable scrolls leave printing this message to their
     // respective functions.
     string pre_succ_msg =
-            make_stringf("As you read the %s, it crumbles to dust.",
+            make_stringf(_("As you read the %s, it crumbles to dust."),
                           scroll.name(DESC_QUALNAME).c_str());
     if (!_is_cancellable_scroll(which_scroll))
     {

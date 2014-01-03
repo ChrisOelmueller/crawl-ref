@@ -57,6 +57,7 @@
 #include <cctype>
 #include <cstdarg>
 #include <cstdio>
+#include <libintl.h>
 #include <memory>
 #include <set>
 #include <sstream>
@@ -164,7 +165,7 @@ bool deviant_route_warning::warn_continue_travel(
         return true;
 
     target = dest;
-    const string prompt = make_stringf("Have to go through %s. Continue?",
+    const string prompt = make_stringf(_("Have to go through %s. Continue?"),
                                        deviant.describe().c_str());
     // If the user says "Yes, shut up and take me there", we won't ask
     // again for that destination. If the user says "No", we will
@@ -885,9 +886,9 @@ void explore_pickup_event(int did_pickup, int tried_pickup)
         if (explore_stopped_pos == you.pos())
         {
             const string prompt =
-                make_stringf("Could not pick up %s here; shall I ignore %s?",
-                             tried_pickup == 1? "an item" : "some items",
-                             tried_pickup == 1? "it" : "them");
+                P_("Could not pick up an item here; shall I ignore it?",
+                   "Could not pick up some items here; shall I ignore them?",
+                   tried_pickup);
 
             // Make Escape => 'n' and stop run.
             explicit_keymap map;
@@ -2186,7 +2187,7 @@ static int _prompt_travel_branch(int prompt_flags, bool* to_entrance)
             if (!trans_travel_dest.empty() && remember_targ)
             {
                 segs.push_back(
-                    make_stringf("Enter - %s", trans_travel_dest.c_str()));
+                    make_stringf(_("Enter - %s"), trans_travel_dest.c_str()));
             }
 
             segs.push_back("? - help");

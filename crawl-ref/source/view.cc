@@ -13,6 +13,7 @@
 #include <sstream>
 #include <algorithm>
 #include <memory>
+#include <libintl.h>
 
 #include "act-iter.h"
 #include "attitude-change.h"
@@ -188,7 +189,7 @@ static string _desc_mons_type_map(map<monster_type, int> types)
             message += ", ";
         ++count;
     }
-    return make_stringf("%s come into view.", message.c_str());
+    return make_stringf(_("%s come into view."), message.c_str());
 }
 
 /*
@@ -520,17 +521,11 @@ bool magic_mapping(int map_radius, int proportion, bool suppress_msg,
         vector<string> sensed;
 
         if (num_altars > 0)
-        {
-            sensed.push_back(make_stringf("%d altar%s", num_altars,
-                                          num_altars > 1 ? "s" : ""));
-        }
+            sensed.push_back(P_("%d altar", "%d altars", num_altars));
 
         if (num_shops_portals > 0)
-        {
-            const char* plur = num_shops_portals > 1 ? "s" : "";
-            sensed.push_back(make_stringf("%d shop%s/portal%s",
-                                          num_shops_portals, plur, plur));
-        }
+            sensed.push_back(P_("%d shop/portal", "%d shops/portals",
+                                num_shops_portals));
 
         if (!sensed.empty())
             mpr_comma_separated_list("You sensed ", sensed);

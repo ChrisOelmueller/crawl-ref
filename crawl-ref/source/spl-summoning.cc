@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <libintl.h>
 
 #include "act-iter.h"
 #include "areas.h"
@@ -126,9 +127,10 @@ spret_type cast_sticks_to_snakes(int pow, god_type god, bool fail)
     }
 
     const item_def& wpn = *you.weapon();
-    const string abort_msg = make_stringf("%s feel%s slithery for a moment!",
-                                          wpn.name(DESC_YOUR).c_str(),
-                                          wpn.quantity > 1 ? "" : "s");
+    const string abort_msg =
+        make_stringf(wpn.quantity == 1 ? _("%s feels slithery for a moment!")
+                                       : _("%s feel slithery for a moment!"),
+                     wpn.name(DESC_YOUR).c_str());
 
     // Don't enchant sticks marked with {!D}.
     if (!check_warning_inscriptions(wpn, OPER_DESTROY))

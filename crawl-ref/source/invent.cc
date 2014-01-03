@@ -252,8 +252,9 @@ string InvEntry::get_text(bool need_cursor) const
         tstr << setw(max_chars_in_line - strwidth(tstr.str())
                      + colour_tag_adjustment)
              << right
-             << make_stringf(" (%i aum)",
-                             static_cast<int>(0.5 + BURDEN_TO_AUM * mass));
+             << make_stringf(" (%i %s)",
+                             static_cast<int>(0.5 + BURDEN_TO_AUM * mass),
+                             _("aum"));
     }
     return tstr.str();
 }

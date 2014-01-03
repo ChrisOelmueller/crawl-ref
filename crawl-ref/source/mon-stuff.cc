@@ -3499,7 +3499,7 @@ bool swap_check(monster* mons, coord_def &loc, bool quiet)
         if (!quiet)
         {
             simple_monster_message(mons,
-                make_stringf(" is %s!", held_status(mons)).c_str());
+                make_stringf(_(" is %s!"), held_status(mons)).c_str());
         }
         return false;
     }
@@ -3686,20 +3686,32 @@ static void _mons_indicate_level_exit(const monster* mon)
     else if (feat_is_travelable_stair(feat))
     {
         command_type dir = feat_stair_direction(feat);
-        simple_monster_message(mon,
-            make_stringf(" %s the %s.",
-                dir == CMD_GO_UPSTAIRS     ? "goes up" :
-                dir == CMD_GO_DOWNSTAIRS   ? "goes down"
-                                           : "takes",
-                feat_is_escape_hatch(feat) ? "escape hatch"
-                                           : "stairs").c_str());
+        if (feat_is_escape_hatch(feat))
+        {
+            if (dir == CMD_GO_UPSTAIRS)
+                simple_monster_message(mon, " goes up the escape hatch");
+            else if (dir == CMD_GO_DOWNSTAIRS)
+                simple_monster_message(mon, " goes down the escape hatch");
+            else
+                simple_monster_message(mon, " takes the escape hatch");
+        }
+        else
+        {
+            if (dir == CMD_GO_UPSTAIRS)
+                simple_monster_message(mon, " goes up the stairs");
+            else if (dir == CMD_GO_DOWNSTAIRS)
+                simple_monster_message(mon, " goes down the stairs");
+            else
+                simple_monster_message(mon, " takes the stairs");
+
+        }
     }
     else if (is_shaft)
     {
-        simple_monster_message(mon,
-            make_stringf(" %s the shaft.",
-                mons_flies(mon) ? "goes down"
-                                : "jumps into").c_str());
+        if (mons_flies(mon))
+            simple_monster_message(mon, " goes down the shaft.");
+        else
+            simple_monster_message(mon, " jumps into the shaft.");
     }
 }
 

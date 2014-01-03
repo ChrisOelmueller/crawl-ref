@@ -650,8 +650,8 @@ bool yesno(const char *str, bool safe, int safeanswer, bool clear_after,
         else if (!noprompt)
         {
             bool upper = (!safe && crawl_state.game_is_hints_tutorial());
-            const string pr = make_stringf("%s[Y]es or [N]o only, please.",
-                                           upper ? "Uppercase " : "");
+            const string pr = upper ? _("Uppercase [Y]es or [N]o only, please.")
+                                    : _("[Y]es or [N]o only, please.");
 #ifdef TOUCH_UI
             status->text = pr;
 #else

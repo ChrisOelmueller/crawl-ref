@@ -5,6 +5,7 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
 #include <math.h>
 
 #include "mon-util.h"
@@ -2991,7 +2992,7 @@ void mons_pacify(monster* mon, mon_attitude_type att, bool no_xp)
     if (mon->type == MONS_GERYON)
     {
         simple_monster_message(mon,
-            make_stringf(" discards %s horn.",
+            make_stringf(_(" discards %s horn."),
                          mon->pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
         monster_drop_things(mon, false, item_is_horn_of_geryon);
     }

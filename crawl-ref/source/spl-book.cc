@@ -12,6 +12,7 @@
 #include <string.h>
 #include <algorithm>
 #include <iomanip>
+#include <libintl.h>
 
 #include "artefact.h"
 #include "cio.h"
@@ -978,26 +979,29 @@ static spell_type _choose_mem_spell(spell_list &spells,
     spell_menu.action_cycle = Menu::CYCLE_TOGGLE;
     spell_menu.menu_action  = Menu::ACT_EXECUTE;
 
-    string more_str = make_stringf("<lightgreen>%d spell level%s left"
-                                   "<lightgreen>",
-                                   player_spell_levels(),
-                                   (player_spell_levels() > 1
-                                    || player_spell_levels() == 0) ? "s" : "");
+    string more_str =
+        make_stringf(P_("<lightgreen>%d spell level left<lightgreen>",
+                        "<lightgreen>%d spell levels left<lightgreen>",
+                        player_spell_levels()),
+                     player_spell_levels());
 
     if (num_unreadable > 0)
     {
-        more_str += make_stringf(", <lightmagenta>%u overly difficult "
-                                 "spellbook%s</lightmagenta>",
-                                 num_unreadable,
-                                 num_unreadable > 1 ? "s" : "");
+        more_str += make_stringf(P_(", <lightmagenta>%u overly difficult "
+                                    "spellbook</lightmagenta>",
+                                    ", <lightmagenta>%u overly difficult "
+                                    "spellbooks</lightmagenta>",
+                                    num_unreadable),
+                                 num_unreadable);
     }
 
     if (num_race > 0)
     {
-        more_str += make_stringf(", <lightred>%u spell%s unmemorisable"
-                                 "</lightred>",
-                                 num_race,
-                                 num_race > 1 ? "s" : "");
+        more_str +=
+            make_stringf(P_(", <lightred>%u spell unmemorisable</lightred>",
+                            ", <lightred>%u spells unmemorisable</lightred>",
+                            num_race),
+                         num_race);
     }
 
 #ifndef USE_TILE_LOCAL
@@ -1247,8 +1251,8 @@ bool forget_spell_from_book(spell_type spell, const item_def* book)
 {
     string prompt;
 
-    prompt += make_stringf("Forgetting %s from %s will destroy the book! "
-                           "Are you sure?",
+    prompt += make_stringf(_("Forgetting %s from %s will destroy the book! "
+                             "Are you sure?"),
                            spell_title(spell),
                            book->name(DESC_THE).c_str());
 

@@ -9,6 +9,7 @@
 
 #include "externs.h"
 
+#include <libintl.h>
 #include <sstream>
 
 #include "branch.h"
@@ -769,22 +770,6 @@ static bool _has_hair(actor* target)
            && you.species != SP_GARGOYLE && you.species != SP_LAVA_ORC;
 }
 
-static string _hair_str(actor* target, bool &plural)
-{
-    ASSERT(target->is_player());
-
-    if (you.species == SP_MUMMY)
-    {
-        plural = true;
-        return "bandages";
-    }
-    else
-    {
-        plural = false;
-        return "hair";
-    }
-}
-
 void MiscastEffect::_conjuration(int severity)
 {
     int num;
@@ -843,12 +828,10 @@ void MiscastEffect::_conjuration(int severity)
         case 10:
         {
             // Player only (for now).
-            bool plural;
-            string hair = _hair_str(target, plural);
-            if (plural)
-                you_msg = make_stringf("Your %s stand on end.", hair.c_str());
+            if (you.species == SP_MUMMY)
+                you_msg = _("Your bandages stand on end.");
             else
-                you_msg = make_stringf("Your %s stands on end.", hair.c_str());
+                you_msg = _("Your hair stands on end.");
         }
         }
         do_msg();
@@ -1922,12 +1905,10 @@ void MiscastEffect::_transmutation(int severity)
         case 10:
         {
             // Player only (for now).
-            bool plural;
-            string hair = _hair_str(target, plural);
-            if (plural)
-                you_msg = make_stringf("Your %s momentarily turns into snakes!", hair.c_str());
+            if (you.species == SP_MUMMY)
+                you_msg = _("Your bandages momentarily turn into snakes!");
             else
-                you_msg = make_stringf("Your %s momentarily turn into snakes!", hair.c_str());
+                you_msg = _("Your hair momentarily turns into snakes!");
         }
         }
         do_msg();
@@ -2608,10 +2589,10 @@ void MiscastEffect::_air(int severity)
         case 12:
         {
             // Player only (for now).
-            bool plural;
-            string hair = _hair_str(target, plural);
-            you_msg = make_stringf("Your %s stand%s on end.", hair.c_str(),
-                                   plural ? "" : "s");
+            if (you.species == SP_MUMMY)
+                you_msg = _("Your bandages stand on end.");
+            else
+                you_msg = _("Your hair stands on end.");
             break;
         }
         }

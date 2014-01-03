@@ -3234,17 +3234,15 @@ void print_sacrifice_message(god_type god, const item_def &item,
         // returned whence they came. (jpeg)
         if (piety_gain)
         {
-            simple_god_message(
-                make_stringf(" gladly reclaims %s.",
-                             item.name(DESC_THE).c_str()).c_str(),
-                GOD_SHINING_ONE);
+            simple_god_message(make_stringf(_(" gladly reclaims %s."),
+                                           item.name(DESC_THE).c_str()).c_str(),
+                               GOD_SHINING_ONE);
         }
         else
         {
-            simple_god_message(
-                make_stringf(" reclaims %s.",
-                             item.name(DESC_THE).c_str()).c_str(),
-                GOD_SHINING_ONE);
+            simple_god_message(make_stringf(_(" reclaims %s."),
+                                           item.name(DESC_THE).c_str()).c_str(),
+                               GOD_SHINING_ONE);
         }
         return;
     }

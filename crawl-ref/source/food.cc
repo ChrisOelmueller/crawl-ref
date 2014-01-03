@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <libintl.h>
 
 #include "externs.h"
 #include "options.h"
@@ -247,9 +248,10 @@ static bool _should_butcher(int corpse_id, bool bottle_blood = false)
              && !you.has_spell(SPELL_SUBLIMATION_OF_BLOOD)
              && !you.has_spell(SPELL_SIMULACRUM))
     {
-        const string msg = make_stringf("You could %s this corpse's blood instead. Continue anyway?",
-                                        can_bottle_blood_from_corpse(corpse.mon_type)
-                                        ? "drain or bottle" : "drain");
+        const string msg = can_bottle_blood_from_corpse(corpse.mon_type)
+            ? _("You could drain or bottle this corpse's blood instead. "
+                "Continue anyway?")
+            : _("You could drain this corpse's blood instead. Continue anyway?");
         if (Options.confirm_butcher != CONFIRM_NEVER)
         {
             if (!yesno(msg.c_str(), true, 'n'))

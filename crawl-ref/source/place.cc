@@ -5,6 +5,8 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+
 #include "externs.h"
 
 #include "branch.h"
@@ -60,7 +62,7 @@ string place_name(unsigned short place, bool long_name, bool include_number)
             // decapitalise 'the'
             if (result.find("The") == 0)
                 result[0] = 't';
-            result = make_stringf("Level %d of %s",
+            result = make_stringf(_("Level %d of %s"),
                       lev, result.c_str());
         }
         else if (lev)

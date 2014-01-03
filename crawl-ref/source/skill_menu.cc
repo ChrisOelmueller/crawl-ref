@@ -5,6 +5,8 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+
 #include "skill_menu.h"
 
 #include "cio.h"
@@ -553,8 +555,8 @@ string SkillMenuSwitch::get_help()
     case SKM_LEVEL_ENHANCED:
         if (skm.is_set(SKMF_ENHANCED))
         {
-            return make_stringf("Skills enhanced by the power of %s are in "
-                                "<blue>blue</blue>. ",
+            return make_stringf(_("Skills enhanced by the power of %s are in "
+                                  "<blue>blue</blue>. "),
                                 god_name(you.religion).c_str());
         }
         else

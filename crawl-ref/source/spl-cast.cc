@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <libintl.h>
 
 #include "spl-cast.h"
 
@@ -1029,7 +1030,7 @@ static void _maybe_cancel_repeat(spell_type spell)
     {
     case SPELL_DELAYED_FIREBALL:
     case SPELL_TUKIMAS_DANCE:
-        crawl_state.cant_cmd_repeat(make_stringf("You can't repeat %s.",
+        crawl_state.cant_cmd_repeat(make_stringf(_("You can't repeat %s."),
                                                  spell_title(spell)));
         break;
 

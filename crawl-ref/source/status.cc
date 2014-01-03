@@ -2,6 +2,8 @@
 
 #include "status.h"
 
+#include <libintl.h>
+
 #include "areas.h"
 #include "env.h"
 #include "evoke.h"
@@ -347,7 +349,7 @@ bool fill_status_info(int status, status_info* inf)
             inf->light_colour = RED;
             inf->light_text   = "Held";
             inf->short_text   = "held";
-            inf->long_text    = make_stringf("You are %s.", held_status());
+            inf->long_text    = make_stringf(_("You are %s."), held_status());
         }
         break;
 
@@ -558,7 +560,7 @@ bool fill_status_info(int status, status_info* inf)
         break;
 
     case DUR_SONG_OF_SLAYING:
-        inf->light_text = make_stringf("Slay (%u)",
+        inf->light_text = make_stringf("%s (%u)", _("Slay"),
                                        you.props["song_of_slaying_bonus"].get_int());
         break;
 
@@ -1029,9 +1031,9 @@ static void _describe_stat_zero(status_info* inf, stat_type st)
     {
         inf->light_colour = you.stat(st) ? LIGHTRED : RED;
         inf->light_text   = s0_names[st];
-        inf->short_text   = make_stringf("lost %s", stat_desc(st, SD_NAME));
+        inf->short_text   = make_stringf(_("lost %s"), stat_desc(st, SD_NAME));
         inf->long_text    = make_stringf(you.stat(st) ?
-                "You are recovering from loss of %s." : "You have no %s!",
+                _("You are recovering from loss of %s.") : _("You have no %s!"),
                 stat_desc(st, SD_NAME));
     }
 }

@@ -7,6 +7,7 @@
 
 #include "misc.h"
 
+#include <libintl.h>
 #include <string.h>
 #include <algorithm>
 
@@ -1602,9 +1603,10 @@ bool i_feel_safe(bool announce, bool want_move, bool just_monsters,
     if (visible.size() == 1)
     {
         const monster& m = *visible[0];
-        const string monname = mons_is_mimic(m.type) ? "A mimic"
-                                                     : m.name(DESC_A);
-        msg = make_stringf("%s is nearby!", monname.c_str());
+        if (mons_is_mimic(m.type))
+            msg = _("A mimic is nearby!");
+        else
+            msg = make_stringf(_("%s is nearby!"), m.name(DESC_A).c_str());
     }
     else if (visible.size() > 1)
         msg = "There are monsters nearby!";

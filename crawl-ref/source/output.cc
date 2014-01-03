@@ -2704,7 +2704,7 @@ static string _status_mut_abilities(int sw)
             "8 rings",
             !form_keeps_mutations() && you.form != TRAN_SPIDER));
         mutations.push_back(_annotate_form_based(
-            make_stringf("constrict %d", you.has_tentacles(false)),
+            make_stringf(_("constrict %d"), you.has_tentacles(false)),
             !form_keeps_mutations()));
     }
 
@@ -2778,9 +2778,9 @@ static string _status_mut_abilities(int sw)
     {
         text += make_stringf("\n<w>%s:</w> ",
                     stringize_glyph(get_item_symbol(SHOW_ITEM_MISCELLANY)).c_str());
-        text += make_stringf(ngettext("%d/%d rune: ", "%d/%d runes: ",
-                                      you.obtainable_runes),
-                    (int)runes.size(), you.obtainable_runes);
+        text += make_stringf(P_("%d/%d rune: ", "%d/%d runes: ",
+                                you.obtainable_runes),
+                             (int)runes.size(), you.obtainable_runes);
         text += comma_separated_line(runes.begin(), runes.end(), ", ", ", ");
     }
 

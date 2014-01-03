@@ -64,6 +64,7 @@
 #include <map>
 #include <set>
 #include <cmath>
+#include <libintl.h>
 
 const int MAX_KRAKEN_TENTACLE_DIST = 12;
 
@@ -181,7 +182,7 @@ bool ugly_thing_mutate(monster* ugly, bool proximity)
 {
     bool success = false;
 
-    string src = "";
+    string msg = "";
 
     colour_t mon_colour = BLACK;
 
@@ -270,9 +271,18 @@ bool ugly_thing_mutate(monster* ugly, bool proximity)
                 proximity_type = 2;
             }
 
-            src = proximity_type == 0 ? " from you" :
-                  proximity_type == 1 ? " from its kin"
-                                      : " from its neighbour";
+            if (proximity_type == 0)
+                msg = _(" basks in your mutagenic energy and changes!");
+            else if (proximity_type == 1)
+            {
+                msg = _(" basks in the mutagenic energy from its kin and "
+                        "changes!");
+            }
+            else
+            {
+                msg = _(" basks in the mutagenic energy from its neighbour and "
+                        "changes!");
+            }
 
             success = true;
         }
@@ -280,10 +290,7 @@ bool ugly_thing_mutate(monster* ugly, bool proximity)
 
     if (success)
     {
-        simple_monster_message(ugly,
-            make_stringf(" basks in the mutagenic energy%s and changes!",
-                         src.c_str()).c_str());
-
+        simple_monster_message(ugly, msg.c_str());
         ugly->uglything_mutate(mon_colour);
 
         return true;
@@ -3868,9 +3875,10 @@ bool mon_special_ability(monster* mons, bolt & beem)
             if (you.can_see(mons))
             {
                 simple_monster_message(mons,
-                    make_stringf(" chants %s song.",
-                    already_mesmerised ? "her luring" : "a haunting").c_str(),
-                    spl);
+                                       already_mesmerised
+                                           ? _(" chants her luring song.")
+                                           : _(" chants a haunting song."),
+                                       spl);
 
                 if (mons->type == MONS_SIREN)
                 {

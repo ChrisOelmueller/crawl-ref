@@ -7,6 +7,7 @@
 
 #include "transform.h"
 
+#include <libintl.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -1010,8 +1011,8 @@ bool transform(int pow, transformation_type which_trans, bool involuntary,
     if (!involuntary && just_check && (bad_str
             || you.dex() > 0 && dex + you.dex() <= 0))
     {
-        string prompt = make_stringf("Transforming will reduce your %s to zero. Continue?",
-                                     bad_str ? "strength" : "dexterity");
+        string prompt = make_stringf(_("Transforming will reduce your %s to zero. Continue?"),
+                                     bad_str ? _("strength") : _("dexterity"));
         if (!yesno(prompt.c_str(), false, 'n'))
         {
             canned_msg(MSG_OK);

@@ -60,6 +60,7 @@
 #include "xom.h"
 
 #include <algorithm>
+#include <libintl.h>
 #include <queue>
 
 // Macro that saves some typing, nothing more.
@@ -2991,7 +2992,7 @@ bool monster::go_frenzy(actor *source)
     {
         del_ench(ENCH_SLOW, true); // Give no additional message.
         simple_monster_message(this,
-            make_stringf(" shakes off %s lethargy.",
+            make_stringf(_(" shakes off %s lethargy."),
                          pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
     }
     del_ench(ENCH_HASTE, true);
@@ -3030,7 +3031,7 @@ void monster::go_berserk(bool intentional, bool /* potion */)
     {
         del_ench(ENCH_SLOW, true); // Give no additional message.
         simple_monster_message(this,
-            make_stringf(" shakes off %s lethargy.",
+            make_stringf(_(" shakes off %s lethargy."),
                          pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
     }
     del_ench(ENCH_FATIGUE, true); // Give no additional message.
@@ -6086,7 +6087,7 @@ bool monster::shove(const char* feat_name)
             moveto(*di);
             mgrd(*di) = mindex();
             simple_monster_message(this,
-                make_stringf(" is pushed out of the %s.", feat_name).c_str());
+                make_stringf(_(" is pushed out of the %s."), feat_name).c_str());
             dprf("Moved to (%d, %d).", pos().x, pos().y);
 
             return true;

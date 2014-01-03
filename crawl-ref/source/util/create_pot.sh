@@ -47,7 +47,6 @@ COMMENT_KEYWORD='i18n'
              --keyword=mpr \
              --keyword=mprf --keyword=mprf:2 --keyword=mprf:3 \
              --keyword=mprf_plural:2,3 --keyword=mprf_plural:3,4 --keyword=mprf_plural:4,5 \
-             --keyword=make_stringf \
              \
              --keyword=armour_prompt \
              --keyword=_annotate_form_based \

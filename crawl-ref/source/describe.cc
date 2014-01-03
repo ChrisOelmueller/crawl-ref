@@ -1019,8 +1019,8 @@ static string _describe_weapon(const item_def &item, bool verbose)
             is_range_weapon(item)? range_skill(item) : weapon_skill(item);
 
         description +=
-            make_stringf(" '%s' category. ",
-                         skill == SK_FIGHTING ? "buggy" : skill_name(skill));
+            make_stringf(_(" '%s' category. "),
+                         skill == SK_FIGHTING ? _("buggy") : skill_name(skill));
 
         if (!launcher)
             description += _handedness_string(item);
@@ -3304,7 +3304,7 @@ static string _monster_stat_description(const monster_info& mi)
     if (mr >= 10)
     {
         result << uppercase_first(pronoun)
-               << make_stringf(" is %s.\n", magic_res_adjective(mr).c_str());
+               << make_stringf(_(" is %s.\n"), magic_res_adjective(mr).c_str());
     }
 
     if (mons_class_flag(mi.type, M_STATIONARY)

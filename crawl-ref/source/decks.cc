@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <libintl.h>
 
 #include "externs.h"
 
@@ -2879,7 +2880,7 @@ bool recruit_mercenary(int mid)
         return true; // wut?
 
     int fee = mon->props["mercenary_fee"].get_int();
-    const string prompt = make_stringf("Pay %s fee of %d gold?",
+    const string prompt = make_stringf(_("Pay %s fee of %d gold?"),
                                        mon->name(DESC_ITS).c_str(), fee);
     bool paid = yesno(prompt.c_str(), false, 0);
     if (crawl_state.seen_hups)

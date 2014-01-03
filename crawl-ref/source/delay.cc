@@ -8,6 +8,7 @@
 #include "externs.h"
 #include "options.h"
 
+#include <libintl.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -622,9 +623,9 @@ void handle_delay()
             spell_type spell = static_cast<spell_type>(delay.parm1);
             if (vehumet_is_offering(spell))
             {
-                string message = make_stringf(" grants you knowledge of %s.",
-                    spell_title(spell));
-                simple_god_message(message.c_str());
+                simple_god_message(
+                    make_stringf(_(" grants you knowledge of %s."),
+                                 spell_title(spell)).c_str());
             }
             mprf(MSGCH_MULTITURN_ACTION, "You start memorising the spell.");
             break;

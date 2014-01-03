@@ -9,6 +9,7 @@
 #include "trap_def.h"
 
 #include <algorithm>
+#include <libintl.h>
 #include <math.h>
 
 #include "artefact.h"
@@ -1182,7 +1183,7 @@ void disarm_trap(const coord_def& where)
     // Prompt for any trap for which you might not survive setting it off.
     if (_disarm_is_deadly(trap))
     {
-        string prompt = make_stringf("Really try disarming that %s?",
+        string prompt = make_stringf(_("Really try disarming that %s?"),
                                      feature_description_at(where, false,
                                                             DESC_BASENAME,
                                                             false).c_str());

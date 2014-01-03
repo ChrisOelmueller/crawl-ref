@@ -5,6 +5,7 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
 #include <queue>
 #include <sstream>
 
@@ -219,187 +220,187 @@ string zin_recite_text(const int seed, const int prayertype, int step)
 
     switch (chapter)
     {
-        case 1:
-            turn[1] = make_stringf("It was the word of Zin that there would not be %s...",
-                                   sin[1].c_str());
-            turn[2] = make_stringf("...and did the people not suffer until they had %s...",
-                                   smite[1].c_str());
-            turn[3] = make_stringf("...the %s, after which all was well?", sinner.c_str());
-            break;
-        case 2:
-            turn[1] = make_stringf("The voice of Zin, pure and clear, did say that the %s...",
-                                   sinner.c_str());
-            turn[2] = make_stringf("...were not %s! And hearing this, the people rose up...",
-                                   virtue[0].c_str());
-            turn[3] = make_stringf("...and embraced %s, for they feared Zin's wrath.",
-                                   virtue[1].c_str());
-            break;
-        case 3:
-            turn[1] = make_stringf("Zin spoke of the doctrine of %s, and...",
-                                   virtue[1].c_str());
-            turn[2] = make_stringf("...saw the %s filled with fear, for they were...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...%s and knew Zin's wrath would come for them.",
-                                   sin[0].c_str());
-            break;
-        case 4:
-            turn[1] = make_stringf("And so Zin bade the %s to come before...",
-                                   sinner.c_str());
-            turn[2] = make_stringf("...the altar, that judgement might be passed...");
-            turn[3] = make_stringf("...upon those who were not %s.", virtue[0].c_str());
-            break;
-        case 5:
-            turn[1] = make_stringf("To the devout, Zin provideth. From the rest...");
-            turn[2] = make_stringf("...ye %s, ye guilty...", sinner.c_str());
-            turn[3] = make_stringf("...of %s, Zin taketh.", sin[1].c_str());
-            break;
-        case 6:
-            turn[1] = make_stringf("Zin saw the %s of the %s, and...",
-                                   sin[1].c_str(), sinner.c_str());
-            turn[2] = make_stringf("...was displeased, for did the law not say that...");
-            turn[3] = make_stringf("...those who did not become %s would be %s?",
-                                   virtue[0].c_str(), smite[1].c_str());
-            break;
-        case 7:
-            turn[1] = make_stringf("Zin said that %s shall be the law of the land, and...",
-                                   virtue[1].c_str());
-            turn[2] = make_stringf("...those who turn to %s will be %s. This was fair...",
-                                   sin[1].c_str(), smite[1].c_str());
-            turn[3] = make_stringf("...and just, and not a voice dissented.");
-            break;
-        case 8:
-            turn[1] = make_stringf("Damned, damned be the %s and...", sinner.c_str());
-            turn[2] = make_stringf("...all else who abandon %s! Let them...",
-                                   virtue[1].c_str());
-            turn[3] = make_stringf("...be %s by the jurisprudence of Zin!",
-                                   smite[1].c_str());
-            break;
-        case 9:
-            turn[1] = make_stringf("And Zin said to all in attendance, 'Which of ye...");
-            turn[2] = make_stringf("...number among the %s? Come before me, that...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...I may %s you now for your %s!'",
-                                   smite[0].c_str(), sin[1].c_str());
-            break;
-        case 10:
-            turn[1] = make_stringf("Yea, I say unto thee, bring forth...");
-            turn[2] = make_stringf("...the %s that they may know...", sinner.c_str());
-            turn[3] = make_stringf("...the wrath of Zin, and thus be %s!",
-                                   smite[1].c_str());
-            break;
-        case 11:
-            turn[1] = make_stringf("In a great set of silver scales are weighed the...");
-            turn[2] = make_stringf("...souls of the %s, and with their %s...",
-                                   sinner.c_str(), sin[0].c_str());
-            turn[3] = make_stringf("...ways, the balance hath tipped against them!");
-            break;
-        case 12:
-            turn[1] = make_stringf("It is just that the %s shall be %s...",
-                                   sinner.c_str(), smite[1].c_str());
-            turn[2] = make_stringf("...in due time, for %s is what Zin has declared...",
-                                   virtue[1].c_str());
-            turn[3] = make_stringf("...the law of the land, and Zin's word is law!");
-            break;
-        case 13:
-            turn[1] = make_stringf("Thus the people made the covenant of %s with...",
-                                   virtue[1].c_str());
-            turn[2] = make_stringf("...Zin, and all was good, for they knew that the...");
-            turn[3] = make_stringf("...%s would trouble them no longer.", sinner.c_str());
-            break;
-        case 14:
-            turn[1] = make_stringf("What of the %s? %s for their...",
-                                   sinner.c_str(), uppercase_first(smite[1]).c_str());
-            turn[2] = make_stringf("...%s they shall be! Zin will %s them again...",
-                                   sin[1].c_str(), smite[0].c_str());
-            turn[3] = make_stringf("...and again, and again!");
-            break;
-        case 15:
-            turn[1] = make_stringf("And lo, the wrath of Zin did find...");
-            turn[2] = make_stringf("...them wherever they hid, and the %s...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...were %s for their %s!",
-                                   smite[1].c_str(), sin[1].c_str());
-            break;
-        case 16:
-            turn[1] = make_stringf("Zin looked out upon the remains of the %s...",
-                                   sinner.c_str());
-            turn[2] = make_stringf("...and declared it good that they had been...");
-            turn[3] = make_stringf("...%s. And thus justice was done.", smite[1].c_str());
-            break;
-        case 17:
-            turn[1] = make_stringf("The law of Zin demands thee...");
-            turn[2] = make_stringf("...be %s, and that the punishment for %s...",
-                                   virtue[0].c_str(), sin[1].c_str());
-            turn[3] = make_stringf("...shall be swift and harsh!");
-            break;
-        case 18:
-            turn[1] = make_stringf("It was then that Zin bade them...");
-            turn[2] = make_stringf("...not to stray from %s, lest...", virtue[1].c_str());
-            turn[3] = make_stringf("...they become as damned as the %s.", sinner.c_str());
-            break;
-        case 19:
-            turn[1] = make_stringf("Only the %s shall be judged worthy, and...",
-                                   virtue[0].c_str());
-            turn[2] = make_stringf("...all the %s will be found wanting. Such is...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...the word of Zin, and such is the law!");
-            break;
-        case 20:
-            turn[1] = make_stringf("To those who would swear an oath of %s on my altar...",
-                                   virtue[1].c_str());
-            turn[2] = make_stringf("...I bring ye salvation. To the rest, ye %s...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...and the %s, the name of Zin shall be thy damnation.",
-                                   sin[0].c_str());
-            break;
-        case 21:
-            turn[1] = make_stringf("And Zin decreed that the people would be...");
-            turn[2] = make_stringf("...protected from %s in all its forms, and...",
-                                   sin[1].c_str());
-            turn[3] = make_stringf("...preserved in their %s for all the days to come.",
-                                   virtue[1].c_str());
-            break;
-        case 22:
-            turn[1] = make_stringf("For those who would enter Zin's holy bosom...");
-            turn[2] = make_stringf("...and live in %s, Zin provideth. Such is...",
-                                   virtue[1].c_str());
-            turn[3] = make_stringf("...the covenant, and such is the way of things.");
-            break;
-        case 23:
-            turn[1] = make_stringf("Zin hath not damned the %s, but it is they...",
-                                   sinner.c_str());
-            turn[2] = make_stringf("...that have damned themselves for their %s, for...",
-                                   sin[1].c_str());
-            turn[3] = make_stringf("...did Zin not decree that to be %s was wrong?",
-                                   sin[0].c_str());
-            break;
-        case 24:
-            turn[1] = make_stringf("And Zin, furious at their %s, held...", sin[1].c_str());
-            turn[2] = make_stringf("...aloft a silver sceptre! The %s...", sinner.c_str());
-            turn[3] = make_stringf("...were %s, and thus the way of things was maintained.",
-                                   smite[1].c_str());
-            break;
-        case 25:
-            turn[1] = make_stringf("When the law of the land faltered, Zin rose...");
-            turn[2] = make_stringf("...from the silver throne, and the %s were...",
-                                   sinner.c_str());
-            turn[3] = make_stringf("...%s. And it was thus that the law was made good.",
-                                   smite[1].c_str());
-            break;
-        case 26:
-            turn[1] = make_stringf("Zin descended from on high in a silver chariot...");
-            turn[2] = make_stringf("...to %s the %s for their...",
-                                   smite[0].c_str(), sinner.c_str());
-            turn[3] = make_stringf("...%s, and thus judgement was rendered.",
-                                   sin[1].c_str());
-            break;
-        case 27:
-            turn[1] = make_stringf("The %s stood before Zin, and in that instant...",
-                                   sinner.c_str());
-            turn[2] = make_stringf("...they knew they would be found guilty of %s...",
-                                   sin[1].c_str());
-            turn[3] = make_stringf("...for that is the word of Zin, and Zin's word is law.");
-            break;
+    case 1:
+        turn[1] = make_stringf(_("It was the word of Zin that there would not be %s..."),
+                               sin[1].c_str());
+        turn[2] = make_stringf(_("...and did the people not suffer until they had %s..."),
+                               smite[1].c_str());
+        turn[3] = make_stringf(_("...the %s, after which all was well?"), sinner.c_str());
+        break;
+    case 2:
+        turn[1] = make_stringf(_("The voice of Zin, pure and clear, did say that the %s..."),
+                               sinner.c_str());
+        turn[2] = make_stringf(_("...were not %s! And hearing this, the people rose up..."),
+                               virtue[0].c_str());
+        turn[3] = make_stringf(_("...and embraced %s, for they feared Zin's wrath."),
+                               virtue[1].c_str());
+        break;
+    case 3:
+        turn[1] = make_stringf(_("Zin spoke of the doctrine of %s, and..."),
+                               virtue[1].c_str());
+        turn[2] = make_stringf(_("...saw the %s filled with fear, for they were..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...%s and knew Zin's wrath would come for them."),
+                               sin[0].c_str());
+        break;
+    case 4:
+        turn[1] = make_stringf(_("And so Zin bade the %s to come before..."),
+                               sinner.c_str());
+        turn[2] = make_stringf(_("...the altar, that judgement might be passed..."));
+        turn[3] = make_stringf(_("...upon those who were not %s."), virtue[0].c_str());
+        break;
+    case 5:
+        turn[1] = make_stringf(_("To the devout, Zin provideth. From the rest..."));
+        turn[2] = make_stringf(_("...ye %s, ye guilty..."), sinner.c_str());
+        turn[3] = make_stringf(_("...of %s, Zin taketh."), sin[1].c_str());
+        break;
+    case 6:
+        turn[1] = make_stringf(_("Zin saw the %s of the %s, and..."),
+                               sin[1].c_str(), sinner.c_str());
+        turn[2] = make_stringf(_("...was displeased, for did the law not say that..."));
+        turn[3] = make_stringf(_("...those who did not become %s would be %s?"),
+                               virtue[0].c_str(), smite[1].c_str());
+        break;
+    case 7:
+        turn[1] = make_stringf(_("Zin said that %s shall be the law of the land, and..."),
+                               virtue[1].c_str());
+        turn[2] = make_stringf(_("...those who turn to %s will be %s. This was fair..."),
+                               sin[1].c_str(), smite[1].c_str());
+        turn[3] = make_stringf(_("...and just, and not a voice dissented."));
+        break;
+    case 8:
+        turn[1] = make_stringf(_("Damned, damned be the %s and..."), sinner.c_str());
+        turn[2] = make_stringf(_("...all else who abandon %s! Let them..."),
+                               virtue[1].c_str());
+        turn[3] = make_stringf(_("...be %s by the jurisprudence of Zin!"),
+                               smite[1].c_str());
+        break;
+    case 9:
+        turn[1] = make_stringf(_("And Zin said to all in attendance, 'Which of ye..."));
+        turn[2] = make_stringf(_("...number among the %s? Come before me, that..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...I may %s you now for your %s!'"),
+                               smite[0].c_str(), sin[1].c_str());
+        break;
+    case 10:
+        turn[1] = make_stringf(_("Yea, I say unto thee, bring forth..."));
+        turn[2] = make_stringf(_("...the %s that they may know..."), sinner.c_str());
+        turn[3] = make_stringf(_("...the wrath of Zin, and thus be %s!"),
+                               smite[1].c_str());
+        break;
+    case 11:
+        turn[1] = make_stringf(_("In a great set of silver scales are weighed the..."));
+        turn[2] = make_stringf(_("...souls of the %s, and with their %s..."),
+                               sinner.c_str(), sin[0].c_str());
+        turn[3] = make_stringf(_("...ways, the balance hath tipped against them!"));
+        break;
+    case 12:
+        turn[1] = make_stringf(_("It is just that the %s shall be %s..."),
+                               sinner.c_str(), smite[1].c_str());
+        turn[2] = make_stringf(_("...in due time, for %s is what Zin has declared..."),
+                               virtue[1].c_str());
+        turn[3] = make_stringf(_("...the law of the land, and Zin's word is law!"));
+        break;
+    case 13:
+        turn[1] = make_stringf(_("Thus the people made the covenant of %s with..."),
+                               virtue[1].c_str());
+        turn[2] = make_stringf(_("...Zin, and all was good, for they knew that the..."));
+        turn[3] = make_stringf(_("...%s would trouble them no longer."), sinner.c_str());
+        break;
+    case 14:
+        turn[1] = make_stringf(_("What of the %s? %s for their..."),
+                               sinner.c_str(), uppercase_first(smite[1]).c_str());
+        turn[2] = make_stringf(_("...%s they shall be! Zin will %s them again..."),
+                               sin[1].c_str(), smite[0].c_str());
+        turn[3] = make_stringf(_("...and again, and again!"));
+        break;
+    case 15:
+        turn[1] = make_stringf(_("And lo, the wrath of Zin did find..."));
+        turn[2] = make_stringf(_("...them wherever they hid, and the %s..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...were %s for their %s!"),
+                               smite[1].c_str(), sin[1].c_str());
+        break;
+    case 16:
+        turn[1] = make_stringf(_("Zin looked out upon the remains of the %s..."),
+                               sinner.c_str());
+        turn[2] = make_stringf(_("...and declared it good that they had been..."));
+        turn[3] = make_stringf(_("...%s. And thus justice was done."), smite[1].c_str());
+        break;
+    case 17:
+        turn[1] = make_stringf(_("The law of Zin demands thee..."));
+        turn[2] = make_stringf(_("...be %s, and that the punishment for %s..."),
+                               virtue[0].c_str(), sin[1].c_str());
+        turn[3] = make_stringf(_("...shall be swift and harsh!"));
+        break;
+    case 18:
+        turn[1] = make_stringf(_("It was then that Zin bade them..."));
+        turn[2] = make_stringf(_("...not to stray from %s, lest..."), virtue[1].c_str());
+        turn[3] = make_stringf(_("...they become as damned as the %s."), sinner.c_str());
+        break;
+    case 19:
+        turn[1] = make_stringf(_("Only the %s shall be judged worthy, and..."),
+                               virtue[0].c_str());
+        turn[2] = make_stringf(_("...all the %s will be found wanting. Such is..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...the word of Zin, and such is the law!"));
+        break;
+    case 20:
+        turn[1] = make_stringf(_("To those who would swear an oath of %s on my altar..."),
+                               virtue[1].c_str());
+        turn[2] = make_stringf(_("...I bring ye salvation. To the rest, ye %s..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...and the %s, the name of Zin shall be thy damnation."),
+                               sin[0].c_str());
+        break;
+    case 21:
+        turn[1] = make_stringf(_("And Zin decreed that the people would be..."));
+        turn[2] = make_stringf(_("...protected from %s in all its forms, and..."),
+                               sin[1].c_str());
+        turn[3] = make_stringf(_("...preserved in their %s for all the days to come."),
+                               virtue[1].c_str());
+        break;
+    case 22:
+        turn[1] = make_stringf(_("For those who would enter Zin's holy bosom..."));
+        turn[2] = make_stringf(_("...and live in %s, Zin provideth. Such is..."),
+                               virtue[1].c_str());
+        turn[3] = make_stringf(_("...the covenant, and such is the way of things."));
+        break;
+    case 23:
+        turn[1] = make_stringf(_("Zin hath not damned the %s, but it is they..."),
+                               sinner.c_str());
+        turn[2] = make_stringf(_("...that have damned themselves for their %s, for..."),
+                               sin[1].c_str());
+        turn[3] = make_stringf(_("...did Zin not decree that to be %s was wrong?"),
+                               sin[0].c_str());
+        break;
+    case 24:
+        turn[1] = make_stringf(_("And Zin, furious at their %s, held..."), sin[1].c_str());
+        turn[2] = make_stringf(_("...aloft a silver sceptre! The %s..."), sinner.c_str());
+        turn[3] = make_stringf(_("...were %s, and thus the way of things was maintained."),
+                               smite[1].c_str());
+        break;
+    case 25:
+        turn[1] = make_stringf(_("When the law of the land faltered, Zin rose..."));
+        turn[2] = make_stringf(_("...from the silver throne, and the %s were..."),
+                               sinner.c_str());
+        turn[3] = make_stringf(_("...%s. And it was thus that the law was made good."),
+                               smite[1].c_str());
+        break;
+    case 26:
+        turn[1] = make_stringf(_("Zin descended from on high in a silver chariot..."));
+        turn[2] = make_stringf(_("...to %s the %s for their..."),
+                               smite[0].c_str(), sinner.c_str());
+        turn[3] = make_stringf(_("...%s, and thus judgement was rendered."),
+                               sin[1].c_str());
+        break;
+    case 27:
+        turn[1] = make_stringf(_("The %s stood before Zin, and in that instant..."),
+                               sinner.c_str());
+        turn[2] = make_stringf(_("...they knew they would be found guilty of %s..."),
+                               sin[1].c_str());
+        turn[3] = make_stringf(_("...for that is the word of Zin, and Zin's word is law."));
+        break;
     }
 
     string recite = "Hail Satan.";
@@ -3137,10 +3138,9 @@ void cheibriados_time_bend(int pow)
                 continue;
             }
 
-            simple_god_message(
-                make_stringf(" rebukes %s.",
-                             mon->name(DESC_THE).c_str()).c_str(),
-                             GOD_CHEIBRIADOS);
+            simple_god_message(make_stringf(_(" rebukes %s."),
+                                           mon->name(DESC_THE).c_str()).c_str(),
+                               GOD_CHEIBRIADOS);
             do_slow_monster(mon, &you);
         }
     }

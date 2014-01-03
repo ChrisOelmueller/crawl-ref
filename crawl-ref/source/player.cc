@@ -155,7 +155,7 @@ bool check_moveto_cloud(const coord_def& p, const string &move_verb,
 
             if (prompted)
                 *prompted = true;
-            string prompt = make_stringf("Really %s into that cloud of %s?",
+            string prompt = make_stringf(_("Really %s into that cloud of %s?"),
                                          move_verb.c_str(),
                                          cloud_name_at_index(cloud).c_str());
             learned_something_new(HINT_CLOUD_WARNING);
@@ -202,18 +202,18 @@ bool check_moveto_trap(const coord_def& p, const string &move_verb,
             *prompted = true;
         if (move_verb == "jump-attack")
         {
-            prompt = make_stringf("Really jump when you might land on that %s?",
+            prompt = make_stringf(_("Really jump when you might land on that %s?"),
                                   feature_description_at(p, false,
                                                          DESC_BASENAME,
                                                          false).c_str());
         }
         else
         {
-            prompt = make_stringf("Really %s %s that %s?",
-                                  move_verb.c_str(),
-                                  (trap->type == TRAP_ALARM
-                                   || trap->type == TRAP_PLATE) ? "onto"
-                                  : "into",
+            const char* format =
+                (trap->type == TRAP_ALARM || trap->type == TRAP_PLATE)
+                ? _("Really %s onto that %s?")
+                : _("Really %s into that %s?");
+            prompt = make_stringf(format, move_verb.c_str(),
                                   feature_description_at(p, false,
                                                          DESC_BASENAME,
                                                          false).c_str());
@@ -308,7 +308,7 @@ bool check_moveto_exclusion(const coord_def& p, const string &move_verb,
     {
         if (prompted)
             *prompted = true;
-        prompt = make_stringf("Really %s into a travel-excluded area?",
+        prompt = make_stringf(_("Really %s into a travel-excluded area?"),
                               move_verb.c_str());
 
         if (!yesno(prompt.c_str(), false, 'n'))
@@ -4944,23 +4944,17 @@ int get_contamination_level()
 
 string describe_contamination(int cont)
 {
-    if (cont > 5)
-        return "You are engulfed in a nimbus of crackling magics!";
-    else if (cont == 5)
-        return "Your entire body has taken on an eerie glow!";
-    else if (cont > 1)
+    switch (cont)
     {
-        return make_stringf("You are %s with residual magics%s",
-                  (cont == 4) ? "practically glowing" :
-                  (cont == 3) ? "heavily infused" :
-                  (cont == 2) ? "contaminated"
-                                   : "lightly contaminated",
-                  (cont == 4) ? "!" : ".");
+    case 0: return "";
+    case 1: return _("You are lightly contaminated with residual magics.");
+    case 2: return _("You are contaminated with residual magics.");
+    case 3: return _("You are heavily infused with residual magics.");
+    case 4: return _("You are practically glowing with residual magics!");
+    case 5: return _("Your entire body has taken on an eerie glow!");
+    default: // (> 5)
+        return _("You are engulfed in a nimbus of crackling magics!");
     }
-    else if (cont == 1)
-        return "You are very lightly contaminated with residual magic.";
-    else
-        return "";
 }
 
 // controlled is true if the player actively did something to cause
@@ -8098,11 +8092,10 @@ static string _constriction_description()
     const int num_free_tentacles = you.usable_tentacles();
     if (num_free_tentacles)
     {
-        if (num_free_tentacles == 1)
-            cinfo += make_stringf("You have %d tentacle available for constriction.",
-                         num_free_tentacles);
-        else
-            cinfo += make_stringf("You have %d tentacles available for constriction.",
+        cinfo +=
+            make_stringf(P_("You have %d tentacle available for constriction.",
+                            "You have %d tentacles available for constriction.",
+                            num_free_tentacles),
                          num_free_tentacles);
     }
     // name of what this monster is constricted by, if any
@@ -8112,10 +8105,10 @@ static string _constriction_description()
             cinfo += "\n";
 
         if (you.held == HELD_MONSTER)
-            cinfo += make_stringf("You are being held by %s.",
+            cinfo += make_stringf(_("You are being held by %s."),
                       monster_by_mid(you.constricted_by)->name(DESC_A).c_str());
         else
-            cinfo += make_stringf("You are being constricted by %s.",
+            cinfo += make_stringf(_("You are being constricted by %s."),
                       monster_by_mid(you.constricted_by)->name(DESC_A).c_str());
     }
 
@@ -8132,7 +8125,7 @@ static string _constriction_description()
         if (!cinfo.empty())
             cinfo += "\n";
 
-        cinfo += make_stringf("You are constricting %s.",
+        cinfo += make_stringf(_("You are constricting %s."),
                     comma_separated_line(c_name.begin(), c_name.end()).c_str());
     }
 

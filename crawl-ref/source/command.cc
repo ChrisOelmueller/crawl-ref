@@ -1142,7 +1142,7 @@ static bool _append_books(string &desc, item_def &item, string key)
     if (!already)
         desc += "None";
 
-    desc += make_stringf("\nLevel:      %d", spell_difficulty(type));
+    desc += make_stringf("\n%s:      %d", _("Level"), spell_difficulty(type));
 
     bool form = false;
     if (you_cannot_memorise(type, form))

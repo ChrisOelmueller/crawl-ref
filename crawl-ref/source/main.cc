@@ -2688,7 +2688,7 @@ static void _decrement_durations()
     _decrement_a_duration(DUR_FINESSE, delay, _("Your hands slow down."));
 
     _decrement_a_duration(DUR_CONFUSING_TOUCH, delay,
-                          make_stringf("Your %s stop glowing.",
+                          make_stringf(_("Your %s stop glowing."),
                                        you.hand_name(true).c_str()).c_str());
 
     _decrement_a_duration(DUR_SURE_BLADE, delay,
@@ -3945,8 +3945,8 @@ static void _open_door(coord_def move, bool check_confused)
 
         if (!ignore_exclude && is_exclude_root(doorpos))
         {
-            string prompt = make_stringf("This %s%s is marked as excluded! "
-                                         "Open it anyway?", adj, noun);
+            string prompt = make_stringf(_("This %s%s is marked as excluded! "
+                                           "Open it anyway?"), adj, noun);
 
             if (!yesno(prompt.c_str(), true, 'n', true, false))
             {

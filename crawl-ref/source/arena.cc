@@ -5,6 +5,7 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
 #include "arena.h"
 
 #include "act-iter.h"
@@ -461,7 +462,7 @@ namespace arena
             cgotoxy(1, line++, GOTO_STAT);
             textcolor(BROWN);
             center_print(crawl_view.hudsz.x,
-                         make_stringf("Round %d of %d",
+                         make_stringf(_("Round %d of %d"),
                                       after_fight ? trials_done
                                                   : trials_done + 1,
                                       total_trials));

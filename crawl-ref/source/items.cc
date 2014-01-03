@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <libintl.h>
 
 #include "externs.h"
 
@@ -846,18 +847,19 @@ static string _menu_burden_invstatus(const Menu *menu, bool is_pickup = false)
     //TODO: Should somehow colour burdened/overloaded in LIGHTRED/RED
     //      respectively {kittel}
     string newstate =
-        new_burd > carrying_capacity(BS_ENCUMBERED) ? "overloaded" :
-      new_burd > carrying_capacity(BS_UNENCUMBERED) ? "burdened"
-                                                    : "unencumbered";
+        new_burd > carrying_capacity(BS_ENCUMBERED) ? _("overloaded") :
+      new_burd > carrying_capacity(BS_UNENCUMBERED) ? _("burdened")
+                                                    : _("unencumbered");
     if (Options.show_inventory_weights)
     {
         //i18n: Exact inventory burden when displaying item weights
-        newstate = make_stringf("%.0f%s/%.0f aum",
+        newstate = make_stringf("%.0f%s/%.0f %s",
                        you.burden * BURDEN_TO_AUM,
                        sw.c_str(),
-                       carrying_capacity(BS_UNENCUMBERED) * BURDEN_TO_AUM);
+                       carrying_capacity(BS_UNENCUMBERED) * BURDEN_TO_AUM,
+                       _("aum"));
     }
-    return make_stringf("(Burden: %s)", newstate.c_str());
+    return make_stringf("(%s: %s)", _("Burden"), newstate.c_str());
 }
 
 static string _pickup_menu_title(const Menu *menu, const string &oldt)
@@ -1190,7 +1192,7 @@ bool pickup_single_item(int link, int qty)
     if (qty == 0 && item->quantity > 1 && item->base_type != OBJ_GOLD)
     {
         const string prompt
-                = make_stringf("Pick up how many of %s (; or enter for all)? ",
+                = make_stringf(_("Pick up how many of %s (; or enter for all)? "),
                                item->name(DESC_THE, false,
                                           false, false).c_str());
 
@@ -2290,10 +2292,9 @@ static string _drop_selitem_text(const vector<MenuEntry*> *s)
         }
     }
 
-    return make_stringf(" (%u%s turn%s)",
-               (unsigned int)s->size(),
-               extraturns? "+" : "",
-               s->size() > 1? "s" : "");
+    return make_stringf(P_(" (%u%s turn)", " (%u%s turns)", s->size()),
+                        (unsigned int)s->size(),
+                        extraturns? "+" : "");
 }
 
 vector<SelItem> items_for_multidrop;

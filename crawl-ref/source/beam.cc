@@ -12,6 +12,7 @@
 #include <cstring>
 #include <cstdarg>
 #include <iostream>
+#include <libintl.h>
 #include <set>
 #include <algorithm>
 #include <cmath>
@@ -3190,8 +3191,8 @@ void bolt::tracer_affect_player()
         // Don't ask if we're aiming at ourselves.
         if (!aimed_at_feet && !dont_stop_player && !harmless_to_player())
         {
-            string prompt = make_stringf("That %s is likely to hit you. Continue anyway?",
-                                         item ? name.c_str() : "beam");
+            string prompt = make_stringf(_("That %s is likely to hit you. Continue anyway?"),
+                                         item ? name.c_str() : _("beam"));
 
             if (yesno(prompt.c_str(), false, 'n'))
             {
@@ -4519,10 +4520,10 @@ void bolt::affect_monster(monster* mon)
         // nice.
         if (you.see_cell(mon->pos()))
         {
-            simple_god_message(
-                make_stringf(" protects %s plant from harm.",
-                    attitude == ATT_FRIENDLY ? "your" : "a").c_str(),
-                GOD_FEDHAS);
+            simple_god_message(attitude == ATT_FRIENDLY
+                                   ? _(" protects your plant from harm.")
+                                   : _(" protects a plant from harm."),
+                               GOD_FEDHAS);
         }
     }
 

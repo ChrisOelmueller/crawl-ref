@@ -48,6 +48,7 @@
 #include <cstdio>
 #include <sstream>
 #include <algorithm>
+#include <libintl.h>
 
 // Global
 StashTracker StashTrack;
@@ -1616,7 +1617,7 @@ string StashTracker::stash_search_prompt()
     {
         const string disp = replace_all(lastsearch, "<", "<<");
         opts.push_back(
-            make_stringf("Enter for \"%s\"", disp.c_str()));
+            make_stringf(_("Enter for \"%s\""), disp.c_str()));
     }
     if (lastsearch != ".")
         opts.push_back("? for help");
@@ -1627,7 +1628,7 @@ string StashTracker::stash_search_prompt()
     if (!prompt_qual.empty())
         prompt_qual = " [" + prompt_qual + "]";
 
-    return make_stringf("Search for what%s? ", prompt_qual.c_str());
+    return make_stringf(_("Search for what%s? "), prompt_qual.c_str());
 }
 
 void StashTracker::remove_shop(const level_pos &pos)

@@ -6,6 +6,7 @@
 #include "AppHdr.h"
 #include "mon-cast.h"
 
+#include <libintl.h>
 #include <math.h>
 
 #include "act-iter.h"
@@ -3293,8 +3294,8 @@ static bool _mons_vampiric_drain(monster *mons)
         if (mons->heal(hp_cost * 2 / 3))
         {
             simple_monster_message(mons,
-                make_stringf(" draws life force from %s and is healed!",
-                targname.c_str()).c_str());
+                make_stringf(_(" draws life force from %s and is healed!"),
+                             targname.c_str()).c_str());
         }
         if (mtarget->alive())
             print_wounds(mtarget);
@@ -3926,7 +3927,7 @@ void mons_cast(monster* mons, bolt &pbolt, spell_type spell_cast,
 
     case SPELL_INJURY_MIRROR:
         simple_monster_message(mons,
-                               make_stringf(" offers %s to %s, and fills with unholy energy.",
+                               make_stringf(_(" offers %s to %s, and fills with unholy energy."),
                                    mons->pronoun(PRONOUN_REFLEXIVE).c_str(),
                                    god_name(mons->god).c_str()).c_str(),
                                MSGCH_MONSTER_SPELL);
@@ -3950,7 +3951,7 @@ void mons_cast(monster* mons, bolt &pbolt, spell_type spell_cast,
     case SPELL_TROGS_HAND:
     {
         simple_monster_message(mons,
-                               make_stringf(" invokes %s protection!",
+                               make_stringf(_(" invokes %s protection!"),
                                    apostrophise(god_name(mons->god)).c_str()).c_str(),
                                MSGCH_MONSTER_SPELL);
         const int dur = BASELINE_DELAY
@@ -4899,7 +4900,7 @@ void mons_cast(monster* mons, bolt &pbolt, spell_type spell_cast,
     case SPELL_INJURY_BOND:
     {
         simple_monster_message(mons,
-            make_stringf(" begins to accept %s allies' injuries.",
+            make_stringf(_(" begins to accept %s allies' injuries."),
                          mons->pronoun(PRONOUN_POSSESSIVE).c_str()).c_str());
         // FIXME: allies preservers vs the player
         for (monster_near_iterator mi(mons, LOS_NO_TRANS); mi; ++mi)

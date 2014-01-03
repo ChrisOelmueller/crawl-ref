@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <libintl.h>
 #include <string.h>
 
 #include "externs.h"
@@ -1305,9 +1306,10 @@ void wind_blast(actor* agent, int pow, coord_def target)
     if (!affected_monsters.empty())
     {
         const string message =
-            make_stringf("%s %s blown away by the wind.",
-                         affected_monsters.describe().c_str(),
-                         affected_monsters.count() == 1? "is" : "are");
+            make_stringf(affected_monsters.count() == 1
+                            ? _("%s is blown away by the wind.")
+                            : _("%s are blown away by the wind."),
+                         affected_monsters.describe().c_str());
         if (strwidth(message) < get_number_of_cols() - 2)
             mpr(message.c_str());
         else

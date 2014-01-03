@@ -19,7 +19,7 @@ extern string init_file_error; // defined in main.cc
 void opening_screen(void)
 {
     string msg = "<yellow>"
-        + make_stringf("Hello, welcome to %s %s !",
+        + make_stringf(_("Hello, welcome to %s %s !"),
                        CRAWL, Version::Long)
         + "</yellow>\n<brown>"
         + _("(c) Copyright 1997-2002 Linley Henzell, 2002-2013 Crawl DevTeam")
@@ -32,7 +32,7 @@ void opening_screen(void)
     if (init_found)
     {
         msg += "<lightgrey>"
-               + make_stringf("(Read options from %s).",
+               + make_stringf(_("(Read options from %s)."),
 #ifdef DGAMELAUNCH
         // For dgl installs, show only the last segment of the .crawlrc
         // file name so that we don't leak details of the directory
@@ -46,7 +46,7 @@ void opening_screen(void)
     else
     {
         msg += "<lightred>"
-            + make_stringf("(No init file %s, using defaults.)",
+            + make_stringf(_("(No init file %s, using defaults.)"),
                            init_file_error.c_str());
     }
 

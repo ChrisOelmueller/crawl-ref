@@ -7,6 +7,7 @@
 
 #include "melee_attack.h"
 
+#include <libintl.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -2351,9 +2352,9 @@ void melee_attack::rot_defender(int amount, int immediate)
         // XXX: why is this message separate here?
         if (defender->is_player())
         {
-            special_damage_message =
-                make_stringf("You feel your flesh %s away!",
-                             immediate > 0 ? "rotting" : "start to rot");
+            special_damage_message = immediate > 0
+                ? _("You feel your flesh rotting away!")
+                : _("You feel your flesh start to rot away!");
         }
         else if (defender->is_monster() && defender_visible)
         {
@@ -2379,7 +2380,7 @@ bool melee_attack::distortion_affects_defender()
             if (defender_visible)
             {
                 special_damage_message =
-                    make_stringf("%s %s in the distortional energy.",
+                    make_stringf(_("%s %s in the distortional energy."),
                                  def_name(DESC_THE).c_str(),
                                  defender->conj_verb("bask").c_str());
             }
@@ -2391,9 +2392,8 @@ bool melee_attack::distortion_affects_defender()
 
     if (one_chance_in(3))
     {
-        special_damage_message =
-            make_stringf("Space bends around %s.",
-            def_name(DESC_THE).c_str());
+        special_damage_message = make_stringf(_("Space bends around %s."),
+                                              def_name(DESC_THE).c_str());
         special_damage += 1 + random2avg(7, 2);
         return false;
     }
@@ -2401,7 +2401,7 @@ bool melee_attack::distortion_affects_defender()
     if (one_chance_in(3))
     {
         special_damage_message =
-            make_stringf("Space warps horribly around %s!",
+            make_stringf(_("Space warps horribly around %s!"),
                          def_name(DESC_THE).c_str());
         special_damage += 3 + random2avg(24, 2);
         return false;
@@ -2498,7 +2498,7 @@ void melee_attack::pain_affects_defender()
         if (defender_visible)
         {
             special_damage_message =
-                make_stringf("%s %s in agony.",
+                make_stringf(_("%s %s in agony."),
                              defender->name(DESC_THE).c_str(),
                              defender->conj_verb("writhe").c_str());
         }
@@ -2640,7 +2640,7 @@ void melee_attack::chaos_affects_defender()
             if (obvious_effect)
             {
                 special_damage_message =
-                    make_stringf("%s is duplicated!",
+                    make_stringf(_("%s is duplicated!"),
                                  def_name(DESC_THE).c_str());
             }
 
@@ -3620,9 +3620,9 @@ void melee_attack::apply_staff_damage()
         if (special_damage)
         {
             special_damage_message =
-                make_stringf("%s %s electrocuted!",
-                             defender->name(DESC_THE).c_str(),
-                             defender->is_player() ? "are" : "is");
+                defender->is_player() ? _("You are electrocuted!")
+                                      : make_stringf(_("%s is electrocuted!"),
+                                           defender->name(DESC_THE).c_str());
             special_damage_flavour = BEAM_ELECTRICITY;
         }
 

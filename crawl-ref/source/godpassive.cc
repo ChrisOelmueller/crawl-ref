@@ -306,9 +306,9 @@ string ash_describe_bondage(int flags, bool level)
     else if (flags & ETF_WEAPON && you.bondage[ET_WEAPON] != -1)
     {
         if (you.bondage[ET_WEAPON])
-            desc = make_stringf("Your weapon %s is bound.", yourhand);
+            desc = make_stringf(_("Your weapon %s is bound."), yourhand);
         else
-            desc = make_stringf("Your weapon %s is not bound.", yourhand);
+            desc = make_stringf(_("Your weapon %s is not bound."), yourhand);
     }
     else if (flags & ETF_SHIELD && you.bondage[ET_SHIELD] != -1)
     {

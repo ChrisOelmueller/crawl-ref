@@ -8,6 +8,7 @@
 #include "shopping.h"
 #include "message.h"
 
+#include <libintl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -2778,8 +2779,8 @@ unsigned int ShoppingList::cull_identical_items(const item_def& item,
             thing[REPLACE_PROMPTED_KEY] = (bool) true;
 
             string prompt =
-                make_stringf("Shopping-list: replace %dgp %s with cheaper "
-                             "one? (Y/n)", list_cost,
+                make_stringf(_("Shopping-list: replace %dgp %s with cheaper "
+                               "one? (Y/n)"), list_cost,
                              describe_thing(thing).c_str());
 
             if (_shop_yesno(prompt.c_str(), 'y'))
@@ -2798,7 +2799,7 @@ unsigned int ShoppingList::cull_identical_items(const item_def& item,
                 continue;
             thing[REMOVE_PROMPTED_KEY] = (bool) true;
 
-            string prompt = make_stringf("Shopping-list: remove %s? (Y/n)",
+            string prompt = make_stringf(_("Shopping-list: remove %s? (Y/n)"),
                                          describe_thing(thing, DESC_A).c_str());
 
             if (_shop_yesno(prompt.c_str(), 'y'))
@@ -2815,7 +2816,7 @@ unsigned int ShoppingList::cull_identical_items(const item_def& item,
         }
         else
         {
-            string str = make_stringf("Shopping-list: removing %s",
+            string str = make_stringf(_("Shopping-list: removing %s"),
                                       describe_thing(thing, DESC_A).c_str());
 
             _shop_mpr(str.c_str());
@@ -3069,7 +3070,7 @@ void ShoppingList::display()
         shopmenu.set_maxpagesize(52);
     }
 
-    string more_str = make_stringf("<yellow>You have %d gp</yellow>", you.gold);
+    string more_str = make_stringf(_("<yellow>You have %d gp</yellow>"), you.gold);
     shopmenu.set_more(formatted_string::parse_string(more_str));
 
     shopmenu.set_flags(MF_SINGLESELECT | MF_ALWAYS_SHOW_MORE
@@ -3103,8 +3104,8 @@ void ShoppingList::display()
             if (cost > you.gold)
             {
                 string prompt =
-                   make_stringf("You cannot afford %s; travel there "
-                                "anyway? (y/N)",
+                   make_stringf(_("You cannot afford %s; travel there "
+                                  "anyway? (y/N)"),
                                 describe_thing(*thing, DESC_A).c_str());
                 clrscr();
                 if (!yesno(prompt.c_str(), true, 'n'))
@@ -3137,7 +3138,7 @@ void ShoppingList::display()
         }
         else if (shopmenu.menu_action == Menu::ACT_MISC)
         {
-            string prompt = make_stringf("Delete %s from shopping list? (y/N)",
+            string prompt = make_stringf(_("Delete %s from shopping list? (y/N)"),
                                          describe_thing(*thing, DESC_A).c_str());
             clrscr();
             if (!yesno(prompt.c_str(), true, 'n'))

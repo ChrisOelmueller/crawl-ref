@@ -6,6 +6,8 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+
 #include "spl-damage.h"
 #include "externs.h"
 
@@ -382,9 +384,9 @@ static void _pre_refrigerate(actor* agent, bool player,
             counted_monster_list mons_list =
                 _counted_monster_list_from_vector(seen_monsters);
             const string message =
-                make_stringf("%s %s frozen.",
-                            mons_list.describe().c_str(),
-                            mons_list.count() == 1? "is" : "are");
+                make_stringf(mons_list.count() == 1 ? _("%s is frozen.")
+                                                    : _("%s are frozen."),
+                             mons_list.describe().c_str());
             if (strwidth(message) < get_number_of_cols() - 2)
                 mpr(message.c_str());
             else
@@ -744,9 +746,10 @@ void sonic_damage(bool scream)
     if (!affected_monsters.empty())
     {
         const string message =
-            make_stringf("%s %s hurt by the noise.",
-                         affected_monsters.describe().c_str(),
-                         affected_monsters.count() == 1? "is" : "are");
+            make_stringf(affected_monsters.count() == 1
+                             ? _("%s is hurt by the noise.")
+                             : _("%s are hurt by the noise."),
+                         affected_monsters.describe().c_str());
         if (strwidth(message) < get_number_of_cols() - 2)
             mpr(message.c_str());
         else
@@ -1370,9 +1373,9 @@ void shillelagh(actor *wielder, coord_def where, int pow)
     if (!affected_monsters.empty())
     {
         const string message =
-            make_stringf("%s shudder%s.",
-                         affected_monsters.describe().c_str(),
-                         affected_monsters.count() == 1? "s" : "");
+            make_stringf(affected_monsters.count() == 1 ? _("%s shudders")
+                                                        : _("%s shudder"),
+                         affected_monsters.describe().c_str());
         if (strwidth(message) < get_number_of_cols() - 2)
             mpr(message.c_str());
         else

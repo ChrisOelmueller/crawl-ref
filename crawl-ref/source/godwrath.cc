@@ -5,6 +5,9 @@
 
 #include "AppHdr.h"
 
+#include <libintl.h>
+#include <sstream>
+
 #include "godwrath.h"
 
 #include "externs.h"
@@ -46,8 +49,6 @@
 #include "transform.h"
 #include "shout.h"
 #include "xom.h"
-
-#include <sstream>
 
 static void _god_smites_you(god_type god, const char *message = NULL,
                             kill_method_type death_type = NUM_KILLBY);
@@ -954,7 +955,7 @@ static bool _jiyva_retribution()
         if (found_one)
         {
             simple_god_message(
-                make_stringf("'s putrescence saturates %s!",
+                make_stringf(_("'s putrescence saturates %s!"),
                              mon->name(DESC_THE).c_str()).c_str(), god);
             slimify_monster(mon, true);
         }
@@ -1330,8 +1331,8 @@ static void _tso_blasts_cleansing_flame(const char *message)
         && !player_under_penance() && x_chance_in_y(you.piety, MAX_PIETY * 2))
     {
         god_speaks(you.religion,
-                   make_stringf("\"Mortal, I have averted the wrath of %s... "
-                                "this time.\"",
+                   make_stringf(_("\"Mortal, I have averted the wrath of %s... "
+                                "this time.\""),
                                 god_name(GOD_SHINING_ONE).c_str()).c_str());
     }
     else
@@ -1428,8 +1429,8 @@ static void _god_smites_you(god_type god, const char *message,
         && !player_under_penance() && x_chance_in_y(you.piety, MAX_PIETY * 2))
     {
         god_speaks(you.religion,
-                   make_stringf("\"Mortal, I have averted the wrath of %s... "
-                                "this time.\"", god_name(god).c_str()).c_str());
+                   make_stringf(_("\"Mortal, I have averted the wrath of %s... "
+                                "this time.\""), god_name(god).c_str()).c_str());
     }
     else
     {

@@ -6,6 +6,8 @@
 #include "AppHdr.h"
 #include "mon-act.h"
 
+#include <libintl.h>
+
 #include "act-iter.h"
 #include "areas.h"
 #include "arena.h"
@@ -1683,7 +1685,7 @@ static void _confused_move_dir(monster *mons)
                     // But don't spam.
                     mons->props["no_conf_move"] = where;
                     simple_monster_message(mons,
-                        make_stringf(" stays still, afraid of the %s.",
+                        make_stringf(_(" stays still, afraid of the %s."),
                         feat_type_name(grd(*ai))).c_str());
                 }
                 mmov.reset();
