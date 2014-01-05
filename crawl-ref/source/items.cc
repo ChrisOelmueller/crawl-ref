@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "externs.h"
 

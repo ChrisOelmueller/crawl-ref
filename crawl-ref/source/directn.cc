@@ -9,7 +9,7 @@
 #include "format.h"
 
 #include <cstdarg>
-#include <libintl.h>
+#include "gettext.h"
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>

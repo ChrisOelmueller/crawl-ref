@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <cmath>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "externs.h"
 

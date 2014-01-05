@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <cctype>
 #include <cmath>
-#include <libintl.h>
+#include "gettext.h"
 
 #ifdef UNIX
 #include <sys/types.h>

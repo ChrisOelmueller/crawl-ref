@@ -7,7 +7,7 @@
 
 #include "misc.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <string.h>
 #include <algorithm>
 

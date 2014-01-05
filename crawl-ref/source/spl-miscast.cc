@@ -9,7 +9,7 @@
 
 #include "externs.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <sstream>
 
 #include "branch.h"

@@ -48,7 +48,7 @@
 #include <cstdio>
 #include <sstream>
 #include <algorithm>
-#include <libintl.h>
+#include "gettext.h"
 
 // Global
 StashTracker StashTrack;

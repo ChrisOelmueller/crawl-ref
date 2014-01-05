@@ -60,7 +60,7 @@
 #include "xom.h"
 
 #include <algorithm>
-#include <libintl.h>
+#include "gettext.h"
 #include <queue>
 
 // Macro that saves some typing, nothing more.

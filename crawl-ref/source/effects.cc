@@ -14,7 +14,7 @@
 #include <queue>
 #include <set>
 #include <cmath>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "externs.h"
 #include "options.h"

@@ -7,7 +7,7 @@
 
 #include "melee_attack.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

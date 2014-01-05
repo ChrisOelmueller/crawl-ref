@@ -1,6 +1,6 @@
 #include "AppHdr.h"
 #include <math.h>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "godpassive.h"
 

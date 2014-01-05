@@ -64,7 +64,7 @@
 #include <map>
 #include <set>
 #include <cmath>
-#include <libintl.h>
+#include "gettext.h"
 
 const int MAX_KRAKEN_TENTACLE_DIST = 12;
 

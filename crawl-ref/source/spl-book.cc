@@ -12,7 +12,7 @@
 #include <string.h>
 #include <algorithm>
 #include <iomanip>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "artefact.h"
 #include "cio.h"

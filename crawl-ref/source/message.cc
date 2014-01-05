@@ -30,7 +30,7 @@
 #include "shout.h"
 #include "viewgeom.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <sstream>
 
 #ifdef WIZARD

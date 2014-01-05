@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <ctype.h>
 #include <string.h>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "clua.h"
 

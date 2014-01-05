@@ -6,7 +6,7 @@
 #include "AppHdr.h"
 #include "mon-cast.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <math.h>
 
 #include "act-iter.h"

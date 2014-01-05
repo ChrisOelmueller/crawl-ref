@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <sstream>
 #include <math.h>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "externs.h"
 #include "options.h"

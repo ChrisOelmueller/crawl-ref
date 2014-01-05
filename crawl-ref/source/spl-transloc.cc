@@ -8,7 +8,7 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "spl-transloc.h"
 #include "externs.h"

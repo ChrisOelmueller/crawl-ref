@@ -12,7 +12,7 @@
 #include <cstring>
 #include <cstdarg>
 #include <iostream>
-#include <libintl.h>
+#include "gettext.h"
 #include <set>
 #include <algorithm>
 #include <cmath>

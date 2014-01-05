@@ -6,7 +6,7 @@
 #include "AppHdr.h"
 #include "mon-act.h"
 
-#include <libintl.h>
+#include "gettext.h"
 
 #include "act-iter.h"
 #include "areas.h"

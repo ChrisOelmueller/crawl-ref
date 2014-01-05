@@ -5,7 +5,7 @@
 
 #include "AppHdr.h"
 
-#include <libintl.h>
+#include "gettext.h"
 
 #include "item_use.h"
 

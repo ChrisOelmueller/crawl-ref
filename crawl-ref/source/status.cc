@@ -2,7 +2,7 @@
 
 #include "status.h"
 
-#include <libintl.h>
+#include "gettext.h"
 
 #include "areas.h"
 #include "env.h"

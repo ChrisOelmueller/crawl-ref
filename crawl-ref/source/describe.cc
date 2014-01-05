@@ -14,7 +14,7 @@
 #include <sstream>
 #include <iomanip>
 #include <numeric>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "externs.h"
 #include "options.h"

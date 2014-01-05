@@ -5,7 +5,7 @@
 
 #include "AppHdr.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include "arena.h"
 
 #include "act-iter.h"

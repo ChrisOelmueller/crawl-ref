@@ -57,7 +57,7 @@
 #include <cctype>
 #include <cstdarg>
 #include <cstdio>
-#include <libintl.h>
+#include "gettext.h"
 #include <memory>
 #include <set>
 #include <sstream>

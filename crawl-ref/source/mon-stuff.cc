@@ -73,7 +73,7 @@
 #include "viewchar.h"
 #include "xom.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <vector>
 #include <algorithm>
 

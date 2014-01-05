@@ -1,6 +1,6 @@
 #include "AppHdr.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <wctype.h>
 #include "ng-input.h"
 

@@ -8,7 +8,7 @@
 
 #include "areas.h"
 
-#include <libintl.h>
+#include "gettext.h"
 
 #include "act-iter.h"
 #include "art-enum.h"

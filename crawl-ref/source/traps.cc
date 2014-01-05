@@ -9,7 +9,7 @@
 #include "trap_def.h"
 
 #include <algorithm>
-#include <libintl.h>
+#include "gettext.h"
 #include <math.h>
 
 #include "artefact.h"

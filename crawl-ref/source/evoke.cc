@@ -10,7 +10,7 @@
 
 #include <algorithm>
 #include <cstdlib>
-#include <libintl.h>
+#include "gettext.h"
 #include <string.h>
 
 #include "externs.h"

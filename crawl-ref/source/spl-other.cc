@@ -6,7 +6,7 @@
 
 #include "AppHdr.h"
 
-#include <libintl.h>
+#include "gettext.h"
 
 #include "spl-other.h"
 #include "externs.h"

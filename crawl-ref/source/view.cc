@@ -13,7 +13,7 @@
 #include <sstream>
 #include <algorithm>
 #include <memory>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "act-iter.h"
 #include "attitude-change.h"

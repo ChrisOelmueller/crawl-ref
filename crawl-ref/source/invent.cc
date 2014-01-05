@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <libintl.h>
+#include "gettext.h"
 #include <sstream>
 #include <iomanip>
 

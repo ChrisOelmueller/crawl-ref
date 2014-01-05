@@ -19,7 +19,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <libintl.h>
+#include "gettext.h"
 #include <list>
 #include <sstream>
 #include <iostream>

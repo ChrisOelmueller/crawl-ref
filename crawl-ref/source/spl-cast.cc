@@ -7,7 +7,7 @@
 
 #include <sstream>
 #include <iomanip>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "spl-cast.h"
 

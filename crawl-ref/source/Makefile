@@ -661,6 +661,11 @@ ifdef GLES
 DEFINES_L += -DUSE_GLES
 endif
 
+# XXX This doesn't seem to work
+ifndef NO_NLS
+DEFINES_L += -DENABLE_NLS
+endif
+
 ifndef NO_PKGCONFIG
 
 # If pkg-config is available, it's the surest way to find where

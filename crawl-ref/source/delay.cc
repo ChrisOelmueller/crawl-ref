@@ -8,7 +8,7 @@
 #include "externs.h"
 #include "options.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <stdio.h>
 #include <string.h>
 

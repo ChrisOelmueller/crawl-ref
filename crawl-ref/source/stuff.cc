@@ -18,7 +18,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <math.h>
-#include <libintl.h>
+#include "gettext.h"
 
 #include "abyss.h"
 #include "cio.h"

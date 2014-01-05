@@ -5,7 +5,7 @@
 
 #include "AppHdr.h"
 
-#include <libintl.h>
+#include "gettext.h"
 #include <math.h>
 
 #include "mon-util.h"

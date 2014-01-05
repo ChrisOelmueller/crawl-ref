@@ -321,6 +321,7 @@ enum CHAR_ATTRIBUTES
 #define ARRAYSZ(x) (sizeof(x) / sizeof(x[0]))
 #define RANDOM_ELEMENT(x) (x[random2(ARRAYSZ(x))])
 
+#define ENABLE_NLS 1 // XXX: This should be set by makefile
 #define _(str) gettext(str)
 #define P_(sing, plur, n) ngettext(sing, plur, n)
 #define no_(str) str
