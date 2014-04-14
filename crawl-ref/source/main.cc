@@ -227,9 +227,9 @@ static void _do_prev_cmd_again();
 static void _update_replay_state();
 
 static void _show_commandline_options_help();
-static void _wanderer_startup_message();
 static void _announce_goal_message();
 static void _god_greeting_message(bool game_start);
+static void _startup_char_message();
 static void _take_starting_note();
 static void _startup_hints_mode();
 static void _set_removed_types_as_identified();
@@ -431,13 +431,13 @@ NORETURN static void _launch_game()
     viewwindow();
 #endif
 
-    if (game_start && you.char_class == JOB_WANDERER)
-        _wanderer_startup_message();
-
     if (game_start)
        _announce_goal_message();
 
     _god_greeting_message(game_start);
+
+    if (game_start)
+        _startup_char_message();
 
     if (!crawl_state.game_is_tutorial())
         mpr("Press <w>?</w> for a list of commands and other information.");
@@ -555,20 +555,11 @@ static void _show_commandline_options_help()
 #endif
 }
 
-static void _wanderer_startup_message()
+static void _startup_char_message()
 {
-    int skill_levels = 0;
-    for (int i = 0; i < NUM_SKILLS; ++i)
-        skill_levels += you.skills[ i ];
-
-    if (skill_levels <= 2)
-    {
-        // Some wanderers stand to not be able to see any of their
-        // skills at the start of the game (one or two skills should be
-        // easily guessed from starting equipment).  Anyway, we'll give
-        // the player a message to warn them (and a reason why). - bwr
-        mpr("You wake up in a daze, and can't recall much.");
-    }
+    mprf("%s%s", getCharHintString(species_name(you.species)).c_str(),
+                 getCharHintString(you.class_name).c_str());
+    // help this prints an empty line why does it do that
 }
 
 static void _wanderer_note_items()

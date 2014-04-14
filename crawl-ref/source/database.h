@@ -46,6 +46,7 @@ string getRandNameString(const string &itemtype, const string &suffix = "");
 string getHelpString(const string &topic);
 string getMiscString(const string &misc, const string &suffix = "");
 string getHintString(const string &key);
+string getCharHintString(const string &job_or_species);
 
 vector<string> getAllFAQKeys();
 string getFAQ_Question(const string &key);

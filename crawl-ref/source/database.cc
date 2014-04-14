@@ -137,6 +137,11 @@ static TextDB AllDBs[] =
             "hints.txt",    // hints mode
             "tutorial.txt", // tutorial mode
             nullptr),
+
+    TextDB("charhints", "descript/",
+            "species-hints.txt",     // brief game start hints for race
+            "backgrounds-hints.txt", // brief game start hints for class
+            nullptr),
 };
 
 static TextDB& DescriptionDB = AllDBs[0];
@@ -149,6 +154,7 @@ static TextDB& QuotesDB      = AllDBs[6];
 static TextDB& HelpDB        = AllDBs[7];
 static TextDB& FAQDB         = AllDBs[8];
 static TextDB& HintsDB       = AllDBs[9];
+static TextDB& CharHintDB    = AllDBs[10];
 
 static string _db_cache_path(string db, const char *lang)
 {
@@ -863,6 +869,15 @@ string getHelpString(const string &topic)
     if (help.empty())
         help = "Error! The help for \"" + topic + "\" is missing!";
     return help;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Game start hint DB specific functions.
+
+string getCharHintString(const string &job_or_species)
+{
+    // unwrap_desc() yes or no?
+    return _query_database(CharHintDB, job_or_species, true, false);
 }
 
 /////////////////////////////////////////////////////////////////////////////
