@@ -1,0 +1,136 @@
+%%%%
+Centaur
+
+You are faster than many enemies early on. Use this to position yourself, or to
+escape from dangerous situations.
+%%%%
+Deep Dwarf
+
+Intrinsic: You do not regenerate naturally, but also take less damage.
+Item: <w>wand of heal wounds</w>
+Ability: <w>Device Recharging</w> - recharge wands for 1 permanent MP
+%%%%
+Deep Elf
+
+Fragile as fuck. Why would you do this. Seriously go play a Dr instead.
+%%%%
+Demigod
+
+You are unable to follow a god.
+%%%%
+Demonspawn
+
+You acquire strong demonic mutations as you gain experience. These provide you
+with support of many kinds, and may tempt you to change your game plans.
+%%%%
+Draconian
+
+Upon reaching level 7, you develop one of several colours with unique traits.
+You cannot wear body armour (robe, ring mail, etc.) or helmets.
+%%%%
+Formicid
+
+Intrinsic: <w>Stasis</w>, Shieldstuff, antennae
+Ability: <w>Dig</w> - extract your mandibles to eat wall
+Ability: <w>Shaft Self</w> - makes noise, shafts you up to three floors down
+%%%%
+Felid
+
+Felids gain extra lives after reaching certain experience levels.
+They cannot use armour or weapons, only digest meat, and see invisible enemies.
+You are faster than many enemies early on. Use this to position yourself, or to
+escape from dangerous situations.
+%%%%
+Ghoul
+
+Rotting is not a problem. Really not. Stop bothering. Eat dudes. You'll be fine.
+%%%%
+Gargoyle
+
+You resist everything and have high intrinsic AC, but no abundance of Health.
+%%%%
+Halfling
+
+Sludge Dwarves excel at hurling bullets from their dwarven slings. They resist
+mutations more easily than other races.
+%%%%
+High Elf
+
+You are officially boring (this race only looks good on paper, joke's on you)
+%%%%
+Hill Orc
+
+You are good with Axes and melee stuff in general but also Fire and Earth magic.
+Cave orc priests in the dungeon might offer conversion to Beogh and spare your
+life in exchange.
+%%%%
+Human
+
+Good at everything
+%%%%
+Tengu
+
+You cannot wear helmets or boots. At level 5, learns to fly for a short time
+(granting bonuses to movement speed and evasion). Later, flies permanently.
+%%%%
+Kobold
+
+Sludge Dwarves like to eat all kinds of meat.
+%%%%
+Lava Orc
+
+Salamander.
+The name's salamander.
+%%%%
+Merfolk
+
+Water (fast, stealth and EV bonus). Polearms.
+%%%%
+Minotaur
+
+Retaliation attack: chance of reflexively headbutting whenever an enemy misses
+you in melee.
+%%%%
+Mummy
+
+You cannot eat, drink or transmute. Resist cold / neg, immune pois, vuln fire.
+%%%%
+Naga
+
+Slow movement, rPois, sInv, good stealth
+Ability: <w>Spit Poison</w> - very damaging ranged attack with a short cooldown.
+%%%%
+Octopode
+
+Can wear eight rings, but only hats and a shield as far as armour goes.
+Swims in water (diff. from Mf here?)
+Intrinsic: <w>Constriction</w> - squeezes adjacent enemies for damage over time.
+%%%%
+Ogre
+
+Squishy as fuck do not play an Ogre unless you know what you're doing
+and maybe don't even then
+%%%%
+Spriggan
+
+Your metabolism is very slow, but you can only digest herbivorous food.
+Cannot wear most armour, cannot wield some Huge Wpns.
+You are faster than many enemies early on. Use this to position yourself, or to
+escape from dangerous situations.
+%%%%
+Troll
+
+Claw dudes. Eat dudes. Repeat.
+%%%%
+Vampire
+
+TODO fix them before writing shit here
+Bat form at XL3, bottle blood at XL6, A! screen for satiation details
+Item: <w>potions of blood</w> - increase satiation level (and decay over time!)
+%%%%
+Vine Stalker
+
+Vine Stalkers cannot regain health from potions or wands.
+Your anti-magic bite restores MP, and you regenerate very quickly.
+Intrinsic: <w>Guardian Spirit</w> - share damage between MP and HP pools
+%%%%

@@ -1,0 +1,112 @@
+%%%%
+Abyssal Knight
+
+Ability: <w>Escape the Abyss</w> (instantly). There also is a portal out nearby.
+%%%%
+Air Elementalist
+
+Spell: <w>Shock</w> - bounces off walls, hitting monsters twice if set up correctly!
+%%%%
+Arcane Marksman
+
+Spell: <w>Corona</w> - find your beach
+%%%%
+Artificer
+
+zappity zap zap
+Item: <w>three wands</w>, each of which useful in different situations
+%%%%
+Assassin
+
+curare (wielding blowgun with ' key or from inv)
+%%%%
+Berserker
+
+Ability: <w>Berserk</w> (increases HP, melee damage, speed). Berserk expires fast if
+not attacking!
+%%%%
+Chaos Knight
+
+chaos weapon (Kalir)
+%%%%
+Conjurer
+
+Spell: <w>Magic Dart</w> - cannot miss, comparatively moderate damage.
+something about godawful searing ray interface while that is unfixed?
+%%%%
+Death Knight
+
+Ability: <w>Animate Remains</w> - corpse to friend, better chance w/higher Invo
+%%%%
+Earth Elementalist
+
+Spell: <w>Sandblast</w> - wield a stone to increase power
+%%%%
+Enchanter
+
+TODO hmmm
+%%%%
+Fighter
+
+Item: <w>potion of might</w> - increases melee damage substantially
+%%%%
+Fire Elementalist
+
+Spell: <w>Flame Tongue</w> - range increases with spellpower (check I, toggle
+with !)
+%%%%
+Gladiator
+
+Item: <w>throwing nets</w> - catch enemies for stabbing or escape
+%%%%
+Healer
+
+TODO
+Item: <w>potions of curing</w> and <w>heal wounds</w>
+%%%%
+Hunter
+
+TODO ranged stuff
+%%%%
+Ice Elementalist
+
+Spell: <w>Freeze</w> - melee range, but high damage and never misses. Slows cold-blooded enemies.
+%%%%
+Monk
+
+Upon joining a god, Monks receive <w>bonus piety</w> (indicated by grey piety stars).
+%%%%
+Necromancer
+
+Spell: <w>Pain</w> - hurts the caster (for 1 HP) as well as the target.
+%%%%
+Skald
+
+Spell: <w>Infusion</w> - attempts to increase melee damage in exchange for MP.
+%%%%
+Summoner
+
+Spell: <w>Summon Small Mammal</w> -
+%%%%
+Transmuter
+
+Spell: <w>Beastly Appendage</w> - transforms a body part into one with auxiliary attack
+Item: <w>arrows</w> - for use with your L2 spell, Sticks to Snakes.
+%%%%
+Venom Mage
+
+Spell: <w>Sting</w>
+%%%%
+Wanderer
+
+TODO all random
+%%%%
+Warper
+
+Item: <w>scroll of blinking</w> - read to escape from a dangerous situation
+Item: <w>darts of dispersal</w> - enemies damaged by these get blinked
+%%%%
+Wizard
+
+Spell: <w>Magic Dart</w> - cannot miss, comparatively moderate damage.
+%%%%
