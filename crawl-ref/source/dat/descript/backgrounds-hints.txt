@@ -70,7 +70,7 @@ TODO ranged stuff
 %%%%
 Ice Elementalist
 
-Spell: <w>Freeze</w> - melee range, but high damage and never misses. Slows cold-blooded enemies.
+Spell: <w>Freeze</w> - melee range, can't be evaded. Slows cold-blooded enemies.
 %%%%
 Monk
 
