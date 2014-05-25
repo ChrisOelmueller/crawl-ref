@@ -293,8 +293,8 @@ public:
 
     bool effect(bool=true, int pow = 40) const
     {
+        restore_stat(STAT_STR, 0, false);
         const bool were_mighty = you.duration[DUR_MIGHT] > 0;
-
         mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_mighty ? "mightier" : "very mighty");
 
@@ -319,8 +319,8 @@ public:
 
     bool effect(bool=true, int pow = 40) const
     {
+        restore_stat(STAT_INT, 0, false);
         const bool were_brilliant = you.duration[DUR_BRILLIANCE] > 0;
-
         mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_brilliant ? "more clever" : "clever");
 
@@ -346,8 +346,8 @@ public:
 
     bool effect(bool=true, int pow = 40) const
     {
+        restore_stat(STAT_DEX, 0, false);
         const bool were_agile = you.duration[DUR_AGILITY] > 0;
-
         mprf(MSGCH_DURATION, "You feel %s all of a sudden.",
              were_agile ? "more agile" : "agile");
 
@@ -632,34 +632,6 @@ public:
 
         effect();
         return true;
-    }
-};
-
-class PotionRestoreAbilities : public PotionEffect
-{
-private:
-    PotionRestoreAbilities() : PotionEffect(POT_RESTORE_ABILITIES) { }
-    DISALLOW_COPY_AND_ASSIGN(PotionRestoreAbilities);
-public:
-    static const PotionRestoreAbilities &instance()
-    {
-        static PotionRestoreAbilities inst; return inst;
-    }
-
-    bool effect(bool=true, int=40) const
-    {
-        bool nothing_happens = true;
-        if (you.duration[DUR_BREATH_WEAPON])
-        {
-            mprf(MSGCH_RECOVERY, "You have got your breath back.");
-            you.duration[DUR_BREATH_WEAPON] = 0;
-            nothing_happens = false;
-        }
-
-        // Give a message if no message otherwise.
-        if (!restore_stat(STAT_ALL, 0, false) && nothing_happens)
-            mpr("You feel refreshed.");
-        return nothing_happens;
     }
 };
 
@@ -1131,6 +1103,34 @@ public:
         return slow_player(10 + random2(pow));
     }
 };
+
+class PotionRestoreAbilities : public PotionEffect
+{
+private:
+    PotionRestoreAbilities() : PotionEffect(POT_RESTORE_ABILITIES) { }
+    DISALLOW_COPY_AND_ASSIGN(PotionRestoreAbilities);
+public:
+    static const PotionRestoreAbilities &instance()
+    {
+        static PotionRestoreAbilities inst; return inst;
+    }
+
+    bool effect(bool=true, int=40) const
+    {
+        bool nothing_happens = true;
+        if (you.duration[DUR_BREATH_WEAPON])
+        {
+            mprf(MSGCH_RECOVERY, "You have got your breath back.");
+            you.duration[DUR_BREATH_WEAPON] = 0;
+            nothing_happens = false;
+        }
+
+        // Give a message if no message otherwise.
+        if (!restore_stat(STAT_ALL, 0, false) && nothing_happens)
+            mpr("You feel refreshed.");
+        return nothing_happens;
+    }
+};
 #endif
 
 // placeholder 'buggy' potion
@@ -1182,8 +1182,8 @@ static const PotionEffect* potion_effects[] =
 #endif
     &PotionExperience::instance(),
     &PotionMagic::instance(),
-    &PotionRestoreAbilities::instance(),
 #if TAG_MAJOR_VERSION == 34
+    &PotionRestoreAbilities::instance(),
     &PotionPoison::instance(),
 #endif
     &PotionBerserk::instance(),

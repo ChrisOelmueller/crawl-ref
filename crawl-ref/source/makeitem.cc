@@ -1389,14 +1389,13 @@ static void _generate_potion_item(item_def& item, int force_type,
         int tries = 500;
         do
         {
-            // total weight is 1065
+            // total weight is 1000
             stype = random_choose_weighted(191, POT_CURING,
                                             95, POT_HEAL_WOUNDS,
-                                            75, POT_RESTORE_ABILITIES,
-                                            66, POT_POISON,
-                                            66, POT_MIGHT,
-                                            66, POT_AGILITY,
-                                            66, POT_BRILLIANCE,
+                                            69, POT_MIGHT,
+                                            69, POT_AGILITY,
+                                            69, POT_BRILLIANCE,
+                                            67, POT_POISON,
                                             63, POT_HASTE,
                                             35, POT_INVISIBILITY,
                                             35, POT_FLIGHT,
@@ -1428,9 +1427,9 @@ static void _generate_potion_item(item_def& item, int force_type,
         || item.sub_type == POT_GAIN_STRENGTH
         || item.sub_type == POT_GAIN_DEXTERITY
         || item.sub_type == POT_GAIN_INTELLIGENCE
+        || item.sub_type == POT_RESTORE_ABILITIES
 #endif
-        || item.sub_type == POT_EXPERIENCE
-        || item.sub_type == POT_RESTORE_ABILITIES)
+        || item.sub_type == POT_EXPERIENCE)
     {
         item.quantity = 1;
     }

@@ -683,6 +683,7 @@ const char* potion_type_name(int potiontype)
     case POT_GAIN_INTELLIGENCE: return "gain intelligence";
     case POT_STRONG_POISON:     return "strong poison";
     case POT_PORRIDGE:          return "porridge";
+    case POT_RESTORE_ABILITIES: return "restore abilities";
 #endif
     case POT_FLIGHT:            return "flight";
     case POT_POISON:            return "poison";
@@ -694,7 +695,6 @@ const char* potion_type_name(int potiontype)
     case POT_DECAY:             return "decay";
     case POT_EXPERIENCE:        return "experience";
     case POT_MAGIC:             return "magic";
-    case POT_RESTORE_ABILITIES: return "restore abilities";
     case POT_BERSERK_RAGE:      return "berserk rage";
     case POT_CURE_MUTATION:     return "cure mutation";
     case POT_MUTATION:          return "mutation";
@@ -2370,6 +2370,7 @@ void check_item_knowledge(bool unknown_items)
                  || j == POT_GAIN_STRENGTH
                  || j == POT_GAIN_DEXTERITY
                  || j == POT_GAIN_INTELLIGENCE
+                 || j == POT_RESTORE_ABILITIES
                  || j == POT_SLOWING
                  || j == POT_STRONG_POISON
                  || j == POT_BLOOD_COAGULATED

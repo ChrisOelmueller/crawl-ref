@@ -1100,6 +1100,7 @@ static void _give_basic_knowledge(job_type which_job)
 #if TAG_MAJOR_VERSION == 34
     you.type_ids[OBJ_POTIONS][POT_BLOOD_COAGULATED] = ID_KNOWN_TYPE;
     you.type_ids[OBJ_POTIONS][POT_PORRIDGE] = ID_KNOWN_TYPE;
+    you.type_ids[OBJ_POTIONS][POT_RESTORE_ABILITIES] = ID_KNOWN_TYPE;
 #endif
 
     // Won't appear unidentified anywhere.
