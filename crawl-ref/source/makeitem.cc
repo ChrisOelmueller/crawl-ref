@@ -1448,35 +1448,35 @@ static void _generate_scroll_item(item_def& item, int force_type,
         int tries = 500;
         do
         {
-            // total weight:    784  if depth_mod < 4
-            //                  913  otherwise
-            //                 -112  in sprint
+            // total weight: 113
+            //              - 15  if depth_mod < 4
+            //              - 14  in sprint
             item.sub_type = random_choose_weighted(
-                200, SCR_IDENTIFY,
-                112, SCR_REMOVE_CURSE,
-                 // [Cha] don't generate teleportation scrolls if in sprint
-                 80, (crawl_state.game_is_sprint() ? NUM_SCROLLS : SCR_TELEPORTATION),
-                 40, SCR_ENCHANT_ARMOUR,
-                 40, SCR_ENCHANT_WEAPON,
-                 40, SCR_RECHARGING,
-                 40, SCR_MAGIC_MAPPING,
-                 40, SCR_AMNESIA,
-                 32, SCR_FEAR,
-                 32, SCR_FOG,
-                 32, SCR_RANDOM_USELESSNESS,
-                 32, SCR_BLINKING,
-                 // [Cha] don't generate noise scrolls if in sprint
-                 32, (crawl_state.game_is_sprint() ? NUM_SCROLLS : SCR_NOISE),
-                 32, SCR_IMMOLATION,
-                 // Higher-level scrolls.
-                 27, (depth_mod < 4 ? NUM_SCROLLS : SCR_VULNERABILITY),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_ACQUIREMENT),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_SUMMONING),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_SILENCE),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_BRAND_WEAPON),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_TORMENT),
-                 17, (depth_mod < 4 ? NUM_SCROLLS : SCR_HOLY_WORD),
-                 0);
+                25, SCR_IDENTIFY,
+                14, SCR_REMOVE_CURSE,
+                // [Cha] don't generate teleportation scrolls if in sprint
+                10, (crawl_state.game_is_sprint() ? NUM_SCROLLS : SCR_TELEPORTATION),
+                5, SCR_ENCHANT_ARMOUR,
+                5, SCR_ENCHANT_WEAPON,
+                5, SCR_RECHARGING,
+                5, SCR_MAGIC_MAPPING,
+                5, SCR_AMNESIA,
+                4, SCR_FEAR,
+                4, SCR_FOG,
+                4, SCR_RANDOM_USELESSNESS,
+                4, SCR_BLINKING,
+                // [Cha] don't generate noise scrolls if in sprint
+                4, (crawl_state.game_is_sprint() ? NUM_SCROLLS : SCR_NOISE),
+                4, SCR_IMMOLATION,
+                // Higher-level scrolls.
+                3, (depth_mod < 4 ? NUM_SCROLLS : SCR_VULNERABILITY),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_ACQUIREMENT),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_SUMMONING),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_SILENCE),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_BRAND_WEAPON),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_TORMENT),
+                2, (depth_mod < 4 ? NUM_SCROLLS : SCR_HOLY_WORD),
+                0);
         }
         while (item.sub_type == NUM_SCROLLS
                || agent == GOD_XOM
