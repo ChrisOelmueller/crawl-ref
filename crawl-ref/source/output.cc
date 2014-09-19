@@ -1307,15 +1307,13 @@ void print_stats()
         textcolour(Options.status_caption_colour);
         CPRINTF("XL: ");
         textcolour(HUD_VALUE_COLOUR);
-        CPRINTF("%2d ", you.experience_level);
+        CPRINTF("%2d", you.experience_level);
         if (you.experience_level >= you.get_max_xl())
-            CPRINTF("%10s", "");
+            CPRINTF("%4s", "");
         else
         {
             textcolour(Options.status_caption_colour);
-            CPRINTF("Next: ");
-            textcolour(HUD_VALUE_COLOUR);
-            CPRINTF("%2d%% ", get_exp_progress());
+            CPRINTF(".%02d ", get_exp_progress());
         }
         if (crawl_state.game_is_zotdef())
         {
