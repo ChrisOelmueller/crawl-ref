@@ -1225,6 +1225,19 @@ static void _redraw_title(const string &your_name, const string &job_name)
     textcolour(LIGHTGREY);
 }
 
+static string _level_description_string_hud()
+{
+    const PlaceInfo& place = you.get_place_info();
+    string short_name = branches[place.branch].shortname;
+
+    if (brdepth[place.branch] > 1)
+        short_name += make_stringf(":%d", you.depth);
+    // Indefinite articles
+    else if (place.branch != BRANCH_PANDEMONIUM && !is_connected_branch(place.branch))
+        short_name = article_a(short_name);
+    return short_name;
+}
+
 void print_stats()
 {
 #if TAG_MAJOR_VERSION == 34
@@ -1383,19 +1396,6 @@ void print_stats()
 #else
     update_screen();
 #endif
-}
-
-static string _level_description_string_hud()
-{
-    const PlaceInfo& place = you.get_place_info();
-    string short_name = branches[place.branch].shortname;
-
-    if (brdepth[place.branch] > 1)
-        short_name += make_stringf(":%d", you.depth);
-    // Indefinite articles
-    else if (place.branch != BRANCH_PANDEMONIUM && !is_connected_branch(place.branch))
-        short_name = article_a(short_name);
-    return short_name;
 }
 
 void print_stats_level()
