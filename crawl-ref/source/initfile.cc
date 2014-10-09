@@ -3978,6 +3978,10 @@ void game_options::set_fake_langs(const string &input)
         { "butt", FLANG_BUTT },
         { "buttbot", FLANG_BUTT },
         { "tef", FLANG_BUTT },
+
+        { "mist", FLANG_MIST },
+        { "hom", FLANG_MIST },
+        { "halls of mist", FLANG_MIST },
     };
 
     fake_langs.clear();

@@ -141,6 +141,7 @@ enum flang_t
     FLANG_WIDE,
     FLANG_GRUNT,
     FLANG_BUTT,
+    FLANG_MIST,
 };
 
 enum ability_type
