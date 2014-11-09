@@ -173,6 +173,7 @@ public:
     bool        default_manual_training;
 
     bool        show_newturn_mark;// Show underscore prefix in messages for new turn
+    bool        compact_hud;     // Save lots of space in the HUD (ignore show_game_turns)
     bool        show_game_turns; // Show game turns instead of player turns.
 
     FixedBitVector<NUM_OBJECT_CLASSES> autopickups; // items to autopickup

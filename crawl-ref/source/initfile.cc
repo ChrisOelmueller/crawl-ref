@@ -772,6 +772,7 @@ void game_options::reset_options()
     default_manual_training = false;
 
     show_newturn_mark = true;
+    compact_hud = false;
     show_game_turns = true;
 
     game = newgame_def();
@@ -2904,6 +2905,7 @@ void game_options::read_option_line(const string &str, bool runscript)
         morgue_dir = field;
 #endif
     else BOOL_OPTION(show_newturn_mark);
+    else BOOL_OPTION(compact_hud);
     else BOOL_OPTION(show_game_turns);
     else INT_OPTION(hp_warning, 0, 100);
     else INT_OPTION_NAMED("mp_warning", magic_point_warning, 0, 100);
