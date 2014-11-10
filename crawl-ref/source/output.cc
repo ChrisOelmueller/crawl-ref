@@ -889,6 +889,81 @@ static int _wpn_name_colour()
     return get_form()->uc_colour;
 }
 
+static bool _best_skills(int i, int j)
+{
+    if (skill_focused(i) != skill_focused(j))
+        return skill_focused(i);
+    else
+        return you.skills[i] > you.skills[j];
+}
+
+/**
+ * Print a brief one-line overview of currently trained skills to the HUD.
+ * Kinda sorta relies on `short_skill_name` only rarely returning four chars.
+ *
+ * @param y The y-coordinate to print the skill bar at.
+ */
+static void _print_stats_skills(int y)
+{
+    vector<skill_type> trained_skills;
+    for (int i = 0; i < NUM_SKILLS; ++i)
+        if (skill_trained(i))
+            trained_skills.push_back(static_cast<skill_type>(i));
+
+    sort(trained_skills.begin(), trained_skills.end(), _best_skills);
+
+    int long_len = -2; // Don't count trailing two spaces.
+    int short_len = -2; // Don't count trailing two spaces.
+    for (unsigned int i = 0; i < trained_skills.size(); ++i)
+    {
+        const skill_type sk = trained_skills[i];
+        long_len += strwidth(long_skill_name(sk));
+        long_len += 3 + (you.skill(sk, 10) > 99 ? 4 : 3);
+        if (i > 3)
+            continue;
+        short_len += strwidth(short_skill_name(sk));
+        short_len += 3 + (you.skill(sk, 10) > 99 ? 4 : 3);
+    }
+
+    CGOTOXY(1, y, GOTO_STAT);
+    const bool long_names_fit = long_len <= 42; // HUD_WIDTH
+    const bool shorten_ellipsis = short_len > 39; // HUD_WIDTH - 3
+
+    for (unsigned int i = 0; i < trained_skills.size(); ++i)
+    {
+        textcolour(HUD_CAPTION_COLOUR);
+        if (i > 3)
+        {
+            textbackground(COLFLAG_REVERSE);
+            if (shorten_ellipsis)
+            {
+                CGOTOXY(crawl_view.mlistsz.x - 1, y, GOTO_STAT);
+                CPRINTF("…");
+            }
+            else
+            {
+                CGOTOXY(crawl_view.mlistsz.x - 3, y, GOTO_STAT);
+                CPRINTF("(…)");
+            }
+            textbackground(BLACK);
+            break;
+        }
+        if (long_names_fit)
+            CPRINTF("%s", long_skill_name(trained_skills[i]));
+        else
+            CPRINTF("%s", short_skill_name(trained_skills[i]).c_str());
+
+        if (skill_focused(trained_skills[i]))
+            CPRINTF("*");
+        else
+            CPRINTF(" ");
+
+        textcolour(HUD_VALUE_COLOUR);
+        CPRINTF("%.1f  ", (double_t) you.skill(trained_skills[i], 10) / 10.0);
+        clear_to_end_of_line();
+    }
+}
+
 /**
  * Print a description of the player's weapon (or lack thereof) to the UI.
  *
@@ -1450,6 +1525,12 @@ void print_stats()
         _print_stats_qv((compact ? 7 : 10) + yhack);
 
     you.redraw_quiver = false;
+
+    if (Options.show_skill_bar)
+    {
+        _print_stats_skills((compact ? 8 : 11) + yhack);
+        yhack++;
+    }
 
     if (you.redraw_status_flags)
     {

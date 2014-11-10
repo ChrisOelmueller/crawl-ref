@@ -978,6 +978,11 @@ bool skill_trained(int i)
     return you.can_train[i] && you.train[i];
 }
 
+bool skill_focused(int i)
+{
+    return you.can_train[i] && you.train[i] > 1;
+}
+
 void check_skill_cost_change()
 {
     while (you.skill_cost_level < 27
@@ -1155,6 +1160,71 @@ int get_skill_percentage(const skill_type x)
 const char *skill_name(skill_type which_skill)
 {
     return skill_titles[which_skill][0];
+}
+
+const char* long_skill_name(skill_type sk)
+{
+    switch (sk)
+    {
+    case SK_FIRE_MAGIC:
+        return "Fire";
+    case SK_ICE_MAGIC:
+        return "Ice";
+    case SK_AIR_MAGIC:
+        return "Air";
+    case SK_EARTH_MAGIC:
+        return "Earth";
+    case SK_POISON_MAGIC:
+        return "Poison";
+    default:
+        return skill_name(sk);
+    }
+}
+
+/**
+ * Short skill name, for display purposes.
+ *
+ * @param sk The skill in question.
+ * @return   Short (ideally three chars, sometimes four) name of the skill.
+ */
+string short_skill_name(skill_type sk)
+{
+    // Try to stick to three chars, only use four where absolutely necessary.
+    switch (sk)
+    {
+    case SK_FIGHTING:       return "Fgt";
+    case SK_SHORT_BLADES:   return "SBl";
+    case SK_LONG_BLADES:    return "LBl";
+    case SK_AXES:           return "Axe";
+    case SK_MACES_FLAILS:   return "M&F";
+    case SK_POLEARMS:       return "Pol";
+    case SK_STAVES:         return "Stv";
+    case SK_UNARMED_COMBAT: return "UC";
+    case SK_BOWS:           return "Bow";
+    case SK_CROSSBOWS:      return "Crb";
+    case SK_THROWING:       return "Thr";
+    case SK_SLINGS:         return "Sli";
+    case SK_ARMOUR:         return "Arm";
+    case SK_DODGING:        return "Dod";
+    case SK_SHIELDS:        return "Shd";
+    case SK_SPELLCASTING:   return "Spc";
+    case SK_CONJURATIONS:   return "Conj";
+    case SK_HEXES:          return "Hex";
+    case SK_CHARMS:         return "Cha";
+    case SK_SUMMONINGS:     return "Sum";
+    case SK_NECROMANCY:     return "Nec";
+    case SK_TRANSLOCATIONS: return "Tloc";
+    case SK_TRANSMUTATIONS: return "Tmut";
+    case SK_FIRE_MAGIC:     return "Fire";
+    case SK_ICE_MAGIC:      return "Ice";
+    case SK_AIR_MAGIC:      return "Air";
+    case SK_EARTH_MAGIC:    return "Ear";
+    case SK_POISON_MAGIC:   return "Poi";
+    case SK_INVOCATIONS:    return "Inv";
+    case SK_EVOCATIONS:     return "Evo";
+    case SK_STEALTH:        return "Ste";
+    default:                return "Nope";
+    }
 }
 
 skill_type str_to_skill(const string &skill)

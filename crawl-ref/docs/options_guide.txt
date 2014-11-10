@@ -61,7 +61,8 @@ The contents of this text are:
                 hp_warning, mp_warning, hp_colour, mp_colour, stat_colour,
                 status_caption_colour, enemy_hp_colour, clear_messages,
                 show_more, small_more, show_newturn_mark,
-                compact_hud, show_game_turns, item_stack_summary_minimum,
+                compact_hud, show_game_turns, show_skill_bar,
+                item_stack_summary_minimum,
                 mlist_min_height, mlist_allow_alternate_layout,
                 mlist_targeting, msg_min_height, msg_max_height,
                 messages_at_top, skill_focus, msg_condense_repeats,
@@ -1291,6 +1292,12 @@ show_game_turns = true
         which is the number of actions done, regardless of their duration. It
         is this turn count which is used for scoring (and this turn count is
         always visible on the % overview screen).
+
+show_skill_bar = false
+        Adds a line to the HUD which lists the skills that are currently enabled
+        for training alongside their respective level.
+        The bar can fit up to four skills. Skills are sorted by skill level in
+        decreasing order, focused skills appearing before non-focused ones.
 
 item_stack_summary_minimum = 4
         If you step over a stack with this number or more of items in
