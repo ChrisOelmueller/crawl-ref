@@ -198,6 +198,19 @@ static const char* grunt[][4] =
   {0}
 };
 
+//TODO list:
+// - proper regex support
+// - database hijacking (override/mute), settings for muting
+// - capitalization inside messages, color tag handling
+// - messages on different channels should share lines
+// - combine messages again after applying translation
+// - (get rid of turncount indicator)
+// - partial message coloring (huge task)
+// - look into sequential monster names
+// - miscast / effect deobfuscation and generally better handling
+// - HUD translation?
+// - move most string-related stuff to lua for more flexible translations?
+// - hmm there was something else but what was it
 static const char* mist[][4] =
 {
   // Adjectives, adverbs
@@ -1863,9 +1876,6 @@ static void _butt(string &str)
 
 static void _mist(string &txt)
 {
-    //TODO list:
-    // - provide custom databases
-    // - settings to mute all multiturn messages, visuals, etc from code
     static const char* exact_mist[][2] =
     {
       // Prompts and other annoying capitalization
