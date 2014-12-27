@@ -83,7 +83,7 @@ unique_item_status_type get_unique_item_status(int unrand_index);
 void set_unique_item_status(const item_def& item,
                             unique_item_status_type status);
 
-string get_artefact_base_name(const item_def &item, bool terse = false);
+string get_artefact_base_name(const item_def &item, bool ignore_cosmetic = false, bool terse = false);
 string get_artefact_name(const item_def &item, bool force_known = false, bool terse = false);
 
 void set_artefact_name(item_def &item, const string &name);

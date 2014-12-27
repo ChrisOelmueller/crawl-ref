@@ -1504,11 +1504,14 @@ static const unrandart_entry *_seekunrandart(const item_def &item)
     return get_unrand_entry(item.special);
 }
 
-string get_artefact_base_name(const item_def &item, bool terse)
+string get_artefact_base_name(const item_def &item, bool ignore_cosmetic, bool terse)
 {
     string base_name = item_base_name(item);
     const char* custom_type = _seekunrandart(item)->type_name;
-    if (custom_type)
+    const bool not_cosmetic = (artefact_wpn_property(item, ARTP_BASE_DAM)
+                               || artefact_wpn_property(item, ARTP_BASE_ACC)
+                               || artefact_wpn_property(item, ARTP_BASE_DELAY));
+    if (custom_type && (not_cosmetic || !ignore_cosmetic))
         base_name = custom_type;
     if (terse)
     {
