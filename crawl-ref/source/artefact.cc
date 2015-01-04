@@ -1536,7 +1536,6 @@ string get_artefact_name(const item_def &item, bool force_known, bool terse)
                 || is_unrandom_artefact(item, UNRAND_BOTONO)
                 || is_unrandom_artefact(item, UNRAND_BRILLIANCE) // would go over limit w/ {halo} INSCRIP
                 || is_unrandom_artefact(item, UNRAND_CHILLY_DEATH)
-                || is_unrandom_artefact(item, UNRAND_DEMON_AXE) // almost fits, four chars over: Cu|rse}
                 || is_unrandom_artefact(item, UNRAND_DEVASTATOR)
                 || is_unrandom_artefact(item, UNRAND_DOOM_KNIGHT)
                 // could get away with no INSCRIP due to unique properties?
