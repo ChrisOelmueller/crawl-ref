@@ -374,6 +374,7 @@ static const char* mist[][4] =
   {" into splinters$", ""},
   {"You carve$", "Hit"},
   {" like the proverbial ham$", ""},
+  {" like a turkey$", ""},
   {" like a pillowcase$", ""},
   {" like a ripe choko$", ""},
   {"You cut$", "Hit"},
