@@ -250,6 +250,7 @@ static const char* grunt[][4] =
 // - miscast / effect deobfuscation and generally better handling
 // - HUD translation?
 // - move most string-related stuff to lua for more flexible translations?
+// - check out the many hardcoded prompts in crawl
 // - hmm there was something else but what was it
 static const char* mist[][4] =
 {
