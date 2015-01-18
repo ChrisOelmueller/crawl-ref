@@ -199,14 +199,54 @@ static const char* grunt[][4] =
 };
 
 //TODO list:
-// - proper regex support
+// - proper regex support (perhaps with * being non-greedy by default)
+//   [in particular, being able to reference matched groups in the
+//    replacement text, such as in the following before/after example:
+//      {"You spit$", "Hit"},
+//      {" like the proverbial pig$", ""},
+//      {" like a pig$", ""},
+//    =>
+//      {"^You spit (.*) like (the proverbial|a) pig$", "Hit \1"},
+//    this, more advanced anchors than makeshift ^ and $ implementation,
+//    (weird|different|msgs for )the same thing,
+//    (optional )? text could be represented as (optional |) text
+//     -- no need to burn ? as operator --
+//    and maybe also teach about \w \d etc. (see LETTERS in this file)
 // - database hijacking (override/mute), settings for muting
+//   [right now, translations can only change the exact keys that are
+//    specified in the english database. this means you have to copy
+//    everything defined there even if you only want to globally override
+//    e.g. all Xom actions with "Xom." you still need to define and
+//    override all Xom action keys such as `Xom medium miscast effect`
+//    instead of just providing `Xom general effect` in translated file.
+//    ideally the query code would merge translated and english database
+//    and look for a match in the joint database, giving priority to the
+//    translation.]
 // - capitalization inside messages, color tag handling
+//   [right now, fake langagues have custom code for finding instances of
+//    their strings with different *start* capitalization. this needs to
+//    be extended and in particular also work for caps inside of strings,
+//    which right now require bad hackery or outright refuse to work.
+//    proper regex support should include a way of only matching the exact
+//    capitalization of the string as provided (probably not as default).]
 // - messages on different channels should share lines
+//   [have not looked into this, maybe they already do]
 // - combine messages again after applying translation
+//   [sounds rather easy but probably isn't
+//    also check if e.g. force_more checks should run again after applying
+//    -- important that they and the coloring/channels/etc run before too!
+//    else turning off / switching languages would mean rewriting your rc]
 // - (get rid of turncount indicator)
+//   [which does a really bad job anyways but now is outright annoying
+//    with its habit of breaking lines between turns and preventing
+//    messages from combining properly]
 // - partial message coloring (huge task)
+//   [way out of the scope of mist but would be incredibly cool, esp. in
+//    inventory and other menus]
 // - look into sequential monster names
+//   [a band of centaurs would assign them unique names (perhaps per level)
+//    so that messages (and the hud!) could refer to them as
+//    `centaur #1 (bow)`, `centaur #2 (longbow flame)`, more ideas go here]
 // - miscast / effect deobfuscation and generally better handling
 // - HUD translation?
 // - move most string-related stuff to lua for more flexible translations?
@@ -1865,7 +1905,6 @@ static void _mist(string &txt)
       {" (- for none, * to show all)", ""}, // w
       {"Welcome back, *", "Hi."},
       {"Welcome, ", "Hi. "},
-      //TODO mute god welcome messages (database hijack code required)
     //{"O*", "O"},
       //   t - <shout>!
       {"Orders for allies: a - Attack new target.", ""},
