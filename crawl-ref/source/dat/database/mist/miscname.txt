@@ -1,0 +1,64 @@
+%%%%
+_glowing_adj_
+
+pale
+%%%%
+_colour_name_
+
+grey
+%%%%
+glowing_colour_name
+
+@_glowing_adj_@ @_colour_name_@
+%%%%
+_writing_adj_
+
+bold
+%%%%
+_writing_noun_
+
+text
+%%%%
+writing_name
+
+text
+%%%%
+smell_name
+
+it
+%%%%
+sound_name
+
+it
+%%%%
+SHT_int_loss
+
+Int loss.
+%%%%
+welcome_spam
+
+Find orb.
+%%%%
+hell_effect_quiet
+
+Hell effect.
+%%%%
+hell_effect_noisy
+
+Hell effect. noise!
+%%%%
+eating_pizza
+
+Pizza
+#__NONE
+%%%%
+_cheese_kind_
+
+Cheese
+#__NONE
+%%%%
+eating_fruit
+
+__NONE
+#That choko was very bland.
+%%%%

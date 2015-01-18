@@ -1,0 +1,9 @@
+%%%%
+friendly orc
+
+__NONE
+%%%%
+default
+
+__NONE
+%%%%

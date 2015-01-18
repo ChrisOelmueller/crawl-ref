@@ -1,0 +1,15 @@
+###############################################################################
+# Voices of fleeing monsters.
+# 'flee' is for when they start running.
+# 'fleeing' is for flight in progress (sometimes).
+# 'cornered' is when they realize they have nowhere to go.
+#########
+%%%%
+default flee
+
+@The_monster@ flees.
+%%%%
+default cornered
+
+@The_monster@ cornered.
+%%%%

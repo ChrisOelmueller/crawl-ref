@@ -1,0 +1,29 @@
+%%%%
+shield of the gong
+
+Gong!
+%%%%
+noisy weapon
+
+Weapon!
+%%%%
+singing sword silenced
+
+Sword silenced.
+%%%%
+singing sword no_tension
+
+Sword no tension.
+%%%%
+singing sword low_tension
+
+Sword low tension.
+%%%%
+singing sword high_tension
+
+Sword high tension.
+%%%%
+singing sword SCREAM
+
+Sword double damage.
+%%%%

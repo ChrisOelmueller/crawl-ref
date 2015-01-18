@@ -1,0 +1,149 @@
+%%%%
+__SHOUT
+
+SOUND:it!
+%%%%
+__SHOUT seen
+
+SOUND:@The_monster@!
+%%%%
+__BARK unseen
+
+SOUND:bark!
+%%%%
+__BARK seen
+
+@__SHOUT seen@
+%%%%
+__TWO_SHOUTS unseen
+
+SOUND:it!!
+%%%%
+__TWO_SHOUTS seen
+
+@__SHOUT seen@
+%%%%
+__ROAR unseen
+
+SOUND:roar!
+%%%%
+__ROAR seen
+
+@__SHOUT seen@
+%%%%
+__SCREAM unseen
+
+SOUND:shriek!
+%%%%
+__SCREAM seen
+
+@__SHOUT seen@
+%%%%
+__BELLOW unseen
+
+SOUND:bellow!
+%%%%
+__BELLOW seen
+
+@__SHOUT seen@
+%%%%
+__TRUMPET unseen
+
+SOUND:trumpet!
+%%%%
+__TRUMPET seen
+
+@__SHOUT seen@
+%%%%
+__SCREECH unseen
+
+SOUND:screech!
+%%%%
+__SCREECH seen
+
+@__SHOUT seen@
+%%%%
+__BUZZ unseen
+
+SOUND:buzz!
+%%%%
+__BUZZ seen
+
+@__SHOUT seen@
+%%%%
+__MOAN unseen
+
+SOUND:moan!
+%%%%
+__MOAN seen
+
+@__SHOUT seen@
+%%%%
+__GURGLE unseen
+
+SOUND:gurgle!
+%%%%
+__GURGLE seen
+
+@__SHOUT seen@
+%%%%
+__CROAK unseen
+
+SOUND:croak!
+%%%%
+__CROAK seen
+
+@__SHOUT seen@
+%%%%
+__GROWL unseen
+
+SOUND:growl!
+%%%%
+__GROWL seen
+
+@__SHOUT seen@
+%%%%
+__HISS unseen
+
+SOUND:hiss!
+%%%%
+__HISS seen
+
+@__SHOUT seen@
+%%%%
+__DEMON_TAUNT
+
+@__SHOUT seen@
+%%%%
+__CAW seen
+
+@__SHOUT seen@
+%%%%
+__CAW unseen
+
+SOUND:caw!
+%%%%
+__CHERUB seen
+
+@__SHOUT seen@
+%%%%
+__CHERUB unseen
+
+SOUND:cherub!
+%%%%
+__RUMBLE seen
+
+@__SHOUT seen@
+%%%%
+__RUMBLE unseen
+
+SOUND:rumble!
+%%%%
+player ghost
+
+@__SHOUT seen@
+%%%%
+'&'
+
+@__DEMON_TAUNT@
+%%%%

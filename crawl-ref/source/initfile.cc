@@ -3989,7 +3989,11 @@ void game_options::set_fake_langs(const string &input)
     {
         const flang_t *flang = map_find(fake_lang_names, flang_name);
         if (flang)
+        {
             fake_langs.push_back(*flang);
+            if (*flang == FLANG_MIST)
+                lang_name = "mist";
+        }
         else
             report_error("Unknown language %s!", flang_name.c_str());
 

@@ -1,0 +1,179 @@
+%%%%
+Xom general effect
+
+Xom.
+%%%%
+Beogh general effect
+
+Beogh.
+%%%%
+the Shining One general effect
+
+Shining One.
+%%%%
+Elyvilon general effect
+
+Elyvilon.
+%%%%
+recite_closure
+
+"Amen."
+%%%%
+Xom prayer
+
+No effect.
+%%%%
+Gozag prayer
+
+No effect.
+%%%%
+Ashenzari welcome
+
+Ashenzari.
+%%%%
+Beogh penance
+
+Beogh penance.
+%%%%
+Beogh welcome
+
+Beogh.
+%%%%
+Cheibriados penance
+
+Cheibriados penance.
+%%%%
+Cheibriados welcome
+
+Cheibriados.
+%%%%
+Dithmenos penance
+
+Dithmenos penance.
+%%%%
+Dithmenos welcome
+
+Dithmenos.
+%%%%
+Elyvilon penance
+
+Elyvilon penance.
+%%%%
+Elyvilon welcome
+
+Elyvilon.
+%%%%
+Fedhas penance
+
+Fedhas penance.
+%%%%
+Fedhas welcome
+
+Fedhas.
+%%%%
+Gozag welcome
+
+Gozag.
+%%%%
+Ru welcome
+
+Ru.
+%%%%
+Jiyva welcome
+
+Jiyva.
+%%%%
+Kikubaaqudgha welcome
+
+Kikubaaqudgha.
+%%%%
+Lugonu welcome
+
+Lugonu.
+%%%%
+Lugonu newgame
+
+Lugonu. <lightgrey>Use <w>a</w>bility menu to exit Abyss.</lightgrey>
+%%%%
+Makhleb welcome
+
+Makhleb.
+%%%%
+Nemelex Xobeh welcome
+
+Nemelex Xobeh.
+%%%%
+Okawaru penance
+
+Okawaru penance.
+%%%%
+Okawaru welcome
+
+Okawaru.
+%%%%
+Qazlal penance
+
+Qazlal penance.
+%%%%
+Qazlal welcome
+
+Qazlal.
+%%%%
+Sif Muna penance
+
+Sif Muna penance.
+%%%%
+Sif Muna welcome
+
+Sif Muna.
+%%%%
+the Shining One penance
+
+Shining One penance.
+%%%%
+the Shining One welcome
+
+Shining One.
+%%%%
+Trog penance
+
+Trog penance.
+%%%%
+Trog welcome
+
+Trog.
+%%%%
+Vehumet welcome
+
+Vehumet.
+%%%%
+Xom bored
+
+Xom bored.
+%%%%
+Xom newgame
+
+Xom says: A new plaything!
+%%%%
+Xom welcome
+
+Xom snickers.
+
+Xom titters.
+%%%%
+Yredelemnul penance
+
+Yredelemnul penance.
+%%%%
+Yredelemnul welcome
+
+Yredelemnul.
+%%%%
+Zin penance
+
+Zin penance.
+%%%%
+Zin welcome
+
+Zin.
+%%%%
