@@ -547,9 +547,9 @@ void update_turn_count()
 
     const bool compact = Options.compact_hud;
 #if TAG_MAJOR_VERSION == 34
-    const int y = (compact ? 6 : 9) + (you.species == SP_LAVA_ORC);
+    const int y = (compact ? 5 : 9) + (you.species == SP_LAVA_ORC);
 #else
-    const int y = (compact ? 6 : 9);
+    const int y = (compact ? 5 : 9);
 #endif
     textcolour(HUD_VALUE_COLOUR);
 
@@ -563,7 +563,7 @@ void update_turn_count()
         if (you.num_turns > 9999999)
             CGOTOXY(29+1, y, GOTO_STAT); // "T"
         else
-            CGOTOXY(29+5, y, GOTO_STAT); // "Turns"
+            CGOTOXY(29+4, y, GOTO_STAT); // "Turn"
 
         CPRINTF(" %d", you.num_turns);
     }
@@ -622,12 +622,13 @@ static void _print_stats_mp(int x, int y)
 
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF(compact ? "M" : player_rotted() ? "MP: " : "Magic:  ");
+    CPRINTF(compact ? "MP  " : player_rotted() ? "MP: " : "Magic:  ");
     textcolour(mp_colour);
     CPRINTF("%3d", you.magic_points);
-    if (!boosted)
-        textcolour(HUD_VALUE_COLOUR);
-    CPRINTF("/%-3d", you.max_magic_points);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("/");
+    //textcolour(HUD_VALUE_COLOUR);
+    CPRINTF("%-3d", you.max_magic_points);
     if (boosted)
         textcolour(HUD_VALUE_COLOUR);
 
@@ -637,11 +638,10 @@ static void _print_stats_mp(int x, int y)
     else
 #endif
 #if TAG_MAJOR_VERSION == 34
-    const int temp_shift = (compact && you.species == SP_LAVA_ORC) ? 2
-                            : compact ? 1 : 0;
-    MP_Bar.draw(19, y+temp_shift, you.magic_points, you.max_magic_points);
+    const int temp_shift = (you.species == SP_LAVA_ORC) ? 1 : 0;
+    MP_Bar.draw(13, y+temp_shift, you.magic_points, you.max_magic_points);
 #else
-    MP_Bar.draw(19, y+compact, you.magic_points, you.max_magic_points);
+    MP_Bar.draw(13, y+compact, you.magic_points, you.max_magic_points);
 #endif
 }
 
@@ -728,15 +728,15 @@ static void _print_stats_hp(int x, int y)
     textcolour(HUD_CAPTION_COLOUR);
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
-        CPRINTF(compact ? "E" : player_rotted() ? "EP: " : "Essence: ");
+        CPRINTF(compact ? "Essence" : player_rotted() ? "EP: " : "Essence: ");
     else
 #endif
-    CPRINTF(compact ? "H" : player_rotted() ? "HP:" : "Health:");
+    CPRINTF(compact ? "HP " : player_rotted() ? "HP:" : "Health:");
     textcolour(hp_colour);
     CPRINTF("%4d", you.hp);
-    if (!boosted)
-        textcolour(HUD_VALUE_COLOUR);
+    textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
+    //textcolour(HUD_VALUE_COLOUR);
     // Indicate rot in compact HUD mode by coloring max hp (% shows rot amount)
     if (compact && max_max_hp != you.hp_max)
         textcolour(YELLOW);
@@ -759,11 +759,11 @@ static void _print_stats_hp(int x, int y)
 #endif
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
-        EP_Bar.draw(19, y, you.hp, you.hp_max);
+        EP_Bar.draw(13, y, you.hp, you.hp_max);
     else
-        HP_Bar.draw(19, y, you.hp, you.hp_max, false, you.hp - max(0, poison_survival()));
+        HP_Bar.draw(13, y, you.hp, you.hp_max, false, you.hp - max(0, poison_survival()));
 #else
-        HP_Bar.draw(19, y, you.hp, you.hp_max, you.hp - max(0, poison_survival()));
+        HP_Bar.draw(13, y, you.hp, you.hp_max, you.hp - max(0, poison_survival()));
 #endif
 }
 
@@ -1343,7 +1343,7 @@ static string _level_description_string_hud()
 void print_stats()
 {
     const bool compact = Options.compact_hud;
-    int ac_pos = 5 - compact; // vertical position, first col starts at 1
+    int ac_pos = 5; // vertical position, first col starts at 1
     int ev_pos = ac_pos + 1;
 #if TAG_MAJOR_VERSION == 34
     const int temp_pos = ac_pos;
@@ -1395,7 +1395,7 @@ void print_stats()
     {
         you.redraw_magic_points = false;
         if (compact)
-            _print_stats_mp (11, 3);
+            _print_stats_mp ( 1, 4);
         else
             _print_stats_mp ( 1, 4);
     }
@@ -1413,9 +1413,9 @@ void print_stats()
         if (you.redraw_stats[i])
         {
 #if TAG_MAJOR_VERSION == 34
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 - compact + i + temp);
+            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 6 - compact + i + temp);
 #else
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 - compact + i);
+            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 6 - compact + i);
 #endif
         }
     you.redraw_stats.init(false);
@@ -1424,12 +1424,12 @@ void print_stats()
     {
 #if TAG_MAJOR_VERSION == 34
         if (compact)
-            CGOTOXY(19, 5 + temp, GOTO_STAT);
+            CGOTOXY(19, 6 + temp, GOTO_STAT);
         else
             CGOTOXY(1, 8 + temp, GOTO_STAT);
 #else
         if (compact)
-            CGOTOXY(19, 5, GOTO_STAT);
+            CGOTOXY(19, 6, GOTO_STAT);
         else
             CGOTOXY(1, 8, GOTO_STAT);
 #endif
@@ -1450,10 +1450,12 @@ void print_stats()
         if (compact && !crawl_state.game_is_zotdef())
         {
 #if TAG_MAJOR_VERSION == 34
-            CGOTOXY(29, 5 + temp, GOTO_STAT);
+            CGOTOXY(19, 7 + temp, GOTO_STAT);
 #else
-            CGOTOXY(29, 5, GOTO_STAT);
+            CGOTOXY(19, 7, GOTO_STAT);
 #endif
+            textcolour(HUD_CAPTION_COLOUR);
+            CPRINTF("in ");
             textcolour(HUD_VALUE_COLOUR);
             CPRINTF("%s", _level_description_string_hud().c_str());
             clear_to_end_of_line();
@@ -1462,12 +1464,12 @@ void print_stats()
         {
 #if TAG_MAJOR_VERSION == 34
             if (compact)
-                CGOTOXY(29, 5 + temp, GOTO_STAT);
+                CGOTOXY(29, 7 + temp, GOTO_STAT);
             else
                 CGOTOXY(30, 8 + temp, GOTO_STAT);
 #else
             if (compact)
-                CGOTOXY(29, 5, GOTO_STAT);
+                CGOTOXY(29, 7, GOTO_STAT);
             else
                 CGOTOXY(30, 8, GOTO_STAT);
 #endif
@@ -1495,10 +1497,11 @@ void print_stats()
         // Increase y-value for all following lines.
         if (!crawl_state.game_is_zotdef())
             yhack++;
-        CGOTOXY(1+6 /*"Gold: "*/, 8 + yhack, GOTO_STAT);
+        CGOTOXY(29, 5 + yhack, GOTO_STAT);
+        textcolour(HUD_CAPTION_COLOUR);
+        CPRINTF("Gold");
         textcolour(HUD_VALUE_COLOUR);
-        if (!compact)
-            CPRINTF("%-6d", you.gold);
+        CPRINTF(" %d", you.gold);
     }
 
     if (you.wield_change)
@@ -1513,7 +1516,7 @@ void print_stats()
         // Also, it's a little bogus to change simulation state in
         // render code.  We should find a better place for this.
         you.m_quiver->on_weapon_changed();
-        _print_stats_wp((compact ? 6 : 9) + yhack);
+        _print_stats_wp((compact ? 7 : 9) + yhack);
     }
     you.wield_change = false;
 
@@ -1522,20 +1525,20 @@ void print_stats()
     if (you.species == SP_FELID)
         yhack -= 1;
     else if (you.redraw_quiver || you.wield_change)
-        _print_stats_qv((compact ? 7 : 10) + yhack);
+        _print_stats_qv((compact ? 8 : 10) + yhack);
 
     you.redraw_quiver = false;
 
     if (Options.show_skill_bar)
     {
-        _print_stats_skills((compact ? 8 : 11) + yhack);
+        _print_stats_skills((compact ? 9 : 11) + yhack);
         yhack++;
     }
 
     if (you.redraw_status_flags)
     {
         you.redraw_status_flags = 0;
-        _print_status_lights((compact ? 8 : 11) + yhack);
+        _print_status_lights((compact ? 9 : 11) + yhack);
     }
     textcolour(LIGHTGREY);
 
@@ -1603,9 +1606,9 @@ void draw_border()
 #if TAG_MAJOR_VERSION == 34
     int temp = (you.species == SP_LAVA_ORC) ? 1 : 0;
 #endif
-    int ac_pos = 5 - compact; // vertical position
-    int ev_pos = 6 - compact;
-    int sh_pos = 7 - compact;
+    int ac_pos = 5; // vertical position
+    int ev_pos = 6;
+    int sh_pos = 7;
 #if TAG_MAJOR_VERSION == 34
     ac_pos += temp; ev_pos += temp; sh_pos += temp;
 #endif
@@ -1619,16 +1622,16 @@ void draw_border()
     CGOTOXY(compact ? 9 : 19, sh_pos, GOTO_STAT); CPRINTF(compact ? "Dex" : "Dex:");
 
 #if TAG_MAJOR_VERSION == 34
-    int turn_pos = (compact ? 6 : 9) + temp;
+    int turn_pos = (compact ? 5 : 9) + temp;
 #else
-    int turn_pos = (compact ? 6 : 9);
+    int turn_pos = (compact ? 5 : 9);
 #endif
     if (compact)
     {
         CGOTOXY(19, turn_pos, GOTO_STAT);
         CPRINTF("@ ");
         CGOTOXY(29, turn_pos, GOTO_STAT);
-        CPRINTF("Turns");
+        CPRINTF("Turn");
     }
     else
     {

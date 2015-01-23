@@ -376,7 +376,7 @@ void crawl_view_geometry::init_geometry()
 {
     termsz = coord_def(get_number_of_cols(), get_number_of_lines());
     hudsz  = coord_def(HUD_WIDTH,
-                       HUD_HEIGHT - (Options.compact_hud ? 3 : 0)
+                       HUD_HEIGHT - (Options.compact_hud ? 2 : 0)
                                   + Options.show_skill_bar
 #if TAG_MAJOR_VERSION == 34
                                   + ((you.species == SP_LAVA_ORC) ? 1 : 0)
