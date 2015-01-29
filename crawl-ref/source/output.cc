@@ -807,6 +807,10 @@ static void _print_stat(stat_type stat, int x, int y)
     // Drained stats
     // Traditional: "Int: 20 (21)      "
     // Compact:     "Int 20/21 XL 20.84"
+
+    // TODO RHS should include: base stat, mutations, rot.
+    // should not include: temp boosts.
+    // so might + 1 rot shows "Str 15/11" with `15` blue, `/11` yellow
     textcolour(YELLOW);
     if (you.stat_loss[stat] > 0)
     {
