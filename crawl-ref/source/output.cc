@@ -620,17 +620,20 @@ static void _print_stats_mp(int x, int y)
                 mp_colour = entry.second;
     }
 
+    const bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
+    // if HP: xx/yy   =====  if HP: xxx/yyy =====
+    //  | MP: xx/yy   =====   | MP:  xx/yy  =====
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF(compact ? "MP  " : player_rotted() ? "MP: " : "Magic:  ");
+    CPRINTF(compact ? "MP " : "MP: ");
     textcolour(mp_colour);
-    CPRINTF("%3d", you.magic_points);
+    CPRINTF(three_digits ? "%3d" : "%2d", you.magic_points);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
-    //textcolour(HUD_VALUE_COLOUR);
-    CPRINTF("%-3d", you.max_magic_points);
     if (boosted)
-        textcolour(HUD_VALUE_COLOUR);
+        textcolour(LIGHTBLUE);
+    CPRINTF("%-3d", you.max_magic_points);
+    textcolour(HUD_VALUE_COLOUR);
 
 #ifdef TOUCH_UI
     if (tiles.is_using_small_layout())
@@ -722,23 +725,24 @@ static void _print_stats_hp(int x, int y)
                 hp_colour = entry.second;
     }
 
-    // .1.3.5.7.9.1.3.5.7.9.  |  .1.3.5.7.9.1
-    // Health: xxx/yyy (zzz)  |  H xxx/yyy M xx/yy
+    const bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
+    // HP: xx/yy   =====  |  HP: xxx/yyy =====  |  HP:xxxx/yyyy=====
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
-        CPRINTF(compact ? "Essence" : player_rotted() ? "EP: " : "Essence: ");
+        CPRINTF(compact ? "EP" : "EP:");
     else
 #endif
-    CPRINTF(compact ? "HP " : player_rotted() ? "HP:" : "Health:");
+    CPRINTF(compact ? "HP" : "HP:");
     textcolour(hp_colour);
-    CPRINTF("%4d", you.hp);
+    CPRINTF(three_digits ? "%4d" : "%3d", you.hp);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
-    //textcolour(HUD_VALUE_COLOUR);
-    // Indicate rot in compact HUD mode by coloring max hp (% shows rot amount)
-    if (compact && max_max_hp != you.hp_max)
+    // Indicate rot by coloring max hp (% screen shows exact rot amount)
+    if (boosted)
+        textcolour(LIGHTBLUE);
+    else if (max_max_hp != you.hp_max)
         textcolour(YELLOW);
     CPRINTF("%-4d", you.hp_max);
     textcolour(HUD_VALUE_COLOUR);
@@ -806,14 +810,9 @@ static void _print_stat(stat_type stat, int x, int y)
     // so might + 1 rot shows "Str 15/11" with `15` blue, `/11` yellow
     textcolour(YELLOW);
     if (you.stat_loss[stat] > 0)
-    {
-        if (compact)
-            CPRINTF("/%d", you.max_stat(stat));
-        else
-            CPRINTF(" (%d)", you.max_stat(stat));
-    }
+        CPRINTF(compact ? "/%d" : " (%d)", you.max_stat(stat));
     else
-        CPRINTF(compact ? "   " : "       ");
+        CPRINTF(compact ? "   " : "     ");
 }
 
 static void _print_stats_ac(int x, int y)
@@ -1410,9 +1409,9 @@ void print_stats()
         if (you.redraw_stats[i])
         {
 #if TAG_MAJOR_VERSION == 34
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 6 - compact + i + temp);
+            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 + i + temp);
 #else
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 6 - compact + i);
+            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 + i);
 #endif
         }
     you.redraw_stats.init(false);
@@ -1486,7 +1485,7 @@ void print_stats()
     int yhack = crawl_state.game_is_zotdef();
 #endif
 
-    // Gold and Turns (Traditional) | Skill bar (Compact)
+    // Gold
 #ifdef USE_TILE_LOCAL
     if (!tiles.is_using_small_layout())
 #endif
@@ -1494,11 +1493,20 @@ void print_stats()
         // Increase y-value for all following lines.
         if (!crawl_state.game_is_zotdef())
             yhack++;
-        CGOTOXY(29, 5 + yhack, GOTO_STAT);
+
         textcolour(HUD_CAPTION_COLOUR);
-        CPRINTF("Gold");
+        if (compact)
+        {
+            CGOTOXY(29, 5 + yhack, GOTO_STAT);
+            CPRINTF("Gold ");
+        }
+        else
+        {
+            CGOTOXY(1, 8 + yhack, GOTO_STAT);
+            CPRINTF("Gold: ");
+        }
         textcolour(HUD_VALUE_COLOUR);
-        CPRINTF(" %d", you.gold);
+        CPRINTF("%d", you.gold);
     }
 
     if (you.wield_change)
@@ -1618,6 +1626,7 @@ void draw_border()
     CGOTOXY(compact ? 9 : 19, ev_pos, GOTO_STAT); CPRINTF(compact ? "Int" : "Int:");
     CGOTOXY(compact ? 9 : 19, sh_pos, GOTO_STAT); CPRINTF(compact ? "Dex" : "Dex:");
 
+    // Turncount
 #if TAG_MAJOR_VERSION == 34
     int turn_pos = (compact ? 5 : 9) + temp;
 #else
@@ -1632,8 +1641,6 @@ void draw_border()
     }
     else
     {
-        CGOTOXY( 1, turn_pos, GOTO_STAT);
-        CPRINTF("Gold:");
         CGOTOXY(19, turn_pos, GOTO_STAT);
         CPRINTF(Options.show_game_turns ? "Time:" : "Turn:");
     }
