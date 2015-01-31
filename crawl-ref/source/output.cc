@@ -741,8 +741,6 @@ static void _print_stats_hp(int x, int y)
     if (compact && max_max_hp != you.hp_max)
         textcolour(YELLOW);
     CPRINTF("%-4d", you.hp_max);
-    if (!compact && max_max_hp != you.hp_max)
-        CPRINTF("(%d)", max_max_hp);
     textcolour(HUD_VALUE_COLOUR);
 
 #ifdef USE_TILE_LOCAL
