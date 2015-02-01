@@ -483,6 +483,10 @@ namespace arena
         for (int i = 0; i < NUM_STATS; ++i)
             you.base_stats[i] = 20;
 
+        // More space for monster list
+        Options.compact_hud = true;
+        Options.show_skill_bar = false;
+
         show_fight_banner();
     }
 
