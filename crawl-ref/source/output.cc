@@ -1452,6 +1452,9 @@ void print_stats()
 #endif
             textcolour(HUD_CAPTION_COLOUR);
             CPRINTF("in ");
+            // Align with first number above
+            if (you.experience_level < 10)
+                CPRINTF(" ");
             textcolour(HUD_VALUE_COLOUR);
             CPRINTF("%s", _level_description_string_hud().c_str());
             clear_to_end_of_line();
