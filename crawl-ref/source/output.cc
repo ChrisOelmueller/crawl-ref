@@ -12,14 +12,17 @@
 #include <sstream>
 
 #include "ability.h"
+#include "abyss.h" // is_level_incorruptible
 #include "branch.h"
 #include "colour.h"
 #include "describe.h"
 #ifndef USE_TILE_LOCAL
 #include "directn.h"
 #endif
+#include "dgn-overview.h"
 #include "english.h"
 #include "env.h"
+#include "exclude.h"
 #include "files.h"
 #include "godabil.h"
 #include "godpassive.h"
@@ -43,6 +46,7 @@
 #include "throw.h"
 #include "transform.h"
 #include "viewchar.h"
+#include "viewmap.h" // feature_list
 #include "view.h"
 #include "xom.h"
 
@@ -283,6 +287,136 @@ static int _god_status_colour(int default_colour);
 
 // Colour for captions like 'Health:', 'Str:', etc.
 #define HUD_CAPTION_COLOUR Options.status_caption_colour
+#define HUD_COMPACT Options.compact_hud
+#define HUD_CRAMPED (Options.compact_hud && Options.compact_hud_xs)
+
+// Column layout constants
+#define HUD_WIDTH crawl_view.hudsz.x
+#define FIRST_COL  1
+#define BAR_START (13 + (2*HUD_CRAMPED))
+
+#define CLASSIC_A FIRST_COL
+#define CLASSIC_B 19
+#define CLASSIC_C 30 // Hack: only used for ZotDef
+
+#define COMPACT_A FIRST_COL
+#define COMPACT_B  9
+#define COMPACT_C 19
+#define COMPACT_D 29
+
+#define CRAMPED_A FIRST_COL
+#define CRAMPED_B  8
+#define CRAMPED_C 15 // 15 would be better
+#define CRAMPED_D 25 // 24?  ??? what to do with remaining space ???
+// 26 + '-----------------' 3 space, 24 would be 5
+//      'Orcish Mines:2|||'
+#define CRAMPED_E 35 // 24?  ??? what to do with remaining space ???
+
+// Some hackish stuff to move around HUD for obsolete content
+#if TAG_MAJOR_VERSION == 34
+#define temp (you.species == SP_LAVA_ORC)
+#else
+// Todo: rewrite #defines below to no longer contain temp TAG_MAJOR_VERSION > 34
+// Fairly sure spamming ifdef-protected alternate codepaths would not help
+// readability much more. Removing temp when possible should be rather quick.
+#define temp 0
+#endif
+
+#define name_pos_x (CLASSIC_A)
+#define name_pos_y 1
+
+#define god_pos_x (CLASSIC_A)
+#define god_pos_y 2
+
+// Real HUD layout data
+#define hp_pos_x (CLASSIC_A)
+#define hp_pos_y (HUD_CRAMPED ? 2 : 3)
+#define hp_bar_y (HUD_CRAMPED ? 2 : 3)
+
+#define mp_pos_x (HUD_CRAMPED ? CRAMPED_B + 1 : CLASSIC_A)
+#define mp_pos_y (HUD_CRAMPED ? 2 : 4)
+#define mp_bar_y (HUD_CRAMPED ? 3 : 4)
+
+#if TAG_MAJOR_VERSION == 34
+#define contam_pos_x mp_pos_x
+#define contam_pos_y mp_pos_y
+#define contam_bar_y mp_bar_y
+
+#define temperature_pos_x (CLASSIC_A)
+#define temperature_pos_y (HUD_CRAMPED ? 3 : 5)
+#define temperature_bar_y (HUD_CRAMPED ? 4 : 5)
+#endif
+
+#define ac_pos_x (CLASSIC_A)
+#define ac_pos_y ((HUD_CRAMPED ? 3 : 5) + temp)
+
+#define ev_pos_x (CLASSIC_A)
+#define ev_pos_y (ac_pos_y + 1)
+
+#define sh_pos_x (CLASSIC_A)
+#define sh_pos_y (ev_pos_y + 1)
+
+
+#define stat_pos_x (HUD_CRAMPED ? CRAMPED_B : HUD_COMPACT ? COMPACT_B : CLASSIC_B)
+#define str_pos_x (stat_pos_x)
+#define int_pos_x (stat_pos_x)
+#define dex_pos_x (stat_pos_x)
+
+#define str_pos_y ((HUD_CRAMPED ? 3 : 5) + temp)
+#define int_pos_y ((HUD_CRAMPED ? 4 : 6) + temp)
+#define dex_pos_y ((HUD_CRAMPED ? 5 : 7) + temp)
+
+#define place_pos_x (HUD_CRAMPED ? CRAMPED_D : COMPACT_D)
+#define place_pos_y ((HUD_CRAMPED ? 4 : 6) + temp)
+
+#define xl_pos_x (HUD_CRAMPED ? CRAMPED_C : HUD_COMPACT ? COMPACT_C : CLASSIC_A)
+#define xl_pos_y ((HUD_CRAMPED ? 4 : HUD_COMPACT ? 6 : 8) + temp)
+
+#define turn_pos_x (HUD_CRAMPED ? CRAMPED_D : HUD_COMPACT ? COMPACT_D : CLASSIC_B)
+#define turn_pos_y ((HUD_CRAMPED ? 5 : HUD_COMPACT ? 5 : 9) + temp)
+#define last_pos_x (HUD_CRAMPED ? CRAMPED_C : HUD_COMPACT ? COMPACT_C : CLASSIC_C)
+#define last_pos_y (turn_pos_y)
+
+#define piety_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
+#define piety_pos_y (HUD_CRAMPED ? xl_pos_y : place_pos_y)
+
+#define defenses_pos_x (HUD_CRAMPED ? CRAMPED_D : COMPACT_C)
+#define defenses_pos_y ((HUD_CRAMPED ? 5 : 7) + temp)
+
+#define hunger_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
+#define hunger_pos_y (HUD_CRAMPED ? 5 : defenses_pos_y)
+
+#define realtime_pos_x hunger_pos_x
+#define realtime_pos_y hunger_pos_y
+
+#define sid_pos_x realtime_pos_x
+#define sid_pos_y realtime_pos_y
+
+#define resists_pos_x sid_pos_x
+#define resists_pos_y sid_pos_y
+
+#define stairs_pos_x resists_pos_x
+#define stairs_pos_y resists_pos_y
+
+#define fcrawl_pos_x resists_pos_x
+#define fcrawl_pos_y resists_pos_y
+
+#define gold_pos_x (HUD_COMPACT ? COMPACT_D : CLASSIC_A)
+#define gold_pos_y ((HUD_COMPACT ? 7 : 9) + temp)
+
+#define zp_pos_x (HUD_COMPACT ? COMPACT_D : CLASSIC_C)
+#define zp_pos_y ((HUD_COMPACT ? 7 :  8) + temp)
+
+#define wp_pos_x (CLASSIC_A)
+#define wp_pos_y ((HUD_CRAMPED ? 6 : HUD_COMPACT ? 8 : 10) + temp)
+#define qv_pos_x (HUD_CRAMPED ? CRAMPED_D : CLASSIC_A)
+#define qv_pos_y (wp_pos_y + (you.species != SP_FELID) - HUD_CRAMPED)
+
+#define skills_pos_x (CLASSIC_A)
+#define skills_pos_y (qv_pos_y + 1)
+
+#define status_pos_x (CLASSIC_A)
+#define status_pos_y (skills_pos_y + Options.show_skill_bar)
 
 // Colour for values, which come after captions.
 static const short HUD_VALUE_COLOUR = LIGHTGREY;
@@ -320,7 +454,7 @@ class colour_bar
     }
 
 #if TAG_MAJOR_VERSION == 34
-    void draw(int ox, int oy, int val, int max_val, bool temp = false, int sub_val = 0)
+    void draw(int ox, int oy, int val, int max_val, bool is_temp = false, int sub_val = 0)
 #else
     void draw(int ox, int oy, int val, int max_val, int sub_val = 0)
 #endif
@@ -334,7 +468,7 @@ class colour_bar
 #if TAG_MAJOR_VERSION == 34
         const colour_t temp_colour = temperature_colour(temperature());
 #endif
-        const int width = crawl_view.hudsz.x - (ox - 1);
+        const int width = HUD_WIDTH - (ox - 1);
         const int sub_disp = (width * val / max_val);
         int disp  = width * max(0, val - sub_val) / max_val;
         const int old_disp = (m_old_disp < 0) ? sub_disp : m_old_disp;
@@ -370,7 +504,7 @@ class colour_bar
             if (cx < disp && cx < old_disp)
             {
 #if TAG_MAJOR_VERSION == 34
-                textcolour((temp) ? temp_colour : m_default);
+                textcolour(temp ? temp_colour : m_default);
 #else
                 textcolour(m_default);
 #endif
@@ -523,11 +657,14 @@ void update_message_status()
 
     textcolour(LIGHTBLUE);
 
-    CGOTOXY(crawl_view.hudsz.x - len + 1, 1, GOTO_STAT);
+    const int dgl_pos_x = FIRST_COL + HUD_WIDTH - len;
+    const int dgl_pos_y = 1;
+    CGOTOXY(dgl_pos_x, dgl_pos_y, GOTO_STAT);
     if (SysEnv.have_messages)
         CPRINTF(msg);
     else
-        CPRINTF(spc.c_str());
+        you.redraw_title = true;
+        //CPRINTF(spc.c_str());
     textcolour(LIGHTGREY);
 }
 #endif
@@ -544,58 +681,69 @@ void update_turn_count()
     {
         return;
     }
+    //                    =========
+    //                    100083===
+    //     this should be 999999999 but isn't .. oh Turns/Turn yes
+    // if (you.num_turns > 99999999)
 
-    const bool compact = Options.compact_hud;
-#if TAG_MAJOR_VERSION == 34
-    const int y = (compact ? 5 : 9) + (you.species == SP_LAVA_ORC);
-#else
-    const int y = (compact ? 5 : 9);
-#endif
-    textcolour(HUD_VALUE_COLOUR);
-
-    if (compact)
+    textcolour(HUD_CAPTION_COLOUR);
+    CGOTOXY(turn_pos_x, turn_pos_y, GOTO_STAT);
+    if (HUD_COMPACT)
     {
+        CGOTOXY(last_pos_x, last_pos_y, GOTO_STAT);
+        //CPRINTF("LastTurn");
+        //CGOTOXY(last_pos_x, last_pos_y+1, GOTO_STAT);
+        // ⌛ // Basil
+        // "@ "
+        // ""
+        //CPRINTF("⌛ "); // CPRINTF("dt"); // mauris // ⌛ // Basil // @
+        CPRINTF("Δt"); // CPRINTF("dt"); // mauris // ⌛ // Basil // @
+        textcolour(HUD_VALUE_COLOUR);
         string last_turn = make_stringf("%.1f",
-                (you.elapsed_time-you.elapsed_time_at_last_input) / 10.0);
-        CGOTOXY(19+2, y, GOTO_STAT); // "@ "
+            (you.elapsed_time - you.elapsed_time_at_last_input) / 10.0);
         CPRINTF("%5s", last_turn.c_str());
 
-        if (you.num_turns > 9999999)
-            CGOTOXY(29+1, y, GOTO_STAT); // "T"
-        else
-            CGOTOXY(29+4, y, GOTO_STAT); // "Turn"
-
+        textcolour(HUD_CAPTION_COLOUR);
+        CGOTOXY(turn_pos_x, turn_pos_y, GOTO_STAT);
+        //CPRINTF(HUD_CRAMPED ? "Turns" : "Turns");
+        CPRINTF(HUD_CRAMPED ? "T" : "Turns"); // "⌚" clock
+        textcolour(HUD_VALUE_COLOUR);
         CPRINTF(" %d", you.num_turns);
     }
     else if (Options.show_game_turns)
     {
-        CGOTOXY(19+6, y, GOTO_STAT); // "Time: "
+        CPRINTF("Time: ");
+        textcolour(HUD_VALUE_COLOUR);
         CPRINTF("%.1f (%.1f)", you.elapsed_time / 10.0,
                 (you.elapsed_time - you.elapsed_time_at_last_input) / 10.0);
         clear_to_end_of_line();
     }
     else
     {
-        CGOTOXY(19+6, y, GOTO_STAT); // "Turn: "
+        CPRINTF("Turn: ");
+        textcolour(HUD_VALUE_COLOUR);
         CPRINTF("%d", you.num_turns);
     }
-
-    textcolour(LIGHTGREY);
 }
 
 #if TAG_MAJOR_VERSION == 34
-static void _print_stats_temperature(int x, int y)
+static void _print_temperature(const int x = temperature_pos_x,
+                               const int y = temperature_pos_y,
+                               const int bar_y = temperature_bar_y)
 {
+    you.redraw_temperature = false;
     cgotoxy(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
     cprintf("Temperature: ");
 
-    Temp_Bar.draw(19, y, temperature(), TEMP_MAX, true);
+    Temp_Bar.draw(BAR_START, bar_y, temperature(), TEMP_MAX, true);
 }
 #endif
 
-static void _print_stats_mp(int x, int y)
+static void _print_stats_mp(const int x = mp_pos_x, const int y = mp_pos_y,
+                            const int bar_y = mp_bar_y)
 {
+    you.redraw_magic_points = false;
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
         return;
@@ -605,7 +753,6 @@ static void _print_stats_mp(int x, int y)
     short mp_colour = HUD_VALUE_COLOUR;
 
     const bool boosted = _boosted_mp();
-    const bool compact = Options.compact_hud;
 
     if (boosted)
         mp_colour = LIGHTBLUE;
@@ -620,19 +767,26 @@ static void _print_stats_mp(int x, int y)
                 mp_colour = entry.second;
     }
 
-    const bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
+    bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
     // if HP: xx/yy   =====  if HP: xxx/yyy =====
     //  | MP: xx/yy   =====   | MP:  xx/yy  =====
     CGOTOXY(x, y, GOTO_STAT);
-    textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF(compact ? "MP " : "MP: ");
+    if (HUD_CRAMPED)
+        three_digits = you.max_magic_points < 10;
+        //three_digits = false;
+    else
+    {
+        textcolour(HUD_CAPTION_COLOUR);
+        CPRINTF(HUD_COMPACT ? "MP " : "MP: ");
+    }
     textcolour(mp_colour);
     CPRINTF(three_digits ? "%3d" : "%2d", you.magic_points);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
     if (boosted)
         textcolour(LIGHTBLUE);
-    CPRINTF("%-3d", you.max_magic_points);
+    //CPRINTF("%-3d", you.max_magic_points);
+    CPRINTF("%d", you.max_magic_points);
     textcolour(HUD_VALUE_COLOUR);
 
 #ifdef TOUCH_UI
@@ -642,25 +796,23 @@ static void _print_stats_mp(int x, int y)
 #endif
 #if TAG_MAJOR_VERSION == 34
     const int temp_shift = (you.species == SP_LAVA_ORC) ? 1 : 0;
-    MP_Bar.draw(13, y+temp_shift, you.magic_points, you.max_magic_points);
+    MP_Bar.draw(BAR_START, bar_y + temp_shift, you.magic_points, you.max_magic_points);
 #else
-    MP_Bar.draw(13, y+compact, you.magic_points, you.max_magic_points);
+    MP_Bar.draw(BAR_START, bar_y, you.magic_points, you.max_magic_points);
 #endif
 }
 
 #if TAG_MAJOR_VERSION == 34
-static void _print_stats_contam(int x, int y)
+static void _print_stats_contam(const int x = contam_pos_x,
+                                const int y = contam_pos_y,
+                                const int bar_y = contam_bar_y)
 {
     if (you.species != SP_DJINNI)
         return;
 
-    const bool compact = Options.compact_hud;
     const int max_contam = 8000;
     int contam = min(you.magic_contamination, max_contam);
 
-    CGOTOXY(x, y, GOTO_STAT);
-    textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF("Contam: ");
     // Calculate colour
     if (you.magic_contamination > 15000)
     {
@@ -691,17 +843,22 @@ static void _print_stats_contam(int x, int y)
 #endif
         Contam_Bar.m_change_pos = Contam_Bar.m_change_neg = DARKGREY;
     }
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(Contam_Bar.m_default);
+    CPRINTF(HUD_CRAMPED ? "Contm" : HUD_COMPACT ? "Contam" : "Contam: ");
 
 #ifdef TOUCH_UI
     if (tiles.is_using_small_layout())
         Contam_Bar.vdraw(6, 10, contam, max_contam);
     else
 #endif
-    Contam_Bar.draw(19, y+compact, contam, max_contam);
+    Contam_Bar.draw(BAR_START, bar_y, contam, max_contam);
 }
 #endif
-static void _print_stats_hp(int x, int y)
+static void _print_stats_hp(const int x = hp_pos_x, const int y = hp_pos_y,
+                            const int bar_y = hp_bar_y)
 {
+    you.redraw_hit_points = false;
     int max_max_hp = get_real_hp(true, true);
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
@@ -711,7 +868,6 @@ static void _print_stats_hp(int x, int y)
     // Calculate colour
     short hp_colour = HUD_VALUE_COLOUR;
     const bool boosted = _boosted_hp();
-    const bool compact = Options.compact_hud;
 
     if (boosted)
         hp_colour = LIGHTBLUE;
@@ -725,18 +881,23 @@ static void _print_stats_hp(int x, int y)
                 hp_colour = entry.second;
     }
 
-    const bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
+    bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
     // HP: xx/yy   =====  |  HP: xxx/yyy =====  |  HP:xxxx/yyyy=====
     CGOTOXY(x, y, GOTO_STAT);
-    textcolour(HUD_CAPTION_COLOUR);
-#if TAG_MAJOR_VERSION == 34
-    if (you.species == SP_DJINNI)
-        CPRINTF(compact ? "EP" : "EP:");
+    if (Options.compact_hud_xs)
+        three_digits = false;
     else
+    {
+        textcolour(HUD_CAPTION_COLOUR);
+#if TAG_MAJOR_VERSION == 34
+        if (you.species == SP_DJINNI)
+            CPRINTF(HUD_COMPACT ? "EP" : "EP:");
+        else
 #endif
-    CPRINTF(compact ? "HP" : "HP:");
+        CPRINTF(HUD_COMPACT ? "HP" : "HP:");
+    }
     textcolour(hp_colour);
-    CPRINTF(three_digits ? "%4d" : "%3d", you.hp);
+    CPRINTF(three_digits ? "%4d" : (HUD_CRAMPED && you.hp_max < 100) ? "%2d" : "%3d", you.hp);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
     // Indicate rot by coloring max hp (% screen shows exact rot amount)
@@ -761,15 +922,15 @@ static void _print_stats_hp(int x, int y)
 #endif
 #if TAG_MAJOR_VERSION == 34
     if (you.species == SP_DJINNI)
-        EP_Bar.draw(13, y, you.hp, you.hp_max);
+        EP_Bar.draw(BAR_START, bar_y, you.hp, you.hp_max);
     else
-        HP_Bar.draw(13, y, you.hp, you.hp_max, false, you.hp - max(0, poison_survival()));
+        HP_Bar.draw(BAR_START, bar_y, you.hp, you.hp_max, false, you.hp - max(0, poison_survival()));
 #else
-        HP_Bar.draw(13, y, you.hp, you.hp_max, you.hp - max(0, poison_survival()));
+        HP_Bar.draw(BAR_START, bar_y, you.hp, you.hp_max, you.hp - max(0, poison_survival()));
 #endif
 }
 
-static short _get_stat_colour(stat_type stat)
+static short _get_stat_colour(stat_type stat, bool yellow_rotted = false)
 {
     if (you.stat_zero[stat])
         return LIGHTRED;
@@ -789,44 +950,117 @@ static short _get_stat_colour(stat_type stat)
     {
         return LIGHTBLUE;  // no end of effect warning
     }
+
+    // Stat is degenerated and we are explicitly asked to show here
+    if (yellow_rotted && you.stat_loss[stat] > 0)
+        return YELLOW;
+
     return HUD_VALUE_COLOUR;
 }
 
-static void _print_stat(stat_type stat, int x, int y)
+static void _print_stat(stat_type stat, const char* statname,
+                        const int x, const int y)
 {
-    const bool compact = Options.compact_hud;
-    CGOTOXY(x+4-compact, y, GOTO_STAT); // "Dex:" | "Dex"
-
-    textcolour(_get_stat_colour(stat));
-    // Traditional "Str:  8" etc. | Compact "Str  8","Int 21","Dex104"
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(statname);
+    // Traditional "Str:  8" | Compact "Str  8"
+    if (!HUD_COMPACT)
+        CPRINTF(":");
+    textcolour(_get_stat_colour(stat, HUD_CRAMPED));
+    // Compact "Str  8", "Int 21", "Dex104" | Traditional same with colons
     CPRINTF("%3d", you.stat(stat, false));
 
     // Drained stats
-    // Traditional: "Int: 20 (21)      "
-    // Compact:     "Int 20/21 XL 20.84"
+    // Traditional: "Int: 20 (21) "
+    // Compact:     "Int 20/21 "
 
     // TODO RHS should include: base stat, mutations, rot.
     // should not include: temp boosts.
     // so might + 1 rot shows "Str 15/11" with `15` blue, `/11` yellow
     textcolour(YELLOW);
-    if (you.stat_loss[stat] > 0)
-        CPRINTF(compact ? "/%d" : " (%d)", you.max_stat(stat));
-    else
-        CPRINTF(compact ? "   " : "     ");
+    if (!HUD_CRAMPED && you.stat_loss[stat] > 0)
+        CPRINTF(HUD_COMPACT ? "/%-3d" : " (%d) ", you.max_stat(stat));
 }
 
-static void _print_stats_ac(int x, int y)
+static void _print_str(const int x = str_pos_x, const int y = str_pos_y)
 {
-    const bool compact = Options.compact_hud;
-    CGOTOXY(x+3-compact, y, GOTO_STAT); // "AC:" | "AC"
+    _print_stat(STAT_STR, "Str", x, y);
+}
+
+static void _print_int(const int x = int_pos_x, const int y = int_pos_y)
+{
+    _print_stat(STAT_INT, "Int", x, y);
+}
+
+static void _print_dex(const int x = dex_pos_x, const int y = dex_pos_y)
+{
+    _print_stat(STAT_DEX, "Dex", x, y);
+}
+
+static void _print_sid(const int x = sid_pos_x, const int y = sid_pos_y)
+{
+    const colour_t str_colour = _get_stat_colour(STAT_STR, true);
+    const colour_t int_colour = _get_stat_colour(STAT_INT, true);
+    const colour_t dex_colour = _get_stat_colour(STAT_DEX, true);
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(str_colour);
+    CPRINTF("%2d", you.stat(STAT_STR, false));
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(",");
+    textcolour(int_colour);
+    CPRINTF("%2d", you.stat(STAT_INT, false));
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(",");
+    textcolour(dex_colour);
+    CPRINTF("%2d", you.stat(STAT_DEX, false));
+}
+static const colour_t _ac_colour()
+{
     if (_boosted_ac())
-        textcolour(LIGHTBLUE);
+        return LIGHTBLUE;
     else if (you.duration[DUR_CORROSION])
-        textcolour(RED);
+        return RED;
     else
-        textcolour(HUD_VALUE_COLOUR);
+        return HUD_VALUE_COLOUR;
+}
+
+static const colour_t _ev_colour()
+{
+    const bool incapacitated = you.duration[DUR_PETRIFYING]
+                               || you.duration[DUR_GRASPING_ROOTS]
+                               || you.cannot_move();
+    if (incapacitated)
+        return RED;
+    else if (_boosted_ev())
+        return LIGHTBLUE;
+    else
+        return HUD_VALUE_COLOUR;
+}
+
+static const colour_t _sh_colour()
+{
+    if (you.incapacitated() && you.shielded())
+        return RED;
+    else if (_boosted_sh())
+        return LIGHTBLUE;
+    else
+        return HUD_VALUE_COLOUR;
+}
+
+static void _print_stats_ac(const int x = ac_pos_x, const int y = ac_pos_y)
+{
+    you.redraw_armour_class = false;
+    colour_t ac_colour = _ac_colour();
+    // Display AC (red if corroded, lightblue if enhanced)
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(HUD_COMPACT ? "AC" : "AC:");
+    textcolour(ac_colour);
     CPRINTF("%3d", you.armour_class());
-    if (!compact)
+
+    // Display GDR percentage
+    if (!HUD_COMPACT)
     {
 #ifdef WIZARD
         if (you.wizard)
@@ -836,28 +1070,308 @@ static void _print_stats_ac(int x, int y)
 #endif
         CPRINTF("     ");
     }
+}
 
-    // SH goes two lines below AC in both traditional and compact mode
-    CGOTOXY(x+3-compact, y+2, GOTO_STAT); // "SH:" | "SH"
-    if (you.incapacitated() && you.shielded())
-        textcolour(RED);
-    else if (_boosted_sh())
-        textcolour(LIGHTBLUE);
-    else
-        textcolour(HUD_VALUE_COLOUR);
+static void _print_stats_ev(const int x = ev_pos_x, const int y = ev_pos_y)
+{
+    you.redraw_evasion = false;
+    const colour_t ev_colour = _ev_colour();
+    // Display EV (red if incapacitated, lightblue if enhanced)
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(HUD_COMPACT ? "EV" : "EV:");
+    textcolour(ev_colour);
+    CPRINTF("%3d", player_evasion());
+}
+
+static void _print_stats_sh(const int x = sh_pos_x, const int y = sh_pos_y)
+{
+    you.redraw_shield_class = false;
+    const colour_t sh_colour = _sh_colour();
+    // Display SH (red if incapacitated, lightblue if enhanced)
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(HUD_COMPACT ? "SH" : "SH:");
+    textcolour(sh_colour);
     CPRINTF("%3d", player_displayed_shield_class());
 }
 
-static void _print_stats_ev(int x, int y)
+static void _print_fcrawl(const int x = fcrawl_pos_x, const int y = fcrawl_pos_y)
 {
-    const bool compact = Options.compact_hud;
-    CGOTOXY(x+3-compact, y, GOTO_STAT); // "EV:" | "EV"
-    const bool incapacitated = you.duration[DUR_PETRIFYING]
-                               || you.duration[DUR_GRASPING_ROOTS]
-                               || you.cannot_move();
-    textcolour(incapacitated ? RED :
-               _boosted_ev() ? LIGHTBLUE : HUD_VALUE_COLOUR);
-    CPRINTF("%3d", player_evasion());
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("~fcrawl~");
+}
+
+static void _resists_helper(const colour_t char_colour, const int resist)
+{
+    textcolour(char_colour);
+    if (resist < 0)
+        CPRINTF("x"); // or - ?
+    else if (resist == 0)
+        CPRINTF(".");
+    else if (char_colour == MAGENTA && resist < 10) // MR
+        CPRINTF("%s", to_string(resist).c_str());
+    else if (resist == 1)
+        CPRINTF("+");
+    else if (resist == 2)
+        CPRINTF("*");
+    else if (resist == 3 && char_colour == LIGHTGREEN) // rPois
+        CPRINTF("!"); // I'd rather die before printing ∞
+    else if (char_colour == MAGENTA && you.form == TRAN_SHADOW) // MR immune
+        CPRINTF("!");
+    else if (resist == 3)
+        CPRINTF("!");
+    else // TODO
+        CPRINTF("?");
+}
+
+static void _print_stairs(const int x = stairs_pos_x, const int y = stairs_pos_y)
+{
+    CGOTOXY(x, y, GOTO_STAT);
+    ////Three upstairs
+    //textcolour(GREEN);
+    //CPRINTF("<");
+    //textcolour(WHITE);
+    //CPRINTF("<");
+    //textcolour(DARKGREY);
+    //CPRINTF("<");
+
+    feature_list features;
+    features.init();
+    //feature_list displayed_features;
+    //for (const auto &f : features)
+    //{
+    //}
+    formatted_string fs = features.format();
+    fs = fs.chop(8);
+    /////TODO
+    fs = fs.chop(3);
+    fs.display();
+
+    // Desired order
+    // Three downstairs (grey if not found, white unvisited, green)
+    // Two of the following, in order by preference:
+    // - Timed portals
+    // - Single-use portals
+    // - Branch entry stairs
+    // - Multi-use portals
+    // - Uphatch
+    // - Downhatch
+    // - Shaft?
+    if (coinflip())
+    {
+        textcolour(BLUE);
+        CPRINTF(" ");
+    }
+    else
+    {
+        textcolour(LIGHTGREEN);
+        CPRINTF(" ");
+    }
+
+    const bool has_br_entry = coinflip();
+    if (has_br_entry)
+    {
+        textcolour(YELLOW);
+        CPRINTF(" ");
+    }
+    else
+    {
+        textcolour(BROWN);
+        CPRINTF(" ");
+    }
+    // Is there a travel-excluded area on the level?
+    // Display its center if so.
+    textcolour(RED);
+    string exclusion = " ";
+    for (const auto &exc : curr_excludes)
+    {
+        exclusion = get_cell_glyph(exc.first).ch;
+        break;
+    }
+    // Make floor tiles with no monster or item on them more visible
+    if (exclusion == ".")
+        textcolour(LIGHTRED);
+
+    CPRINTF(exclusion.c_str());
+
+    //CPRINTF(coinflip() ? "." : "E");
+
+    // Is the level annotated, and is the annotation scary?
+    // Skip [runed doors] exclusions(?) uniques(?) 
+    //string annotation = get_level_annotation(level_id::current(), true);
+    string annotation = get_level_annotation();
+    if (annotation == "")
+        annotation = " ";
+    else if (level_annotation_has("runed door"))
+    {
+        textcolour(LIGHTBLUE);
+        annotation = "+";
+    }
+    else
+    {
+        textcolour(LIGHTGREY);
+        annotation = "!";
+    }
+    if (level_annotation_has("!"))
+        textcolour(LIGHTRED);
+
+    CPRINTF(annotation.c_str());
+
+    // TODO HACK
+    // Are runed doors present on the level?
+    //textcolour(LIGHTBLUE);
+    //CPRINTF(level_annotation_has("runed door") ? "+" : " ");
+
+    // Is the level corruptible?
+    // Only display indicator when it matters.
+    textcolour(MAGENTA);
+    if (you_worship(GOD_LUGONU) || one_chance_in(10))
+    {
+        if (is_level_incorruptible(true))
+            textcolour(DARKGREY);
+        CPRINTF("C");
+    }
+    else
+        CPRINTF(" ");
+}
+
+static void _print_resists(const int x = resists_pos_x, const int y = resists_pos_y)
+{
+    const bool calc_unid = false;
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+
+    _resists_helper(LIGHTRED, player_res_fire(calc_unid));
+    _resists_helper(LIGHTBLUE, player_res_cold(calc_unid));
+    _resists_helper(DARKGREY, player_prot_life(calc_unid));
+    _resists_helper(LIGHTGREEN, player_res_poison(calc_unid));
+    _resists_helper(WHITE, player_res_electricity(calc_unid));
+    _resists_helper(YELLOW, you.res_corr(calc_unid));
+    _resists_helper(LIGHTMAGENTA,
+        (you.rmut_from_item(calc_unid)
+         || player_mutation_level(MUT_MUTATION_RESISTANCE) == 3));
+    _resists_helper(MAGENTA, player_res_magic(calc_unid) / MR_PIP);
+}
+
+
+static void _print_defenses(const int x = defenses_pos_x,
+                            const int y = defenses_pos_y)
+{
+    const colour_t ac_colour = _ac_colour();
+    const colour_t ev_colour = _ev_colour();
+    const colour_t sh_colour = _sh_colour();
+    const int sh = player_displayed_shield_class();
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(ac_colour);
+    CPRINTF("%02d", you.armour_class());
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("/");
+    textcolour(ev_colour);
+    CPRINTF("%02d", player_evasion());
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("/");
+    textcolour(sh_colour);
+    if (sh)
+        CPRINTF("%02d", player_displayed_shield_class());
+    else
+        CPRINTF("--");
+}
+
+static void _print_piety(const int x = piety_pos_x, const int y = piety_pos_y)
+{
+
+    if (you_worship(GOD_NO_GOD))
+    {
+        _print_fcrawl(piety_pos_x, piety_pos_y);
+        return;
+    }
+    CGOTOXY(x, y, GOTO_STAT);
+
+    const char godkey =
+        you_worship(GOD_SHINING_ONE) ? '1' : god_name(you.religion).at(0);
+
+    textcolour(_god_status_colour(god_colour(you.religion)));
+
+    CPRINTF("%c %s", godkey, _god_asterisks().c_str());
+}
+
+static void _print_rot(const int x, const int y)
+{
+    const int max_max_hp = get_real_hp(true, true);
+    // TODO real ghoul hunger meter + rot count
+    if (max_max_hp == you.hp_max)
+        return;
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("Rot");
+    textcolour(YELLOW);
+    CPRINTF("%4d  ", max_max_hp);
+}
+
+static void _print_hunger(const int x = hunger_pos_x, const int y = hunger_pos_y)
+{
+    // Mummy / lichform
+    if (you.undead_state() == US_UNDEAD)
+        return;
+#if TAG_MAJOR_VERSION == 34
+    // Let's not speak about these.
+    if (you.species == SP_DJINNI)
+        return;
+#endif
+
+    if (you.undead_state() == US_HUNGRY_DEAD)
+    {
+        _print_rot(x, y);
+        return;
+    }
+
+    CGOTOXY(x, y, GOTO_STAT);
+
+    map<hunger_state_t, pair<colour_t, colour_t> > hunger_bar = {
+      {HS_STARVING,      {RED,        DARKGREY,   }},
+    //{HS_NEAR_STARVING, {RED,        DARKGREY,   }}, // YELLOW actually
+      {HS_VERY_HUNGRY,   {YELLOW,     LIGHTGREY,  }},
+      {HS_HUNGRY,        {YELLOW,     LIGHTGREY,  }},
+      {HS_SATIATED,      {LIGHTGREY,  LIGHTGREY,  }}, // has two bars
+      {HS_FULL,          {GREEN,      GREEN,      }},
+      {HS_VERY_FULL,     {GREEN,      GREEN,      }},
+      {HS_ENGORGED,      {LIGHTGREEN, LIGHTGREEN, }},
+    };// // TODO option to hide status lights below a threshold state
+
+    // TODO check if Vp special coloring actually helps
+    //const bool vp = you.undead_state() == US_SEMI_UNDEAD;
+    const bool vp = false;
+    colour_t rightmost = RED;
+    for (const auto &snack : hunger_bar)
+    {
+        if (snack.first > you.hunger_state)
+            continue;
+        // Vampires get special coloring, as to not imply misleading
+        // things about their hunger states with segment colors.
+        rightmost = vp ? snack.second.second : snack.second.first;
+        textcolour(rightmost);
+    }
+    for (const auto &snack : hunger_bar)
+    {
+        const char ch = (snack.first <= you.hunger_state
+                         && you.hunger_state != HS_STARVING) ? '=' : '-';
+        if (ch == '-')
+            rightmost = vp ? snack.second.second : snack.second.first;
+        textcolour(rightmost);
+        NOWRAP_EOL_CPRINTF("%c", ch);
+        if (snack.first == HS_SATIATED)
+            NOWRAP_EOL_CPRINTF("%c", ch);
+    }
+}
+
+static void _print_realtime(const int x = realtime_pos_x,
+                            const int y = realtime_pos_y)
+{
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_VALUE_COLOUR);
+    CPRINTF(make_time_string(you.real_time, true).c_str());
 }
 
 /**
@@ -897,10 +1411,13 @@ static bool _best_skills(int i, int j)
  * Print a brief one-line overview of currently trained skills to the HUD.
  * Kinda sorta relies on `short_skill_name` only rarely returning four chars.
  *
+ * @param x The x-coordinate to print the skill bar at.
  * @param y The y-coordinate to print the skill bar at.
  */
-static void _print_stats_skills(int y)
+static void _print_stats_skills(const int x = skills_pos_x,
+                                const int y = skills_pos_y) 
 {
+    // you.redraw_skills = false; ////TODO implement this perhaps?
     vector<skill_type> trained_skills;
     for (int i = 0; i < NUM_SKILLS; ++i)
         if (skill_trained(i))
@@ -921,7 +1438,7 @@ static void _print_stats_skills(int y)
         short_len += 3 + (you.skill(sk, 10) > 99 ? 4 : 3);
     }
 
-    CGOTOXY(1, y, GOTO_STAT);
+    CGOTOXY(x, y, GOTO_STAT);
     const bool long_names_fit = long_len <= 42; // HUD_WIDTH
     const bool shorten_ellipsis = short_len > 39; // HUD_WIDTH - 3
 
@@ -963,9 +1480,10 @@ static void _print_stats_skills(int y)
 /**
  * Print a description of the player's weapon (or lack thereof) to the UI.
  *
+ * @param x     The x-coordinate to print the description at.
  * @param y     The y-coordinate to print the description at.
  */
-static void _print_stats_wp(int y)
+static void _print_wp(const int x = wp_pos_x, const int y = wp_pos_y)
 {
     string text;
     if (you.weapon())
@@ -984,20 +1502,28 @@ static void _print_stats_wp(int y)
     else
         text = you.unarmed_attack_name();
 
-    CGOTOXY(1, y, GOTO_STAT);
+    CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
     const char slot_letter = you.weapon() ? index_to_letter(you.weapon()->link)
                                           : '-';
     const string slot_name = make_stringf("%c) ", slot_letter);
     CPRINTF("%s", slot_name.c_str());
     textcolour(_wpn_name_colour());
-    const int max_name_width = crawl_view.hudsz.x - slot_name.size();
+    const int max_name_width = HUD_WIDTH - slot_name.size();
     CPRINTF("%s", chop_string(text, max_name_width).c_str());
     textcolour(LIGHTGREY);
 }
 
-static void _print_stats_qv(int y)
+/**
+ * Print a description of the player's quivered item stack (or lack thereof)
+ * to the UI.
+ *
+ * @param x     The x-coordinate to print the description at.
+ * @param y     The y-coordinate to print the description at.
+ */
+static void _print_qv(const int x = qv_pos_x, const int y = qv_pos_y)
 {
+    you.redraw_quiver = false;
     int col;
     string text;
     const int q = you.m_quiver->get_fire_item();
@@ -1029,11 +1555,11 @@ static void _print_stats_qv(int y)
             text = "Nothing quivered";
         }
     }
-    CGOTOXY(1, y, GOTO_STAT);
+    CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("%c) ", hud_letter);
     textcolour(col);
-    CPRINTF("%s", chop_string(text, crawl_view.hudsz.x).c_str());
+    CPRINTF("%s", chop_string(text, HUD_WIDTH).c_str());
     textcolour(LIGHTGREY);
 }
 
@@ -1122,8 +1648,10 @@ static void _get_status_lights(vector<status_light>& out)
             _add_status_light_to_out(status, out);
 }
 
-static void _print_status_lights(int y)
+static void _print_status_lights(const int x = status_pos_x,
+                                 const int y = status_pos_y) 
 {
+    you.redraw_status_flags = 0;
     vector<status_light> lights;
     static int last_number_of_lights = 0;
     _get_status_lights(lights);
@@ -1131,10 +1659,9 @@ static void _print_status_lights(int y)
         return;
     last_number_of_lights = lights.size();
 
-    size_t line_cur = y;
     const size_t line_end = crawl_view.hudsz.y+1;
 
-    CGOTOXY(1, line_cur, GOTO_STAT);
+    CGOTOXY(x, y, GOTO_STAT);
 #ifdef ASSERTS
     if (wherex() != crawl_view.hudp.x)
     {
@@ -1147,6 +1674,7 @@ static void _print_status_lights(int y)
     if (!tiles.is_using_small_layout())
     {
 #endif
+    size_t line_cur = y;
     size_t i_light = 0;
     while (true)
     {
@@ -1154,11 +1682,11 @@ static void _print_status_lights(int y)
                 + (i_light < lights.size() ? strwidth(lights[i_light].text)
                                            : 10000);
 
-        if (end_x <= crawl_view.hudsz.x)
+        if (end_x <= HUD_WIDTH)
         {
             textcolour(lights[i_light].colour);
             CPRINTF("%s", lights[i_light].text.c_str());
-            if (end_x < crawl_view.hudsz.x)
+            if (end_x < HUD_WIDTH)
                 CPRINTF(" ");
             ++i_light;
         }
@@ -1169,7 +1697,7 @@ static void _print_status_lights(int y)
             // Careful not to trip the )#(*$ CGOTOXY ASSERT
             if (line_cur == line_end)
                 break;
-            CGOTOXY(1, line_cur, GOTO_STAT);
+            CGOTOXY(x, line_cur, GOTO_STAT);
         }
     }
 #ifdef USE_TILE_LOCAL
@@ -1184,15 +1712,15 @@ static void _print_status_lights(int y)
         }
         else
         {
-            while (i_light < lights.size() && (int)i_light < crawl_view.hudsz.x - 1)
+            while (i_light < lights.size() && (int)i_light < HUD_WIDTH - 1)
             {
                 textcolour(lights[i_light].colour);
                 if (i_light == lights.size() - 1
-                    && strwidth(lights[i_light].text) < crawl_view.hudsz.x - wherex())
+                    && strwidth(lights[i_light].text) < HUD_WIDTH - wherex())
                 {
                     CPRINTF("%s",lights[i_light].text.c_str());
                 }
-                else if ((int)lights.size() > crawl_view.hudsz.x / 2)
+                else if ((int)lights.size() > HUD_WIDTH / 2)
                     CPRINTF("%.1s",lights[i_light].text.c_str());
                 else
                     CPRINTF("%.1s ",lights[i_light].text.c_str());
@@ -1212,6 +1740,7 @@ static bool _need_stats_printed()
            || you.redraw_magic_points
            || you.redraw_armour_class
            || you.redraw_evasion
+           || you.redraw_shield_class
            || you.redraw_stats[STAT_STR]
            || you.redraw_stats[STAT_INT]
            || you.redraw_stats[STAT_DEX]
@@ -1221,71 +1750,29 @@ static bool _need_stats_printed()
 }
 #endif
 
-static void _draw_wizmode_flag(const char *word)
+static void _draw_wizmode_flag(const char *word, const int y)
 {
+    // -2 for the "**"
+    int x = FIRST_COL + HUD_WIDTH - strlen(word) - 2;
+    if (HUD_CRAMPED)
+        x += strlen(word) -1;
     textcolour(LIGHTMAGENTA);
-    // 3+ for the " **"
-    CGOTOXY(1 + crawl_view.hudsz.x - (3 + strlen(word)), 1, GOTO_STAT);
-    CPRINTF(" *%s*", word);
+    CGOTOXY(x, y, GOTO_STAT);
+    if (HUD_CRAMPED)
+        CPRINTF("*%c*", word[0]);
+    else
+        CPRINTF("*%s*", word);
 }
 
-static void _redraw_title(const string &your_name, const string &job_name)
+// Minotaur of Okawaru **....
+static void _stats_god(const int x = god_pos_x, const int y = god_pos_y)
 {
-    const unsigned int WIDTH = crawl_view.hudsz.x;
-    string title = your_name + " " + job_name;
+    if (HUD_CRAMPED)
+        return;
 
-#ifdef USE_TILE_LOCAL
-    if (tiles.is_using_small_layout())
-        title = your_name;
-    else
-#endif
-    {
-        unsigned int in_len = strwidth(title);
-        if (in_len > WIDTH)
-        {
-            in_len -= 3;  // What we're getting back from removing "the".
-
-            const unsigned int name_len = strwidth(your_name);
-            string trimmed_name = your_name;
-            // Squeeze name if required, the "- 8" is to not squeeze too much.
-            if (in_len > WIDTH && (name_len - 8) > (in_len - WIDTH))
-            {
-                trimmed_name = chop_string(trimmed_name,
-                                           name_len - (in_len - WIDTH) - 1);
-            }
-
-            title = trimmed_name + ", " + job_name;
-        }
-    }
-
-    // Line 1: Foo the Bar    *WIZARD*
-    CGOTOXY(1, 1, GOTO_STAT);
-    textcolour(YELLOW);
-#ifdef USE_TILE_LOCAL
-    if (tiles.is_using_small_layout() && you.wizard) textcolour(LIGHTMAGENTA);
-#endif
-    CPRINTF("%s", chop_string(title, WIDTH).c_str());
-#ifdef USE_TILE_LOCAL
-    if (you.wizard && !tiles.is_using_small_layout())
-#else
-    if (you.wizard)
-#endif
-        _draw_wizmode_flag("WIZARD");
-#ifdef USE_TILE_LOCAL
-    else if (you.explore && !tiles.is_using_small_layout())
-#else
-    else if (you.explore)
-#endif
-        _draw_wizmode_flag("EXPLORE");
-#ifdef DGL_SIMPLE_MESSAGING
-    update_message_status();
-#endif
-
-    // Line 2:
-    // Minotaur [of God] [Piety]
-    textcolour(YELLOW);
-    CGOTOXY(1, 2, GOTO_STAT);
+    CGOTOXY(x, y, GOTO_STAT);
     string species = species_name(you.species);
+    textcolour(YELLOW);
     NOWRAP_EOL_CPRINTF("%s", species.c_str());
     if (!you_worship(GOD_NO_GOD))
     {
@@ -1296,37 +1783,108 @@ static void _redraw_title(const string &your_name, const string &job_name)
 
         string piety = _god_asterisks();
         textcolour(_god_status_colour(YELLOW));
-        if ((unsigned int)(strwidth(species) + strwidth(god) + strwidth(piety) + 1)
-            <= WIDTH)
-        {
+        const int linelength = 
+            FIRST_COL + strwidth(species) + strwidth(god) + strwidth(piety);
+        // "Mottled Draconian of the Shining One ***..." doesn't fit
+        // by one char. Trim to "the Shining One***..." in that case.
+        if (linelength <= HUD_WIDTH)
             NOWRAP_EOL_CPRINTF(" %s", piety.c_str());
-        }
-        else if ((unsigned int)(strwidth(species) + strwidth(god) + strwidth(piety) + 1)
-                  == (WIDTH + 1))
-        {
-            //mottled draconian of TSO doesn't fit by one symbol,
-            //so we remove leading space.
+        else if (linelength == HUD_WIDTH + 1)
             NOWRAP_EOL_CPRINTF("%s", piety.c_str());
-        }
     }
     else if (you.char_class == JOB_MONK && you.species != SP_DEMIGOD
              && !had_gods())
     {
-        string godpiety = "**....";
+        string piety = "**....";
         textcolour(DARKGREY);
-        if ((unsigned int)(strwidth(species) + strwidth(godpiety) + 1) <= WIDTH)
-            NOWRAP_EOL_CPRINTF(" %s", godpiety.c_str());
+        const int linelength = FIRST_COL + strwidth(species) + strwidth(piety);
+        if (linelength <= HUD_WIDTH)
+            NOWRAP_EOL_CPRINTF(" %s", piety.c_str());
     }
 
-    clear_to_end_of_line();
+    clear_to_end_of_line(); ////TODO // penance stars shorter / abandonment
+}
 
-    textcolour(LIGHTGREY);
+// Line 1: Foo the Fighter        *WIZARD*
+static void _redraw_title(const string &your_name, const string &job_name,
+                          const int x = name_pos_x, const int y = name_pos_y)
+{
+    you.redraw_title = false;
+    string title = your_name + " " + job_name;
+
+    // Player name, shortened if necessary, and player title
+    // [Foo the Fighter]        *WIZARD*
+    // [VeryLongNameF, Fighter] *WIZARD*
+#ifdef USE_TILE_LOCAL
+    if (tiles.is_using_small_layout())
+        title = your_name;
+    else
+#endif
+    {
+        int in_len = strwidth(title);
+        if (you.wizard || you.explore)
+            in_len += HUD_CRAMPED ? 3 : 8; // *W* *E* | *WIZARD* *EXPLORE*
+        if (you.wizard || you.explore)
+            in_len += 1; // flags being placed 1 col from border: *W* |
+        if (HUD_CRAMPED)
+            in_len += 5; // "[MiFi] "
+        if (HUD_CRAMPED || in_len > HUD_WIDTH)
+        {
+            // What we're getting back from replacing " the " with ", "
+            in_len -= 3;
+            const int name_len = strwidth(your_name);
+            string trimmed_name = your_name;
+            // Squeeze name if required, the "- 8" is to not squeeze too much.
+            if (in_len > HUD_WIDTH && (name_len + 2) > (in_len - HUD_WIDTH))
+            {
+                trimmed_name = chop_string(trimmed_name,
+                                           name_len - (in_len - HUD_WIDTH) - 1);
+            }
+
+            title = trimmed_name + ", " + job_name.substr(4);
+        }
+    }
+
+    // [[MiFi] ]Foo the Fighter        *WIZARD*
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(YELLOW);
+    if (HUD_CRAMPED)
+    {
+        CPRINTF("[%s%s] ",
+            get_species_abbrev(you.species),
+            get_job_abbrev(you.char_class));
+    }
+#ifdef USE_TILE_LOCAL
+    if (tiles.is_using_small_layout() && you.wizard) textcolour(LIGHTMAGENTA);
+#endif
+    CPRINTF("%s", chop_string(title, HUD_WIDTH).c_str());
+
+    // Wizmode / Explore mode flags
+    // Foo the Fighter       [*WIZARD* ]
+    const char* wizmode = you.wizard ? "WIZARD" : you.explore ? "EXPLORE" : "";
+    if ((you.wizard || you.explore)
+#ifdef USE_TILE_LOCAL
+        && !tiles.is_using_small_layout()
+#endif
+    )
+        _draw_wizmode_flag(wizmode, y);
+
+    // DGL message hint
+    // Foo the Fighter        [(Hit _) ]
+#ifdef DGL_SIMPLE_MESSAGING
+    update_message_status();
+#endif
+    _stats_god();
 }
 
 static string _level_description_string_hud()
 {
     const PlaceInfo& place = you.get_place_info();
-    string short_name = branches[place.branch].shortname;
+    string short_name;
+    if (HUD_COMPACT)
+        short_name = branches[place.branch].abbrevname;
+    else
+        short_name = branches[place.branch].shortname;
 
     if (brdepth[place.branch] > 1)
         short_name += make_stringf(":%d", you.depth);
@@ -1336,26 +1894,83 @@ static string _level_description_string_hud()
     return short_name;
 }
 
+static void _print_place(const int x = place_pos_x, const int y = place_pos_y)
+{
+    //you.redraw_experience = false;
+    CGOTOXY(x, y, GOTO_STAT);
+
+    if (HUD_COMPACT && !crawl_state.game_is_zotdef())
+    {
+        textcolour(HUD_CAPTION_COLOUR);
+        // align w/actions (hudswappy): usually single-digit turn
+        //CPRINTF("In  ");
+        // This looks less bad while also eathing three chars
+        //CPRINTF("Lvl"); // but is bad since XL</>Lvl in same column
+        //CPRINTF("Plog "); // Site Camp  Location*
+        if (!HUD_CRAMPED)
+            CPRINTF("Place "); // Site Camp  Location*
+
+        textcolour(HUD_VALUE_COLOUR);
+        // 8: "Vaults:3"
+        CPRINTF("%-8s", _level_description_string_hud().c_str());
+    }
+}
+
+static void _print_xl(const int x = xl_pos_x, const int y = xl_pos_y)
+{
+    you.redraw_experience = false;
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("XL");
+
+    if (!HUD_COMPACT)
+        CPRINTF(":");
+    textcolour(HUD_VALUE_COLOUR);
+    CPRINTF("%3d", you.experience_level);
+    if (you.experience_level >= you.get_max_xl())
+        CPRINTF("%4s", "");
+    else
+    {
+        textcolour(HUD_CAPTION_COLOUR);
+        CPRINTF(".%02d ", get_exp_progress());
+    }
+}
+
+static void _print_zp(const int x = zp_pos_x, const int y = zp_pos_y)
+{
+    if (!crawl_state.game_is_zotdef())
+        return;
+
+    CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF(HUD_COMPACT ? "ZP" : "ZP:");
+    textcolour(HUD_VALUE_COLOUR);
+    CPRINTF(" %d", you.zot_points);
+}
+
+static void _print_gold(const bool terse=false,
+                        const int x = gold_pos_x, const int y = gold_pos_y)
+{
+#ifdef USE_TILE_LOCAL
+    if (tiles.is_using_small_layout())
+        return;
+#endif
+    textcolour(HUD_CAPTION_COLOUR);
+    CGOTOXY(x, y, GOTO_STAT);
+    // glyph_to_tagstr(get_item_glyph(item))
+    CPRINTF(terse ? "$ " : HUD_COMPACT ? "Gold  " : "Gold: "); // ⌛
+    textcolour(HUD_VALUE_COLOUR);
+    CPRINTF("%d", you.gold);
+}
+
 void print_stats()
 {
-    const bool compact = Options.compact_hud;
-    int ac_pos = 5; // vertical position, first col starts at 1
-    int ev_pos = ac_pos + 1;
-#if TAG_MAJOR_VERSION == 34
-    const int temp_pos = ac_pos;
-    const int temp = (you.species == SP_LAVA_ORC) ? 1 : 0;
-    ac_pos += temp; ev_pos += temp;
-#endif
-
     cursor_control coff(false);
     textcolour(LIGHTGREY);
 
     // Displayed evasion is tied to dex/str.
-    if (you.redraw_stats[STAT_DEX]
-        || you.redraw_stats[STAT_STR])
-    {
+    if (you.redraw_stats[STAT_DEX] || you.redraw_stats[STAT_STR])
         you.redraw_evasion = true;
-    }
 
     if (HP_Bar.wants_redraw())
         you.redraw_hit_points = true;
@@ -1378,143 +1993,60 @@ void print_stats()
 #endif
 
     if (you.redraw_title)
-    {
-        you.redraw_title = false;
         _redraw_title(you.your_name, filtered_lang(player_title()));
-    }
     if (you.redraw_hit_points)
-    {
-        you.redraw_hit_points = false;
-        _print_stats_hp (1, 3);
-    }
+        _print_stats_hp();
     if (you.redraw_magic_points)
-    {
-        you.redraw_magic_points = false;
-        if (compact)
-            _print_stats_mp ( 1, 4);
-        else
-            _print_stats_mp ( 1, 4);
-    }
+        _print_stats_mp();
 #if TAG_MAJOR_VERSION == 34
-    if (compact)
-        _print_stats_contam(11, 3);
-    else
-        _print_stats_contam( 1, 4);
-    if (you.redraw_temperature)  { you.redraw_temperature = false;  _print_stats_temperature (1, temp_pos); }
-#endif
-    if (you.redraw_armour_class) { you.redraw_armour_class = false; _print_stats_ac (1, ac_pos); }
-    if (you.redraw_evasion)      { you.redraw_evasion = false;      _print_stats_ev (1, ev_pos); }
+    _print_stats_contam();
 
-    for (int i = 0; i < NUM_STATS; ++i)
-        if (you.redraw_stats[i])
-        {
-#if TAG_MAJOR_VERSION == 34
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 + i + temp);
-#else
-            _print_stat(static_cast<stat_type>(i), compact ? 9 : 19, 5 + i);
+    if (you.redraw_temperature)
+        _print_temperature();
 #endif
-        }
+    //if (you.redraw_armour_class || you.redraw_evasion || you.redraw_shield_class)
+    //    _print_defenses();
+    // For historic reasons, these two are still combined //// TODO
+    if (you.redraw_armour_class || you.redraw_shield_class)
+        _print_stats_sh();
+    if (you.redraw_armour_class)
+        _print_stats_ac();
+    if (you.redraw_evasion)
+        _print_stats_ev();
+
+    if (you.redraw_stats[STAT_STR])
+        _print_str();
+    if (you.redraw_stats[STAT_INT])
+        _print_int();
+    if (you.redraw_stats[STAT_DEX])
+        _print_dex();
     you.redraw_stats.init(false);
 
     if (you.redraw_experience)
-    {
-#if TAG_MAJOR_VERSION == 34
-        if (compact)
-            CGOTOXY(19, 6 + temp, GOTO_STAT);
-        else
-            CGOTOXY(1, 8 + temp, GOTO_STAT);
-#else
-        if (compact)
-            CGOTOXY(19, 6, GOTO_STAT);
-        else
-            CGOTOXY(1, 8, GOTO_STAT);
-#endif
-        textcolour(Options.status_caption_colour);
-        CPRINTF("XL");
-        if (!compact)
-            CPRINTF(":");
-        textcolour(HUD_VALUE_COLOUR);
-        CPRINTF("%3d", you.experience_level);
-        if (you.experience_level >= you.get_max_xl())
-            CPRINTF("%4s", "");
-        else
-        {
-            textcolour(Options.status_caption_colour);
-            CPRINTF(".%02d ", get_exp_progress());
-        }
-        // Different place in compact HUD mode
-        if (compact && !crawl_state.game_is_zotdef())
-        {
-#if TAG_MAJOR_VERSION == 34
-            CGOTOXY(19, 7 + temp, GOTO_STAT);
-#else
-            CGOTOXY(19, 7, GOTO_STAT);
-#endif
-            textcolour(HUD_CAPTION_COLOUR);
-            CPRINTF("in ");
-            // Align with first number above
-            if (you.experience_level < 10)
-                CPRINTF(" ");
-            textcolour(HUD_VALUE_COLOUR);
-            CPRINTF("%s", _level_description_string_hud().c_str());
-            clear_to_end_of_line();
-        }
-        if (crawl_state.game_is_zotdef())
-        {
-#if TAG_MAJOR_VERSION == 34
-            if (compact)
-                CGOTOXY(29, 7 + temp, GOTO_STAT);
-            else
-                CGOTOXY(30, 8 + temp, GOTO_STAT);
-#else
-            if (compact)
-                CGOTOXY(29, 7, GOTO_STAT);
-            else
-                CGOTOXY(30, 8, GOTO_STAT);
-#endif
-            textcolour(Options.status_caption_colour);
-            CPRINTF("ZP");
-            if (!compact)
-                CPRINTF(":");
-            textcolour(HUD_VALUE_COLOUR);
-            CPRINTF(" %d", you.zot_points);
-        }
-        you.redraw_experience = false;
-    }
+        _print_xl();
 
-#if TAG_MAJOR_VERSION == 34
-    int yhack = crawl_state.game_is_zotdef() + temp;
-#else
-    int yhack = crawl_state.game_is_zotdef();
-#endif
+    _print_place();
 
     // Gold
-#ifdef USE_TILE_LOCAL
-    if (!tiles.is_using_small_layout())
-#endif
-    {
-        // Increase y-value for all following lines.
-        if (!crawl_state.game_is_zotdef())
-            yhack++;
+    if (!HUD_CRAMPED)
+        _print_gold();
 
-        textcolour(HUD_CAPTION_COLOUR);
-        if (compact)
-        {
-            CGOTOXY(29, 5 + yhack, GOTO_STAT);
-            CPRINTF("Gold ");
-        }
-        else
-        {
-            CGOTOXY(1, 8 + yhack, GOTO_STAT);
-            CPRINTF("Gold: ");
-        }
-        textcolour(HUD_VALUE_COLOUR);
-        CPRINTF("%d", you.gold);
-    }
+    if (HUD_CRAMPED)
+        _print_piety();
+
+    _print_hunger();
+    //_print_defenses();
+    //_print_fcrawl();
+    //_print_sid();
+    //_print_realtime();
+    //_print_resists();
+    //_print_stairs();
+
+    _print_zp();
 
     if (you.wield_change)
     {
-        // weapon_change is set in a billion places; probably not all
+        // wield_change is set in a billion places; probably not all
         // of them actually mean the user changed their weapon.  Calling
         // on_weapon_changed redundantly is normally OK; but if the user
         // is wielding a bow and throwing javelins, the on_weapon_changed
@@ -1524,31 +2056,55 @@ void print_stats()
         // Also, it's a little bogus to change simulation state in
         // render code.  We should find a better place for this.
         you.m_quiver->on_weapon_changed();
-        _print_stats_wp((compact ? 7 : 9) + yhack);
+        _print_wp();
     }
     you.wield_change = false;
 
     // There are no circumstances under which Felids could quiver something.
-    // Reduce line counter for status display.
-    if (you.species == SP_FELID)
-        yhack -= 1;
-    else if (you.redraw_quiver || you.wield_change)
-        _print_stats_qv((compact ? 8 : 10) + yhack);
-
-    you.redraw_quiver = false;
+    if (you.species != SP_FELID && (you.redraw_quiver || you.wield_change))
+        _print_qv();
 
     if (Options.show_skill_bar)
-    {
-        _print_stats_skills((compact ? 9 : 11) + yhack);
-        yhack++;
-    }
+        _print_stats_skills();
 
     if (you.redraw_status_flags)
-    {
-        you.redraw_status_flags = 0;
-        _print_status_lights((compact ? 9 : 11) + yhack);
-    }
+        _print_status_lights();
+
     textcolour(LIGHTGREY);
+    //_print_fcrawl( 8, 5);
+    //_print_fcrawl( 8, 6);
+    //_print_fcrawl( 8, 7);
+
+    //_print_fcrawl(17, 5);
+    //_print_fcrawl(17, 6);
+    //_print_fcrawl(17, 7);
+
+    //_print_fcrawl(26, 5);
+    //_print_fcrawl(26, 6);
+    //_print_fcrawl(26, 7);
+
+    //_print_fcrawl(35, 5);
+    //_print_fcrawl(35, 6);
+    //_print_fcrawl(35, 7);
+
+    //_print_fcrawl( 1, 5);
+    //_print_fcrawl( 1, 6);
+    //_print_fcrawl( 1, 7);
+    //_print_fcrawl( 8, 5);
+    //_print_fcrawl( 8, 6);
+    //_print_fcrawl( 8, 7);
+    //_print_fcrawl(15, 5);
+    //_print_fcrawl(15, 6);
+    //_print_fcrawl(15, 7);
+    //_print_fcrawl(22, 5);
+    //_print_fcrawl(22, 6);
+    //_print_fcrawl(22, 7);
+    //_print_fcrawl(29, 5);
+    //_print_fcrawl(29, 6);
+    //_print_fcrawl(29, 7);
+    //_print_fcrawl(36, 5);
+    //_print_fcrawl(36, 6);
+    //_print_fcrawl(36, 7);
 
 #ifdef USE_TILE_LOCAL
     if (has_changed)
@@ -1560,7 +2116,7 @@ void print_stats()
 
 void print_stats_level()
 {
-    if (Options.compact_hud)
+    if (HUD_COMPACT)
     {
         print_stats();
         return;
@@ -1570,7 +2126,7 @@ void print_stats_level()
     if (you.species == SP_LAVA_ORC)
         ypos++;
 #endif
-    cgotoxy(19, ypos, GOTO_STAT);
+    cgotoxy(CLASSIC_B, ypos, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("Place: ");
 
@@ -1584,10 +2140,9 @@ void print_stats_level()
 
 void draw_border()
 {
-    textcolour(HUD_CAPTION_COLOUR);
     clrscr();
 
-    textcolour(Options.status_caption_colour);
+    textcolour(HUD_CAPTION_COLOUR);
 
     // Traditional HUD layout:                         Compact HUD layout:
     //  | 1 3 5 7 9. . . . .  1 3 5 7 9. . . . .  1 3|  | 1 3 5 7 9. . . . .  1 3 5 7 9. . . . .  1 3|
@@ -1609,44 +2164,6 @@ void draw_border()
     //15| ee  2 deep elf master archers              |15| ee  3 deep elf demonologists               |
     //  | ee  2 deep elf annihilators                |  | e  5 deep elf knights                      |
     //17| ee  3 deep elf demonologists           (…) |17| e  5 deep elf summoners                (…) |
-
-    const bool compact = Options.compact_hud;
-#if TAG_MAJOR_VERSION == 34
-    int temp = (you.species == SP_LAVA_ORC) ? 1 : 0;
-#endif
-    int ac_pos = 5; // vertical position
-    int ev_pos = 6;
-    int sh_pos = 7;
-#if TAG_MAJOR_VERSION == 34
-    ac_pos += temp; ev_pos += temp; sh_pos += temp;
-#endif
-
-    CGOTOXY(1, ac_pos, GOTO_STAT); CPRINTF(compact ? "AC" : "AC:");
-    CGOTOXY(1, ev_pos, GOTO_STAT); CPRINTF(compact ? "EV" : "EV:");
-    CGOTOXY(1, sh_pos, GOTO_STAT); CPRINTF(compact ? "SH" : "SH:");
-
-    CGOTOXY(compact ? 9 : 19, ac_pos, GOTO_STAT); CPRINTF(compact ? "Str" : "Str:");
-    CGOTOXY(compact ? 9 : 19, ev_pos, GOTO_STAT); CPRINTF(compact ? "Int" : "Int:");
-    CGOTOXY(compact ? 9 : 19, sh_pos, GOTO_STAT); CPRINTF(compact ? "Dex" : "Dex:");
-
-    // Turncount
-#if TAG_MAJOR_VERSION == 34
-    int turn_pos = (compact ? 5 : 9) + temp;
-#else
-    int turn_pos = (compact ? 5 : 9);
-#endif
-    if (compact)
-    {
-        CGOTOXY(19, turn_pos, GOTO_STAT);
-        CPRINTF("@ ");
-        CGOTOXY(29, turn_pos, GOTO_STAT);
-        CPRINTF("Turn");
-    }
-    else
-    {
-        CGOTOXY(19, turn_pos, GOTO_STAT);
-        CPRINTF(Options.show_game_turns ? "Time:" : "Turn:");
-    }
 }
 
 void set_redraw_status(uint64_t flags)
@@ -1679,10 +2196,13 @@ void redraw_screen()
     you.redraw_stats.init(true);
     you.redraw_armour_class = true;
     you.redraw_evasion      = true;
+    you.redraw_shield_class = true;
     you.redraw_experience   = true;
     you.wield_change        = true;
     you.redraw_quiver       = true;
+    //you.redraw_skills       = true;
 
+    /////////////////// TODO // this is completely, horrifyingly outdated
     set_redraw_status(
                       REDRAW_LINE_1_MASK | REDRAW_LINE_2_MASK | REDRAW_LINE_3_MASK);
 
@@ -1690,7 +2210,7 @@ void redraw_screen()
 
     bool note_status = notes_are_active();
     activate_notes(false);
-    if (!Options.compact_hud)
+    if (!HUD_COMPACT)
         print_stats_level();
 #ifdef DGL_SIMPLE_MESSAGING
     update_message_status();
@@ -2279,10 +2799,10 @@ static string _god_asterisks()
         return "";
 
     if (player_under_penance())
-        return "*";
+        return "* :( *";
 
     if (you_worship(GOD_GOZAG))
-        return "";
+        return "$$$$$$";
 
     if (you_worship(GOD_XOM))
     {
@@ -2290,7 +2810,7 @@ static string _god_asterisks()
         if (p_rank >= 0)
             return string(p_rank, '.') + "*" + string(5 - p_rank, '.');
         else
-            return "......"; // very special plaything
+            return " >:)  "; // very special plaything
     }
     else
     {
@@ -2396,7 +2916,6 @@ static vector<formatted_string> _get_overview_stats()
         entry.textcolour(HUD_VALUE_COLOUR);
 
     entry.cprintf("%2d", you.armour_class());
-
     cols.add_formatted(1, entry.to_colour_string(), false);
     entry.clear();
 

@@ -773,6 +773,7 @@ void game_options::reset_options()
 
     show_newturn_mark = true;
     compact_hud = false;
+    compact_hud_xs = false;
     show_game_turns = true;
     show_skill_bar = false;
 
@@ -2907,6 +2908,7 @@ void game_options::read_option_line(const string &str, bool runscript)
 #endif
     else BOOL_OPTION(show_newturn_mark);
     else BOOL_OPTION(compact_hud);
+    else BOOL_OPTION(compact_hud_xs);
     else BOOL_OPTION(show_game_turns);
     else BOOL_OPTION(show_skill_bar);
     else INT_OPTION(hp_warning, 0, 100);

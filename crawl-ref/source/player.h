@@ -371,6 +371,7 @@ public:
   bool redraw_experience;
   bool redraw_armour_class;
   bool redraw_evasion;
+  bool redraw_shield_class;
 
   colour_t flash_colour;
   targetter *flash_where;

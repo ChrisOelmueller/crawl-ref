@@ -173,7 +173,8 @@ public:
     bool        default_manual_training;
 
     bool        show_newturn_mark;// Show underscore prefix in messages for new turn
-    bool        compact_hud;     // Save lots of space in the HUD (ignore show_game_turns)
+    bool        compact_hud;     // Save two lines of space in the HUD (ignore show_game_turns)
+    bool        compact_hud_xs;  // Save another line (needs compact_hud = true)
     bool        show_game_turns; // Show game turns instead of player turns.
     bool        show_skill_bar;  // Show skill bar in HUD
 
