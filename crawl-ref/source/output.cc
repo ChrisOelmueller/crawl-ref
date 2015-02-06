@@ -935,12 +935,7 @@ static void _print_stats_qv(int y)
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("%c) ", hud_letter);
     textcolour(col);
-#ifdef USE_TILE_LOCAL
-    int w = crawl_view.hudsz.x - (tiles.is_using_small_layout()?0:4);
-    CPRINTF("%s", chop_string(text, w).c_str());
-#else
-    CPRINTF("%s", chop_string(text, crawl_view.hudsz.x-4).c_str());
-#endif
+    CPRINTF("%s", chop_string(text, crawl_view.hudsz.x).c_str());
     textcolour(LIGHTGREY);
 }
 
