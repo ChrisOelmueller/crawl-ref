@@ -17,7 +17,6 @@
 #include "dgn-overview.h"
 #include "env.h"
 #include "files.h"
-#include "format.h"
 #include "fprop.h"
 #include "libutil.h"
 #include "macro.h"
@@ -404,75 +403,90 @@ static bool _comp_glyphs(const cglyph_t& g1, const cglyph_t& g2)
 static cglyph_t _get_feat_glyph(const coord_def& gc);
 #endif
 
-class feature_list
+static feature_list_group feat_dir(dungeon_feature_type feat)
 {
-    enum group
+    switch (feat_stair_direction(feat))
     {
-        G_UP, G_DOWN, G_PORTAL, G_OTHER, G_NONE, NUM_GROUPS = G_NONE
-    };
-
-    vector<cglyph_t> data[NUM_GROUPS];
-
-    static group feat_dir(dungeon_feature_type feat)
-    {
-        switch (feat_stair_direction(feat))
-        {
-        case CMD_GO_UPSTAIRS:
-            return G_UP;
-        case CMD_GO_DOWNSTAIRS:
-            return G_DOWN;
-        default:
-            return G_NONE;
-        }
-    }
-
-    group get_group(const coord_def& gc)
-    {
-        dungeon_feature_type feat = env.map_knowledge(gc).feat();
-
-        if (feat_is_staircase(feat) || feat_is_escape_hatch(feat))
-            return feat_dir(feat);
-        if (feat == DNGN_TRAP_SHAFT)
-            return G_DOWN;
-        if (feat_is_altar(feat) || feat == DNGN_ENTER_SHOP)
-            return G_OTHER;
-        if (get_feature_dchar(feat) == DCHAR_ARCH)
-            return G_PORTAL;
+    case CMD_GO_UPSTAIRS:
+        return G_UP;
+    case CMD_GO_DOWNSTAIRS:
+        return G_DOWN;
+    default:
         return G_NONE;
     }
+}
 
-    void maybe_add(const coord_def& gc)
-    {
+/*
+static pair<unsigned,unsigned> feature_list::_hud_sort(const coord_def& gc)
+{
+    dungeon_feature_type feat = env.map_knowledge(gc).feat();
+
+    if (feat_is_staircase(feat) && feat_stair_direction(feat) == CMD_GO_DOWNSTAIRS)
+        return pair<1, 1>;
+    if (feat_is_escape_hatch(feat) && feat_stair_direction(feat) == CMD_GO_DOWNSTAIRS)
+        return pair<1, 2>;
+    if (feat_is_staircase(feat))
+        return pair<1, 3>;
+    if (feat_is_escape_hatch(feat))
+        return pair<1, 4>;
+    if (feat_is_staircase(feat) || feat_is_escape_hatch(feat))
+        return pair<1, 5>;
+    if (feat == DNGN_TRAP_SHAFT)
+        return pair<1, 6>;
+
+    if (get_feature_dchar(feat) == DCHAR_ARCH)
+        return pair<2, 1>;
+    // return G_NONE;
+}
+
+static void feature_list::_add_feat(const dungeon_feature_type feat){}
+*/
+
+feature_list_group feature_list::get_group(const coord_def& gc)
+{
+    dungeon_feature_type feat = env.map_knowledge(gc).feat();
+
+    if (feat_is_staircase(feat) || feat_is_escape_hatch(feat))
+        return feat_dir(feat);
+    if (feat == DNGN_TRAP_SHAFT)
+        return G_DOWN;
+    if (feat_is_altar(feat) || feat == DNGN_ENTER_SHOP)
+        return G_OTHER;
+    if (get_feature_dchar(feat) == DCHAR_ARCH)
+        return G_PORTAL;
+    return G_NONE;
+}
+
+void feature_list::maybe_add(const coord_def& gc)
+{
 #ifndef USE_TILE_LOCAL
-        if (!env.map_knowledge(gc).known())
-            return;
+    if (!env.map_knowledge(gc).known())
+        return;
 
-        group grp = get_group(gc);
-        if (grp != G_NONE)
-            data[grp].push_back(_get_feat_glyph(gc));
+    feature_list_group grp = get_group(gc);
+    if (grp != G_NONE)
+        data[grp].push_back(_get_feat_glyph(gc));
 #endif
-    }
+}
 
-public:
-    void init()
-    {
-        for (vector<cglyph_t> &groupdata : data)
-            groupdata.clear();
-        for (rectangle_iterator ri(0); ri; ++ri)
-            maybe_add(*ri);
-        for (vector<cglyph_t> &groupdata : data)
-            sort(begin(groupdata), end(groupdata), _comp_glyphs);
-    }
+void feature_list::init()
+{
+    for (vector<cglyph_t> &groupdata : data)
+        groupdata.clear();
+    for (rectangle_iterator ri(0); ri; ++ri)
+        maybe_add(*ri);
+    for (vector<cglyph_t> &groupdata : data)
+        sort(begin(groupdata), end(groupdata), _comp_glyphs);
+}
 
-    formatted_string format() const
-    {
-        formatted_string s;
-        for (const vector<cglyph_t> &groupdata : data)
-            for (cglyph_t gly : groupdata)
-                s.add_glyph(gly);
-        return s;
-    }
-};
+formatted_string feature_list::format() const
+{
+    formatted_string s;
+    for (const vector<cglyph_t> &groupdata : data)
+        for (cglyph_t gly : groupdata)
+            s.add_glyph(gly);
+    return s;
+}
 
 #ifndef USE_TILE_LOCAL
 static void _draw_title(const coord_def& cpos, const feature_list& feats)
@@ -1302,3 +1316,5 @@ static cglyph_t _get_feat_glyph(const coord_def& gc)
     return g;
 }
 #endif
+
+feature_list::~feature_list() { }
