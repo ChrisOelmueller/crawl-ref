@@ -994,11 +994,7 @@ string monster_info::common_name(description_level_type desc) const
         && type != MONS_PILLAR_OF_SALT)
     {
         ASSERT(num_heads > 0);
-        if (num_heads < 11)
-            ss << number_in_words(num_heads);
-        else
-            ss << std::to_string(num_heads);
-
+        ss << number_in_words(num_heads, 11);
         ss << "-headed ";
     }
 

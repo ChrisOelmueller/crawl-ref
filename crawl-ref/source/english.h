@@ -24,7 +24,7 @@ string apostrophise_fixup(const string &msg);
 string conjugate_verb(const string &verb, bool plural);
 const char *decline_pronoun(gender_type gender, pronoun_type variant);
 
-string number_in_words(unsigned number);
+string number_in_words(unsigned number, unsigned threshold = 0);
 
 string article_a(const string &name, bool lowercase = true);
 

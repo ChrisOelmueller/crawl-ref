@@ -317,14 +317,14 @@ static string _number_in_words(unsigned num, unsigned period)
                                   : ""));
 }
 
-string number_in_words(unsigned num)
-{
-    return _number_in_words(num, 0);
-}
-
 static string _number_to_string(unsigned number, bool in_words)
 {
-    return in_words ? number_in_words(number) : to_string(number);
+    return in_words ? _number_in_words(number, 0) : to_string(number);
+}
+
+string number_in_words(unsigned num, unsigned threshold)
+{
+    return _number_to_string(num, (num < threshold));
 }
 
 // Naively prefix A/an to a noun.
