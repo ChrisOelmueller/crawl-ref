@@ -646,26 +646,38 @@ bool fill_status_info(int status, status_info* inf)
 static void _describe_hunger(status_info* inf)
 {
     const bool vamp = (you.species == SP_VAMPIRE);
+    const bool compact_hud = Options.compact_hud;
+    //const bool cramped_hud = Options.compact_hud_xs;
 
     switch (you.hunger_state)
     {
     case HS_ENGORGED:
+        if (compact_hud)
+            break;
         inf->light_colour = LIGHTGREEN;
         inf->light_text   = (vamp ? "Alive" : "Engorged");
         break;
     case HS_VERY_FULL:
+        if (compact_hud)
+            break;
         inf->light_colour = GREEN;
         inf->light_text   = "Very Full";
         break;
     case HS_FULL:
+        if (compact_hud)
+            break;
         inf->light_colour = GREEN;
         inf->light_text   = "Full";
         break;
     case HS_HUNGRY:
+        if (compact_hud)
+            break;
         inf->light_colour = YELLOW;
         inf->light_text   = (vamp ? "Thirsty" : "Hungry");
         break;
     case HS_VERY_HUNGRY:
+        if (compact_hud)
+            break;
         inf->light_colour = YELLOW;
         inf->light_text   = (vamp ? "Very Thirsty" : "Very Hungry");
         break;
