@@ -1547,12 +1547,12 @@ static void _print_qv(const int x = qv_pos_x, const int y = qv_pos_y)
         if (fire_warn_if_impossible(true))
         {
             col  = DARKGREY;
-            text = "Quiver unavailable";
+            text = HUD_CRAMPED ? "Unavailable" : "Quiver unavailable";
         }
         else
         {
             col  = LIGHTGREY;
-            text = "Nothing quivered";
+            text = HUD_CRAMPED ? "Empty quiver" : "Nothing quivered";
         }
     }
     CGOTOXY(x, y, GOTO_STAT);
