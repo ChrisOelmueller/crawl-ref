@@ -771,14 +771,11 @@ static void _print_stats_mp(const int x = mp_pos_x, const int y = mp_pos_y,
     // if HP: xx/yy   =====  if HP: xxx/yyy =====
     //  | MP: xx/yy   =====   | MP:  xx/yy  =====
     CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
     if (HUD_CRAMPED)
-        three_digits = you.max_magic_points < 10;
-        //three_digits = false;
+        three_digits = false;
     else
-    {
-        textcolour(HUD_CAPTION_COLOUR);
         CPRINTF(HUD_COMPACT ? "MP " : "MP: ");
-    }
     textcolour(mp_colour);
     CPRINTF(three_digits ? "%3d" : "%2d", you.magic_points);
     textcolour(HUD_CAPTION_COLOUR);
