@@ -1932,7 +1932,7 @@ static void _print_xl(const int x = xl_pos_x, const int y = xl_pos_y)
     else
     {
         textcolour(HUD_CAPTION_COLOUR);
-        CPRINTF(".%02d ", get_exp_progress());
+        CPRINTF(".%02d ", min(get_exp_progress(), 99));
     }
 }
 
