@@ -2802,7 +2802,7 @@ static string _god_asterisks()
         return "* :( *";
 
     if (you_worship(GOD_GOZAG))
-        return "$$$$$$";
+        return make_stringf("$%-5d", you.gold);
 
     if (you_worship(GOD_XOM))
     {
