@@ -293,7 +293,7 @@ static int _god_status_colour(int default_colour);
 // Column layout constants
 #define HUD_WIDTH crawl_view.hudsz.x
 #define FIRST_COL  1
-#define BAR_START (13 + (2*HUD_CRAMPED))
+#define BAR_START 13
 
 #define CLASSIC_A FIRST_COL
 #define CLASSIC_B 19
@@ -333,9 +333,9 @@ static int _god_status_colour(int default_colour);
 #define hp_pos_y (HUD_CRAMPED ? 2 : 3)
 #define hp_bar_y (HUD_CRAMPED ? 2 : 3)
 
-#define mp_pos_x (HUD_CRAMPED ? CRAMPED_B + 1 : CLASSIC_A)
-#define mp_pos_y (HUD_CRAMPED ? 2 : 4)
-#define mp_bar_y (HUD_CRAMPED ? 3 : 4)
+#define mp_pos_x (CLASSIC_A)
+#define mp_pos_y (hp_pos_y + 1)
+#define mp_bar_y (hp_bar_y + 1)
 
 #if TAG_MAJOR_VERSION == 34
 #define contam_pos_x mp_pos_x
@@ -380,17 +380,17 @@ static int _god_status_colour(int default_colour);
 #define piety_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
 #define piety_pos_y (HUD_CRAMPED ? xl_pos_y : place_pos_y)
 
-#define defenses_pos_x (HUD_CRAMPED ? CRAMPED_D : COMPACT_C)
-#define defenses_pos_y ((HUD_CRAMPED ? 5 : 7) + temp)
+#define defenses_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
+#define defenses_pos_y (ev_pos_y)
 
 #define hunger_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
-#define hunger_pos_y (HUD_CRAMPED ? 5 : defenses_pos_y)
+#define hunger_pos_y (HUD_CRAMPED ? 5+temp : defenses_pos_y)
 
 #define realtime_pos_x hunger_pos_x
 #define realtime_pos_y hunger_pos_y
 
-#define sid_pos_x realtime_pos_x
-#define sid_pos_y realtime_pos_y
+#define sid_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
+#define sid_pos_y (sh_pos_y)
 
 #define resists_pos_x sid_pos_x
 #define resists_pos_y sid_pos_y
@@ -398,8 +398,8 @@ static int _god_status_colour(int default_colour);
 #define stairs_pos_x resists_pos_x
 #define stairs_pos_y resists_pos_y
 
-#define fcrawl_pos_x resists_pos_x
-#define fcrawl_pos_y resists_pos_y
+#define fcrawl_pos_x piety_pos_x
+#define fcrawl_pos_y piety_pos_y
 
 #define gold_pos_x (HUD_COMPACT ? COMPACT_D : CLASSIC_A)
 #define gold_pos_y ((HUD_COMPACT ? 7 : 9) + temp)
@@ -772,10 +772,7 @@ static void _print_stats_mp(const int x = mp_pos_x, const int y = mp_pos_y,
     //  | MP: xx/yy   =====   | MP:  xx/yy  =====
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
-    if (HUD_CRAMPED)
-        three_digits = false;
-    else
-        CPRINTF(HUD_COMPACT ? "MP " : "MP: ");
+    CPRINTF(HUD_COMPACT ? "MP " : "MP: ");
     textcolour(mp_colour);
     CPRINTF(three_digits ? "%3d" : "%2d", you.magic_points);
     textcolour(HUD_CAPTION_COLOUR);
@@ -881,20 +878,15 @@ static void _print_stats_hp(const int x = hp_pos_x, const int y = hp_pos_y,
     bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
     // HP: xx/yy   =====  |  HP: xxx/yyy =====  |  HP:xxxx/yyyy=====
     CGOTOXY(x, y, GOTO_STAT);
-    if (Options.compact_hud_xs)
-        three_digits = false;
-    else
-    {
-        textcolour(HUD_CAPTION_COLOUR);
+    textcolour(HUD_CAPTION_COLOUR);
 #if TAG_MAJOR_VERSION == 34
-        if (you.species == SP_DJINNI)
-            CPRINTF(HUD_COMPACT ? "EP" : "EP:");
-        else
+    if (you.species == SP_DJINNI)
+        CPRINTF(HUD_COMPACT ? "EP" : "EP:");
+    else
 #endif
-        CPRINTF(HUD_COMPACT ? "HP" : "HP:");
-    }
+    CPRINTF(HUD_COMPACT ? "HP" : "HP:");
     textcolour(hp_colour);
-    CPRINTF(three_digits ? "%4d" : (HUD_CRAMPED && you.hp_max < 100) ? "%2d" : "%3d", you.hp);
+    CPRINTF(three_digits ? "%4d" : "%3d", you.hp);
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("/");
     // Indicate rot by coloring max hp (% screen shows exact rot amount)
@@ -997,18 +989,17 @@ static void _print_dex(const int x = dex_pos_x, const int y = dex_pos_y)
 
 static void _print_sid(const int x = sid_pos_x, const int y = sid_pos_y)
 {
+    you.redraw_stats.init(false);
     const colour_t str_colour = _get_stat_colour(STAT_STR, true);
     const colour_t int_colour = _get_stat_colour(STAT_INT, true);
     const colour_t dex_colour = _get_stat_colour(STAT_DEX, true);
     CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("SID ");
     textcolour(str_colour);
-    CPRINTF("%2d", you.stat(STAT_STR, false));
-    textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF(",");
+    CPRINTF("%2d ", you.stat(STAT_STR, false));
     textcolour(int_colour);
-    CPRINTF("%2d", you.stat(STAT_INT, false));
-    textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF(",");
+    CPRINTF("%2d ", you.stat(STAT_INT, false));
     textcolour(dex_colour);
     CPRINTF("%2d", you.stat(STAT_DEX, false));
 }
@@ -1256,19 +1247,24 @@ static void _print_resists(const int x = resists_pos_x, const int y = resists_po
 static void _print_defenses(const int x = defenses_pos_x,
                             const int y = defenses_pos_y)
 {
+    you.redraw_armour_class = false;
+    you.redraw_evasion      = false;
+    you.redraw_shield_class = false;
     const colour_t ac_colour = _ac_colour();
     const colour_t ev_colour = _ev_colour();
     const colour_t sh_colour = _sh_colour();
     const int sh = player_displayed_shield_class();
     CGOTOXY(x, y, GOTO_STAT);
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("Def ");
     textcolour(ac_colour);
     CPRINTF("%02d", you.armour_class());
     textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF("/");
+    CPRINTF("|");
     textcolour(ev_colour);
     CPRINTF("%02d", player_evasion());
     textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF("/");
+    CPRINTF("|");
     textcolour(sh_colour);
     if (sh)
         CPRINTF("%02d", player_displayed_shield_class());
@@ -1281,7 +1277,7 @@ static void _print_piety(const int x = piety_pos_x, const int y = piety_pos_y)
 
     if (you_worship(GOD_NO_GOD))
     {
-        _print_fcrawl(piety_pos_x, piety_pos_y);
+        _print_fcrawl();
         return;
     }
     CGOTOXY(x, y, GOTO_STAT);
@@ -2001,22 +1997,38 @@ void print_stats()
     if (you.redraw_temperature)
         _print_temperature();
 #endif
-    //if (you.redraw_armour_class || you.redraw_evasion || you.redraw_shield_class)
-    //    _print_defenses();
-    // For historic reasons, these two are still combined //// TODO
-    if (you.redraw_armour_class || you.redraw_shield_class)
-        _print_stats_sh();
-    if (you.redraw_armour_class)
-        _print_stats_ac();
-    if (you.redraw_evasion)
-        _print_stats_ev();
+    if (HUD_CRAMPED && (you.redraw_armour_class
+                        || you.redraw_evasion
+                        || you.redraw_shield_class))
+    {
+        _print_defenses();
+    }
+    else
+    {
+        // For historic reasons, these two are still combined //// TODO
+        if (you.redraw_armour_class || you.redraw_shield_class)
+            _print_stats_sh();
+        if (you.redraw_armour_class)
+            _print_stats_ac();
+        if (you.redraw_evasion)
+            _print_stats_ev();
+    }
 
-    if (you.redraw_stats[STAT_STR])
-        _print_str();
-    if (you.redraw_stats[STAT_INT])
-        _print_int();
-    if (you.redraw_stats[STAT_DEX])
-        _print_dex();
+    if (HUD_CRAMPED && (you.redraw_stats[STAT_STR]
+                        || you.redraw_stats[STAT_INT]
+                        || you.redraw_stats[STAT_DEX]))
+    {
+        _print_sid();
+    }
+    else
+    {
+        if (you.redraw_stats[STAT_STR])
+            _print_str();
+        if (you.redraw_stats[STAT_INT])
+            _print_int();
+        if (you.redraw_stats[STAT_DEX])
+            _print_dex();
+    }
     you.redraw_stats.init(false);
 
     if (you.redraw_experience)
@@ -2032,9 +2044,6 @@ void print_stats()
         _print_piety();
 
     _print_hunger();
-    //_print_defenses();
-    //_print_fcrawl();
-    //_print_sid();
     //_print_realtime();
     //_print_resists();
     //_print_stairs();
