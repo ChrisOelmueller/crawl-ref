@@ -1828,7 +1828,7 @@ static void _redraw_title(const string &your_name, const string &job_name,
             in_len += 1; // flags being placed 1 col from border: *W* |
         if (HUD_CRAMPED)
             in_len += 5; // "[MiFi] "
-        if (HUD_CRAMPED || in_len > HUD_WIDTH)
+        if (in_len > HUD_WIDTH)
         {
             // What we're getting back from replacing " the " with ", "
             in_len -= 3;
