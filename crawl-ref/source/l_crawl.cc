@@ -1146,6 +1146,8 @@ LUAFN(_crawl_redraw_stats)
     you.redraw_armour_class = true;
     you.redraw_evasion      = true;
     you.redraw_shield_class = true;
+    you.redraw_place        = true;
+    you.redraw_gold_zp      = true;
     you.redraw_status_flags = 0xFFFFFFFF;
 
     print_stats();

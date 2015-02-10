@@ -37,7 +37,6 @@ void update_message_status();
 void update_turn_count();
 
 void print_stats();
-void print_stats_level();
 void draw_border();
 
 void set_redraw_status(uint64_t flags);

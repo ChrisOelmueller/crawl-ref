@@ -1857,6 +1857,8 @@ bool transform(int pow, transformation_type which_trans, bool involuntary,
     you.redraw_armour_class = true;
     you.redraw_evasion      = true;
     you.redraw_shield_class = true;
+    you.redraw_place        = true;
+    you.redraw_gold_zp      = true;
     you.redraw_quiver       = true;
     you.wield_change        = true;
     if (form_changed_physiology(which_trans))

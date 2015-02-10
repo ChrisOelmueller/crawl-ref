@@ -5832,6 +5832,8 @@ void player::init()
     redraw_evasion      = false;
     redraw_shield_class = false;
     redraw_title        = false;
+    redraw_place        = false;
+    redraw_gold_zp      = false;
 
     flash_colour        = BLACK;
     flash_where         = nullptr;

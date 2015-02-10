@@ -107,6 +107,8 @@ static void _redraw_all()
     you.redraw_evasion      = true;
     you.redraw_shield_class = true;
     you.redraw_experience   = true;
+    you.redraw_place        = true;
+    you.redraw_gold_zp      = true;
 
     you.redraw_status_flags =
         REDRAW_LINE_1_MASK | REDRAW_LINE_2_MASK | REDRAW_LINE_3_MASK;

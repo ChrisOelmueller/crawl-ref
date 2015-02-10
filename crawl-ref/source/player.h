@@ -373,6 +373,9 @@ public:
   bool redraw_evasion;
   bool redraw_shield_class;
 
+  bool redraw_place;
+  bool redraw_gold_zp;
+
   colour_t flash_colour;
   targetter *flash_where;
 

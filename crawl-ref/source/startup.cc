@@ -303,6 +303,8 @@ static void _post_init(bool newc)
     if (you.species == SP_LAVA_ORC)
         you.redraw_temperature = true;
 #endif
+    you.redraw_place        = true;
+    you.redraw_gold_zp      = true;
     you.redraw_quiver       = true;
     you.wield_change        = true;
 
