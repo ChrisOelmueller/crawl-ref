@@ -356,7 +356,6 @@ static int _god_status_colour(int default_colour);
 #define sh_pos_x (CLASSIC_A)
 #define sh_pos_y (ev_pos_y + 1)
 
-
 #define stat_pos_x (HUD_CRAMPED ? CRAMPED_B : HUD_COMPACT ? COMPACT_B : CLASSIC_B)
 #define str_pos_x (stat_pos_x)
 #define int_pos_x (stat_pos_x)
@@ -366,57 +365,60 @@ static int _god_status_colour(int default_colour);
 #define int_pos_y ((HUD_CRAMPED ? 4 : 6) + temp)
 #define dex_pos_y ((HUD_CRAMPED ? 5 : 7) + temp)
 
-#define place_pos_x (HUD_CRAMPED ? CRAMPED_D : COMPACT_D)
-#define place_pos_y ((HUD_CRAMPED ? 4 : 6) + temp)
-
-#define xl_pos_x (HUD_CRAMPED ? CRAMPED_C : HUD_COMPACT ? COMPACT_C : CLASSIC_A)
-#define xl_pos_y ((HUD_CRAMPED ? 4 : HUD_COMPACT ? 6 : 8) + temp)
-
 #define turn_pos_x (HUD_CRAMPED ? CRAMPED_D : HUD_COMPACT ? COMPACT_D : CLASSIC_B)
 #define turn_pos_y ((HUD_CRAMPED ? 5 : HUD_COMPACT ? 5 : 9) + temp)
 #define last_pos_x (HUD_CRAMPED ? CRAMPED_C : HUD_COMPACT ? COMPACT_C : CLASSIC_C)
 #define last_pos_y (turn_pos_y)
 
-#define piety_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
-#define piety_pos_y (HUD_CRAMPED ? xl_pos_y : place_pos_y)
+#define xl_pos_x (HUD_CRAMPED ? CRAMPED_C : HUD_COMPACT ? COMPACT_C : CLASSIC_A)
+#define xl_pos_y ((HUD_CRAMPED ? 4 : HUD_COMPACT ? 6 : 8) + temp)
 
-#define defenses_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
-#define defenses_pos_y (ev_pos_y)
+#define custom_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
+#define custom_pos_y (xl_pos_y + 1)
 
-#define hunger_pos_x (HUD_CRAMPED ? CRAMPED_E : COMPACT_C)
-#define hunger_pos_y (HUD_CRAMPED ? 5+temp : defenses_pos_y)
-
-#define realtime_pos_x hunger_pos_x
-#define realtime_pos_y hunger_pos_y
-
-#define sid_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
-#define sid_pos_y (sh_pos_y)
-
-#define resists_pos_x sid_pos_x
-#define resists_pos_y sid_pos_y
-
-#define stairs_pos_x resists_pos_x
-#define stairs_pos_y resists_pos_y
-
-#define fcrawl_pos_x piety_pos_x
-#define fcrawl_pos_y piety_pos_y
+#define place_pos_x (HUD_CRAMPED ? CRAMPED_D : HUD_COMPACT ? COMPACT_D : CLASSIC_B)
+#define place_pos_y ((HUD_CRAMPED ? 4 : HUD_COMPACT ? 6 : 8) + temp)
 
 #define gold_pos_x (HUD_COMPACT ? COMPACT_D : CLASSIC_A)
 #define gold_pos_y ((HUD_COMPACT ? 7 : 9) + temp)
 
-#define zp_pos_x (HUD_COMPACT ? COMPACT_D : CLASSIC_C)
-#define zp_pos_y ((HUD_COMPACT ? 7 :  8) + temp)
+#define piety_pos_x (custom_pos_x)
+#define piety_pos_y (custom_pos_y - 1)
+
+#define defenses_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
+#define defenses_pos_y (ev_pos_y)
+
+#define hunger_pos_x (custom_pos_x)
+#define hunger_pos_y (custom_pos_y)
+
+#define realtime_pos_x (custom_pos_x)
+#define realtime_pos_y (custom_pos_y)
+
+#define sid_pos_x (HUD_CRAMPED ? CRAMPED_A : COMPACT_C)
+#define sid_pos_y (sh_pos_y)
+
+#define resists_pos_x (custom_pos_x)
+#define resists_pos_y (custom_pos_y)
+
+#define stairs_pos_x (custom_pos_x)
+#define stairs_pos_y (custom_pos_y)
+
+#define fcrawl_pos_x (piety_pos_x)
+#define fcrawl_pos_y (piety_pos_y)
+
+#define zp_pos_x (HUD_CRAMPED ? place_pos_x : HUD_COMPACT ? COMPACT_D : CLASSIC_C)
+#define zp_pos_y (HUD_CRAMPED ? place_pos_y : HUD_COMPACT ? gold_pos_y : place_pos_y)
 
 #define wp_pos_x (CLASSIC_A)
 #define wp_pos_y ((HUD_CRAMPED ? 6 : HUD_COMPACT ? 8 : 10) + temp)
 #define qv_pos_x (HUD_CRAMPED ? CRAMPED_D : CLASSIC_A)
-#define qv_pos_y (wp_pos_y + (you.species != SP_FELID) - HUD_CRAMPED)
+#define qv_pos_y (wp_pos_y + 1 - (you.species == SP_FELID || HUD_CRAMPED))
 
 #define skills_pos_x (CLASSIC_A)
-#define skills_pos_y (qv_pos_y + 1)
+#define skills_pos_y (qv_pos_y + Options.show_skill_bar)
 
 #define status_pos_x (CLASSIC_A)
-#define status_pos_y (skills_pos_y + Options.show_skill_bar)
+#define status_pos_y (skills_pos_y + 1)
 
 // Colour for values, which come after captions.
 static const short HUD_VALUE_COLOUR = LIGHTGREY;
@@ -691,13 +693,7 @@ void update_turn_count()
     if (HUD_COMPACT)
     {
         CGOTOXY(last_pos_x, last_pos_y, GOTO_STAT);
-        //CPRINTF("LastTurn");
-        //CGOTOXY(last_pos_x, last_pos_y+1, GOTO_STAT);
-        // ⌛ // Basil
-        // "@ "
-        // ""
-        //CPRINTF("⌛ "); // CPRINTF("dt"); // mauris // ⌛ // Basil // @
-        CPRINTF("Δt"); // CPRINTF("dt"); // mauris // ⌛ // Basil // @
+        CPRINTF("Δt"); // CPRINTF("dt"); // ⌛ // "@ "
         textcolour(HUD_VALUE_COLOUR);
         string last_turn = make_stringf("%.1f",
             (you.elapsed_time - you.elapsed_time_at_last_input) / 10.0);
@@ -705,7 +701,6 @@ void update_turn_count()
 
         textcolour(HUD_CAPTION_COLOUR);
         CGOTOXY(turn_pos_x, turn_pos_y, GOTO_STAT);
-        //CPRINTF(HUD_CRAMPED ? "Turns" : "Turns");
         CPRINTF(HUD_CRAMPED ? "T" : "Turns"); // "⌚" clock
         textcolour(HUD_VALUE_COLOUR);
         CPRINTF(" %d", you.num_turns);
@@ -767,7 +762,8 @@ static void _print_stats_mp(const int x = mp_pos_x, const int y = mp_pos_y,
                 mp_colour = entry.second;
     }
 
-    bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
+    const bool three_digits =
+        HUD_CRAMPED || you.hp_max > 99 || you.max_magic_points > 99;
     // if HP: xx/yy   =====  if HP: xxx/yyy =====
     //  | MP: xx/yy   =====   | MP:  xx/yy  =====
     CGOTOXY(x, y, GOTO_STAT);
@@ -779,7 +775,6 @@ static void _print_stats_mp(const int x = mp_pos_x, const int y = mp_pos_y,
     CPRINTF("/");
     if (boosted)
         textcolour(LIGHTBLUE);
-    //CPRINTF("%-3d", you.max_magic_points);
     CPRINTF("%d", you.max_magic_points);
     textcolour(HUD_VALUE_COLOUR);
 
@@ -875,8 +870,10 @@ static void _print_stats_hp(const int x = hp_pos_x, const int y = hp_pos_y,
                 hp_colour = entry.second;
     }
 
-    bool three_digits = (you.hp_max > 99 || you.max_magic_points > 99);
-    // HP: xx/yy   =====  |  HP: xxx/yyy =====  |  HP:xxxx/yyyy=====
+    const bool three_digits =
+        HUD_CRAMPED || you.hp_max > 99 || you.max_magic_points > 99;
+    // if HP: xx/yy   =====  if HP: xxx/yyy =====  if HP:xxxx/yyyy=====
+    //  | MP: xx/yy   =====   | MP:  xx/yy  =====   | MP: xxx/yyy =====
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
 #if TAG_MAJOR_VERSION == 34
@@ -997,9 +994,13 @@ static void _print_sid(const int x = sid_pos_x, const int y = sid_pos_y)
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF("SID ");
     textcolour(str_colour);
-    CPRINTF("%2d ", you.stat(STAT_STR, false));
+    CPRINTF("%2d", you.stat(STAT_STR, false));
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("|");
     textcolour(int_colour);
-    CPRINTF("%2d ", you.stat(STAT_INT, false));
+    CPRINTF("%2d", you.stat(STAT_INT, false));
+    textcolour(HUD_CAPTION_COLOUR);
+    CPRINTF("|");
     textcolour(dex_colour);
     CPRINTF("%2d", you.stat(STAT_DEX, false));
 }
@@ -1091,9 +1092,12 @@ static void _print_fcrawl(const int x = fcrawl_pos_x, const int y = fcrawl_pos_y
     CPRINTF("~fcrawl~");
 }
 
-static void _resists_helper(const colour_t char_colour, const int resist)
+static void _resists_helper(const colour_t char_colour, const int resist,
+                            const bool binary_resist=false)
 {
     textcolour(char_colour);
+    if (!binary_resist)
+        textbackground(COLFLAG_REVERSE);
     if (resist < 0)
         CPRINTF("x"); // or - ?
     else if (resist == 0)
@@ -1112,6 +1116,7 @@ static void _resists_helper(const colour_t char_colour, const int resist)
         CPRINTF("!");
     else // TODO
         CPRINTF("?");
+    textbackground(BLACK);
 }
 
 static void _print_stairs(const int x = stairs_pos_x, const int y = stairs_pos_y)
@@ -1178,9 +1183,9 @@ static void _print_stairs(const int x = stairs_pos_x, const int y = stairs_pos_y
         exclusion = get_cell_glyph(exc.first).ch;
         break;
     }
-    // Make floor tiles with no monster or item on them more visible
-    if (exclusion == ".")
-        textcolour(LIGHTRED);
+    //// Make floor tiles with no monster or item on them more visible
+    //if (exclusion == ".")
+    //    textcolour(LIGHTRED);
 
     CPRINTF(exclusion.c_str());
 
@@ -1231,15 +1236,15 @@ static void _print_resists(const int x = resists_pos_x, const int y = resists_po
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_CAPTION_COLOUR);
 
-    _resists_helper(LIGHTRED, player_res_fire(calc_unid));
-    _resists_helper(LIGHTBLUE, player_res_cold(calc_unid));
+    _resists_helper(RED, player_res_fire(calc_unid));
+    _resists_helper(BLUE, player_res_cold(calc_unid));
     _resists_helper(DARKGREY, player_prot_life(calc_unid));
-    _resists_helper(LIGHTGREEN, player_res_poison(calc_unid));
-    _resists_helper(WHITE, player_res_electricity(calc_unid));
-    _resists_helper(YELLOW, you.res_corr(calc_unid));
+    _resists_helper(GREEN, player_res_poison(calc_unid));
+    _resists_helper(WHITE, player_res_electricity(calc_unid), true);
+    _resists_helper(YELLOW, you.res_corr(calc_unid), true);
     _resists_helper(LIGHTMAGENTA,
         (you.rmut_from_item(calc_unid)
-         || player_mutation_level(MUT_MUTATION_RESISTANCE) == 3));
+         || player_mutation_level(MUT_MUTATION_RESISTANCE) == 3), true);
     _resists_helper(MAGENTA, player_res_magic(calc_unid) / MR_PIP);
 }
 
@@ -1287,7 +1292,11 @@ static void _print_piety(const int x = piety_pos_x, const int y = piety_pos_y)
 
     textcolour(_god_status_colour(god_colour(you.religion)));
 
-    CPRINTF("%c %s", godkey, _god_asterisks().c_str());
+    CPRINTF("%c", godkey);
+    // Slight hack that is probably never going to be relevant.
+    if (!you_worship(GOD_GOZAG) || you.gold <= 99999)
+        CPRINTF(" ");
+    CPRINTF(_god_asterisks().c_str());
 }
 
 static void _print_rot(const int x, const int y)
@@ -1364,7 +1373,7 @@ static void _print_realtime(const int x = realtime_pos_x,
 {
     CGOTOXY(x, y, GOTO_STAT);
     textcolour(HUD_VALUE_COLOUR);
-    CPRINTF(make_time_string(you.real_time, true).c_str());
+    CPRINTF(chop_string(make_time_string(you.real_time, true), 8).c_str());
 }
 
 /**
@@ -1432,8 +1441,8 @@ static void _print_stats_skills(const int x = skills_pos_x,
     }
 
     CGOTOXY(x, y, GOTO_STAT);
-    const bool long_names_fit = long_len <= 42; // HUD_WIDTH
-    const bool shorten_ellipsis = short_len > 39; // HUD_WIDTH - 3
+    const bool long_names_fit = long_len <= HUD_WIDTH;
+    const bool shorten_ellipsis = (short_len + 3) > HUD_WIDTH;
 
     for (unsigned int i = 0; i < trained_skills.size(); ++i)
     {
@@ -1466,7 +1475,7 @@ static void _print_stats_skills(const int x = skills_pos_x,
 
         textcolour(HUD_VALUE_COLOUR);
         CPRINTF("%.1f  ", (double_t) you.skill(trained_skills[i], 10) / 10.0);
-        clear_to_end_of_line();
+        //clear_to_end_of_line();
     }
 }
 
@@ -1738,6 +1747,8 @@ static bool _need_stats_printed()
            || you.redraw_stats[STAT_INT]
            || you.redraw_stats[STAT_DEX]
            || you.redraw_experience
+           || you.redraw_place
+           || you.redraw_gold_zp
            || you.wield_change
            || you.redraw_quiver;
 }
@@ -1889,24 +1900,25 @@ static string _level_description_string_hud()
 
 static void _print_place(const int x = place_pos_x, const int y = place_pos_y)
 {
-    //you.redraw_experience = false;
+    if (crawl_state.game_is_zotdef())
+        return;
+    you.redraw_place = false;
     CGOTOXY(x, y, GOTO_STAT);
-
-    if (HUD_COMPACT && !crawl_state.game_is_zotdef())
-    {
-        textcolour(HUD_CAPTION_COLOUR);
-        // align w/actions (hudswappy): usually single-digit turn
-        //CPRINTF("In  ");
-        // This looks less bad while also eathing three chars
-        //CPRINTF("Lvl"); // but is bad since XL</>Lvl in same column
-        //CPRINTF("Plog "); // Site Camp  Location*
-        if (!HUD_CRAMPED)
-            CPRINTF("Place "); // Site Camp  Location*
-
-        textcolour(HUD_VALUE_COLOUR);
-        // 8: "Vaults:3"
-        CPRINTF("%-8s", _level_description_string_hud().c_str());
-    }
+    textcolour(HUD_CAPTION_COLOUR);
+    // align w/actions (hudswappy): usually single-digit turn
+    //CPRINTF("In  ");
+    // This looks less bad while also eathing three chars
+    //CPRINTF("Lvl"); // but is bad since XL</>Lvl in same column
+    //CPRINTF("Plog "); // Site Camp  Location*
+    // Site Camp  Location*
+    CPRINTF(HUD_CRAMPED ? "" : HUD_COMPACT ? "Place " : "Place: ");
+#ifdef DEBUG_DIAGNOSTICS
+    if (!HUD_COMPACT)
+        CPRINTF("(%d) ", env.absdepth0 + 1);
+#endif
+    textcolour(HUD_VALUE_COLOUR);
+    // 8: "Vaults:3"
+    CPRINTF("%-8s", _level_description_string_hud().c_str());
 }
 
 static void _print_xl(const int x = xl_pos_x, const int y = xl_pos_y)
@@ -1938,7 +1950,9 @@ static void _print_zp(const int x = zp_pos_x, const int y = zp_pos_y)
     textcolour(HUD_CAPTION_COLOUR);
     CPRINTF(HUD_COMPACT ? "ZP" : "ZP:");
     textcolour(HUD_VALUE_COLOUR);
-    CPRINTF(" %d", you.zot_points);
+    if (you.zot_points <= 999999)
+        CPRINTF(" ");
+    CPRINTF("%d", you.zot_points);
 }
 
 static void _print_gold(const bool terse=false,
@@ -2034,21 +2048,29 @@ void print_stats()
     if (you.redraw_experience)
         _print_xl();
 
-    _print_place();
+    if (you.redraw_place)
+        _print_place();
 
-    // Gold
-    if (!HUD_CRAMPED)
-        _print_gold();
+    // Gold (ZP instead in HUD_CRAMPED)
+    ////TODO replace hunger bar instead of place?
+    if (HUD_COMPACT)
+        _print_zp(place_pos_x, place_pos_y);
+    else
+        _print_zp();
 
     if (HUD_CRAMPED)
         _print_piety();
+    else
+        _print_gold();
 
-    _print_hunger();
-    //_print_realtime();
-    //_print_resists();
-    //_print_stairs();
-
-    _print_zp();
+    if (HUD_COMPACT)
+        _print_hunger();
+    else if (Options.show_skill_bar)
+    {
+        _print_realtime(35,12);
+        _print_resists( 15,12);
+        _print_stairs(  25,12);
+    }
 
     if (you.wield_change)
     {
@@ -2093,55 +2115,12 @@ void print_stats()
     //_print_fcrawl(35, 6);
     //_print_fcrawl(35, 7);
 
-    //_print_fcrawl( 1, 5);
-    //_print_fcrawl( 1, 6);
-    //_print_fcrawl( 1, 7);
-    //_print_fcrawl( 8, 5);
-    //_print_fcrawl( 8, 6);
-    //_print_fcrawl( 8, 7);
-    //_print_fcrawl(15, 5);
-    //_print_fcrawl(15, 6);
-    //_print_fcrawl(15, 7);
-    //_print_fcrawl(22, 5);
-    //_print_fcrawl(22, 6);
-    //_print_fcrawl(22, 7);
-    //_print_fcrawl(29, 5);
-    //_print_fcrawl(29, 6);
-    //_print_fcrawl(29, 7);
-    //_print_fcrawl(36, 5);
-    //_print_fcrawl(36, 6);
-    //_print_fcrawl(36, 7);
-
 #ifdef USE_TILE_LOCAL
     if (has_changed)
         update_screen();
 #else
     update_screen();
 #endif
-}
-
-void print_stats_level()
-{
-    if (HUD_COMPACT)
-    {
-        print_stats();
-        return;
-    }
-    int ypos = 8;
-#if TAG_MAJOR_VERSION == 34
-    if (you.species == SP_LAVA_ORC)
-        ypos++;
-#endif
-    cgotoxy(CLASSIC_B, ypos, GOTO_STAT);
-    textcolour(HUD_CAPTION_COLOUR);
-    CPRINTF("Place: ");
-
-    textcolour(HUD_VALUE_COLOUR);
-#ifdef DEBUG_DIAGNOSTICS
-    CPRINTF("(%d) ", env.absdepth0 + 1);
-#endif
-    CPRINTF("%s", _level_description_string_hud().c_str());
-    clear_to_end_of_line();
 }
 
 void draw_border()
@@ -2216,8 +2195,6 @@ void redraw_screen()
 
     bool note_status = notes_are_active();
     activate_notes(false);
-    if (!HUD_COMPACT)
-        print_stats_level();
 #ifdef DGL_SIMPLE_MESSAGING
     update_message_status();
 #endif
