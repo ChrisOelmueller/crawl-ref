@@ -1854,9 +1854,10 @@ bool transform(int pow, transformation_type which_trans, bool involuntary,
     }
 
     // All checks done, transformation will take place now.
-    you.redraw_quiver       = true;
-    you.redraw_evasion      = true;
     you.redraw_armour_class = true;
+    you.redraw_evasion      = true;
+    you.redraw_shield_class = true;
+    you.redraw_quiver       = true;
     you.wield_change        = true;
     if (form_changed_physiology(which_trans))
         merfolk_stop_swimming();
@@ -2064,9 +2065,10 @@ void untransform(bool skip_move)
 {
     const flight_type old_flight = you.flight_mode();
 
-    you.redraw_quiver       = true;
-    you.redraw_evasion      = true;
     you.redraw_armour_class = true;
+    you.redraw_evasion      = true;
+    you.redraw_shield_class = true;
+    you.redraw_quiver       = true;
     you.wield_change        = true;
     if (you.props.exists(TRANSFORM_POW_KEY))
         you.props.erase(TRANSFORM_POW_KEY);

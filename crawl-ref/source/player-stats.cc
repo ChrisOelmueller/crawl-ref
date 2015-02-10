@@ -658,16 +658,18 @@ static void _handle_stat_change(stat_type stat, bool see_source)
     switch (stat)
     {
     case STAT_STR:
-        you.redraw_armour_class = true; // includes shields
+        you.redraw_armour_class = true;
         you.redraw_evasion = true; // Might reduce EV penalty
+        you.redraw_shield_class = true;
         break;
 
     case STAT_INT:
         break;
 
     case STAT_DEX:
+        you.redraw_armour_class = true;
         you.redraw_evasion = true;
-        you.redraw_armour_class = true; // includes shields
+        you.redraw_shield_class = true;
         break;
 
     default:

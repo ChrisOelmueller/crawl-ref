@@ -2668,8 +2668,9 @@ static spret_type _do_ability(const ability_def& abil, bool fail)
 
         you.increase_duration(DUR_HEROISM,
             35 + random2(you.skill(SK_INVOCATIONS, 8)), 80);
-        you.redraw_evasion      = true;
         you.redraw_armour_class = true;
+        you.redraw_evasion      = true;
+        you.redraw_shield_class = true;
         break;
 
     case ABIL_OKAWARU_FINESSE:

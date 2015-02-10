@@ -1250,7 +1250,7 @@ struct disable_check
     ~disable_check()
     {
         if (you.incapacitated() != was_disabled)
-            you.redraw_armour_class = true;
+            you.redraw_shield_class = true;
     }
 
     bool was_disabled;

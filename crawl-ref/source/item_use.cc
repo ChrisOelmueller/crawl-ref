@@ -2276,7 +2276,10 @@ static int _handle_enchant_armour(bool alreadyknown, const string &pre_msg)
         bool result = enchant_armour(ac_change, false, arm);
 
         if (ac_change)
+        {
             you.redraw_armour_class = true;
+            you.redraw_shield_class = true;
+        }
 
         return result ? 1 : 0;
     }

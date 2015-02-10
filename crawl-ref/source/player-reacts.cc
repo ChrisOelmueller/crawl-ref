@@ -580,7 +580,7 @@ static void _decrement_durations()
 
         if (you.duration[DUR_DIVINE_SHIELD] == 1 && !one_chance_in(3))
         {
-            you.redraw_armour_class = true;
+            you.redraw_shield_class = true;
             if (--you.attribute[ATTR_DIVINE_SHIELD] == 0)
             {
                 you.duration[DUR_DIVINE_SHIELD] = 0;
@@ -672,13 +672,13 @@ static void _decrement_durations()
     {
         if (you.props.exists(CONDENSATION_SHIELD_KEY))
             you.props.erase(CONDENSATION_SHIELD_KEY);
-        you.redraw_armour_class = true;
+        you.redraw_shield_class = true;
     }
 
     if (_decrement_a_duration(DUR_MAGIC_SHIELD, delay,
                               "Your magical shield disappears."))
     {
-        you.redraw_armour_class = true;
+        you.redraw_shield_class = true;
     }
 
     if (_decrement_a_duration(DUR_STONESKIN, delay, "Your skin feels tender."))
@@ -736,8 +736,9 @@ static void _decrement_durations()
     if (_decrement_a_duration(DUR_HEROISM, delay,
                               "You feel like a meek peon again."))
     {
-        you.redraw_evasion      = true;
         you.redraw_armour_class = true;
+        you.redraw_evasion      = true;
+        you.redraw_shield_class = true;
     }
 
     _decrement_a_duration(DUR_FINESSE, delay,

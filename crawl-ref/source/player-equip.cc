@@ -940,6 +940,7 @@ static void _equip_armour_effect(item_def& arm, bool unmeld,
 
     you.redraw_armour_class = true;
     you.redraw_evasion = true;
+    you.redraw_shield_class = true;
 }
 
 static void _unequip_armour_effect(item_def& item, bool meld,
@@ -947,6 +948,7 @@ static void _unequip_armour_effect(item_def& item, bool meld,
 {
     you.redraw_armour_class = true;
     you.redraw_evasion = true;
+    you.redraw_shield_class = true;
 
     switch (get_armour_ego_type(item))
     {

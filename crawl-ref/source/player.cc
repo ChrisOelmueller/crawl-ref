@@ -2853,9 +2853,10 @@ void gain_exp(unsigned int exp_gained, unsigned int* actual_gain)
         dprf("Lost %d of %d draining points", loss, you.attribute[ATTR_XP_DRAIN]);
 
         you.attribute[ATTR_XP_DRAIN] -= loss;
-        // Regaining skills may affect AC/EV.
+        // Regaining skills may affect AC/EV/SH.
         you.redraw_armour_class = true;
         you.redraw_evasion = true;
+        you.redraw_shield_class = false;
         if (you.attribute[ATTR_XP_DRAIN] <= 0)
         {
             you.attribute[ATTR_XP_DRAIN] = 0;
@@ -5829,6 +5830,7 @@ void player::init()
     redraw_experience   = false;
     redraw_armour_class = false;
     redraw_evasion      = false;
+    redraw_shield_class = false;
     redraw_title        = false;
 
     flash_colour        = BLACK;
@@ -9075,4 +9077,5 @@ void player::maybe_degrade_bone_armour(int mult)
         mpr("The last of your corpse armour falls away.");
 
     redraw_armour_class = true;
+    redraw_shield_class = true;
 }

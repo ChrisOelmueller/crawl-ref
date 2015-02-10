@@ -322,6 +322,7 @@ void redraw_skill(skill_type exsk, skill_type old_best_skill)
         || exsk == SK_EARTH_MAGIC || you.duration[DUR_TRANSFORMATION] > 0)
     {
         you.redraw_armour_class = true;
+        you.redraw_shield_class = true;
     }
 
     // Recalculate this skill's order for tie breaking skills

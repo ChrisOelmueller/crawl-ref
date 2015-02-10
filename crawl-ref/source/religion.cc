@@ -1143,7 +1143,7 @@ void dec_penance(god_type god, int val)
                      && you.piety >= piety_breakpoint(0))
             {
                 mprf(MSGCH_GOD, "A storm instantly forms around you!");
-                you.redraw_armour_class = true; // also handles shields
+                you.redraw_shield_class = true;
             }
             // When you've worked through all your penance, you get
             // another chance to make hostile slimes strict neutral.
@@ -1288,7 +1288,7 @@ static void _inc_penance(god_type god, int val)
             if (you.piety >= piety_breakpoint(0))
             {
                 mprf(MSGCH_GOD, god, "The storm surrounding you dissipates.");
-                you.redraw_armour_class = true;
+                you.redraw_shield_class = true;
             }
             if (you.duration[DUR_QAZLAL_FIRE_RES])
             {
@@ -2466,7 +2466,7 @@ static void _gain_piety_point()
     if (you_worship(GOD_QAZLAL)
         && qazlal_sh_boost(old_piety) != qazlal_sh_boost())
     {
-        you.redraw_armour_class = true;
+        you.redraw_shield_class = true;
     }
 
     if (you_worship(GOD_SHINING_ONE) || you_worship(GOD_DITHMENOS))
@@ -2684,7 +2684,7 @@ void lose_piety(int pgn)
     if (you_worship(GOD_QAZLAL)
         && qazlal_sh_boost(old_piety) != qazlal_sh_boost())
     {
-        you.redraw_armour_class = true;
+        you.redraw_shield_class = true;
     }
 
     if (you_worship(GOD_SHINING_ONE) || you_worship(GOD_DITHMENOS))
@@ -2984,7 +2984,7 @@ void excommunication(god_type new_god, bool immediate)
         if (old_piety >= piety_breakpoint(0))
         {
             mprf(MSGCH_GOD, old_god, "Your storm instantly dissipates.");
-            you.redraw_armour_class = true;
+            you.redraw_shield_class = true;
         }
         if (you.duration[DUR_QAZLAL_FIRE_RES])
         {

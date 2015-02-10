@@ -210,6 +210,7 @@ spret_type corpse_armour(int pow, bool fail)
 
     you.attribute[ATTR_BONE_ARMOUR] += harvested;
     you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 
     return SPRET_SUCCESS;
 }

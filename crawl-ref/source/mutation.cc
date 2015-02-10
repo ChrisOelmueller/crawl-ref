@@ -1683,6 +1683,14 @@ bool mutate(mutation_type which_mutation, const string &reason, bool failMsg,
             calc_mp();
             break;
 
+        case MUT_ICY_BLUE_SCALES:
+        case MUT_MOLTEN_SCALES:
+            you.redraw_evasion = true;
+            break;
+        case MUT_LARGE_BONE_PLATES:
+            you.redraw_shield_class = true;
+            break;
+
         case MUT_PASSIVE_MAPPING:
             add_daction(DACT_REAUTOMAP);
             break;
@@ -1793,6 +1801,14 @@ static bool _delete_single_mutation_level(mutation_type mutat,
     case MUT_WEAK:   case MUT_CLUMSY: case MUT_DOPEY:
         mprf(MSGCH_MUTATION, "You feel %s.", _stat_mut_desc(mutat, false));
         lose_msg = false;
+        break;
+
+    case MUT_ICY_BLUE_SCALES:
+    case MUT_MOLTEN_SCALES:
+        you.redraw_evasion = true;
+        break;
+    case MUT_LARGE_BONE_PLATES:
+        you.redraw_shield_class = true;
         break;
 
     case MUT_BREATHE_POISON:

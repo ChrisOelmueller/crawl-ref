@@ -1209,7 +1209,7 @@ void tso_divine_shield()
     else
         mpr("Your divine shield is renewed.");
 
-    you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 
     // duration of complete shield bonus from 35 to 80 turns
     you.set_duration(DUR_DIVINE_SHIELD,
@@ -1218,7 +1218,7 @@ void tso_divine_shield()
     // affects size of SH bonus, decreases near end of duration
     you.attribute[ATTR_DIVINE_SHIELD] = 3 + you.skill_rdiv(SK_INVOCATIONS, 1, 5);
 
-    you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 }
 
 void tso_remove_divine_shield()
@@ -1226,7 +1226,7 @@ void tso_remove_divine_shield()
     mprf(MSGCH_DURATION, "Your divine shield disappears!");
     you.duration[DUR_DIVINE_SHIELD] = 0;
     you.attribute[ATTR_DIVINE_SHIELD] = 0;
-    you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 }
 
 void elyvilon_purification()

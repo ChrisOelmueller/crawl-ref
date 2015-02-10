@@ -448,9 +448,10 @@ bool drain_player(int power, bool announce_full, bool ignore_protection)
         xom_is_stimulated(15);
 
         you.attribute[ATTR_XP_DRAIN] += power;
-        // Losing skills may affect AC/EV.
+        // Losing skills may affect AC/EV/SH.
         you.redraw_armour_class = true;
         you.redraw_evasion = true;
+        you.redraw_shield_class = true;
 
         dprf("Drained by %d points (%d total)", power, you.attribute[ATTR_XP_DRAIN]);
 

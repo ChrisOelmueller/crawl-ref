@@ -387,7 +387,7 @@ void remove_condensation_shield()
 {
     mprf(MSGCH_DURATION, "Your icy shield evaporates.");
     you.duration[DUR_CONDENSATION_SHIELD] = 0;
-    you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 }
 
 spret_type cast_condensation_shield(int pow, bool fail)
@@ -412,7 +412,7 @@ spret_type cast_condensation_shield(int pow, bool fail)
         mpr("A crackling disc of dense vapour forms in the air!");
     you.increase_duration(DUR_CONDENSATION_SHIELD, 15 + random2(pow), 40);
     you.props[CONDENSATION_SHIELD_KEY] = pow;
-    you.redraw_armour_class = true;
+    you.redraw_shield_class = true;
 
     return SPRET_SUCCESS;
 }
