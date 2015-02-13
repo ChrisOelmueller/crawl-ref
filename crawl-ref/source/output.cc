@@ -2180,6 +2180,8 @@ void redraw_screen()
     you.redraw_evasion      = true;
     you.redraw_shield_class = true;
     you.redraw_experience   = true;
+    you.redraw_place        = true;
+    you.redraw_gold_zp      = true;
     you.wield_change        = true;
     you.redraw_quiver       = true;
     //you.redraw_skills       = true;
