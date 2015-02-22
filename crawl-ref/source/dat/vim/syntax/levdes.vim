@@ -74,7 +74,7 @@ syn keyword desOrientation north south east west northwest northeast southwest s
 syn keyword desOrientation Depths Temple Orc Elf Lair Swamp Shoals Snake Spider Slime Vaults Blade Crypt Tomb
 "Note: `Zot` totally highlights in e.g. the items `rune of Zot` and `Orb of Zot`. Not worth fixing.
 syn keyword desOrientation Hell Dis Geh Coc Tar Zot Forest Abyss Pan Zig Lab Bazaar Trove Sewer Ossuary
-syn keyword desOrientation Bailey IceCv Volcano WizLab
+syn keyword desOrientation Bailey IceCave Volcano Wizlab
 
 "Note: This is the list above, but lower-cased
 syn match desBranch contained /d\|temple\|orc\|elf\|lair\|swamp\|shoals\|snake\|spider\|slime\|vaults\|blade\|crypt\|tomb/

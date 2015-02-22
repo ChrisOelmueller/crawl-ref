@@ -51,7 +51,7 @@ A closed door
 
 A wooden door.
 %%%%
-# These should get custom names instead. Currently used by: IceCv, Ossuary,
+# These should get custom names instead. Currently used by: IceCave, Ossuary,
 # Sewer, Trove, Volcano.
 A collapsed entrance
 

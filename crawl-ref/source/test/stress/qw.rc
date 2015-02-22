@@ -529,11 +529,11 @@ local branch_data = {
 local portal_data = {
   --{"Bailey", "a flagged portal", "bailey"},
   --{"Bazaar", "gateway to a bazaar", "bazaar"},
-  --{"IceCv", "a frozen archway", "ice_cave"},
+  --{"IceCave", "a frozen archway", "ice_cave"},
   {"Ossuary", "covered staircase", "ossuary"},
   {"Sewer", "a glowing drain", "sewer"},
   --{"Volcano", "a dark tunnel", "volcano"},
-  --{"WizLab", "a magical portal", "wizlab"},
+  --{"Wizlab", "a magical portal", "wizlab"},
   --{"Zig", "gateway to a ziggurat", "ziggurat"},
   --{"Lab", "labyrinth entrance", "labyrinth"},
 } -- hack

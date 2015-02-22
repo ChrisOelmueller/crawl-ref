@@ -761,7 +761,7 @@ stone_dark1
 stone_dark2
 stone_dark3
 
-# For the Doroklohe WizLab
+# For the Doroklohe Wizlab
 stone_black_marked0 WALL_STONE_BLACK_MARKED
 stone_black_marked1
 stone_black_marked2

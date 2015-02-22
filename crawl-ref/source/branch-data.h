@@ -270,7 +270,7 @@ const Branch branches[NUM_BRANCHES] =
     { BRANCH_ICE_CAVE, NUM_BRANCHES, -1, -1, 1, 15,
           BFLAG_NO_XLEV_TRAVEL | BFLAG_NO_ITEMS, 0,
       DNGN_ENTER_ICE_CAVE, DNGN_EXIT_ICE_CAVE,
-      "Ice Cave", "an ice cave", "IceCv",
+      "Ice Cave", "an ice cave", "IceCave",
       nullptr,
       BLUE, WHITE,
       '6', 0 },
@@ -286,7 +286,7 @@ const Branch branches[NUM_BRANCHES] =
     { BRANCH_WIZLAB, NUM_BRANCHES, -1, -1, 1, 24,
       BFLAG_NO_XLEV_TRAVEL | BFLAG_NO_ITEMS, 0,
       DNGN_ENTER_WIZLAB, DNGN_EXIT_WIZLAB,
-      "Wizlab", "a wizard's laboratory", "WizLab",
+      "Wizlab", "a wizard's laboratory", "Wizlab",
       nullptr,
       LIGHTGREY, BROWN, // set per-map
       '8', 0 },
